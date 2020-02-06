@@ -11,6 +11,8 @@ import edu.wpi.first.wpilibj2.command.*;
 
 import frc.robot.subsystems.*;
 
+import static frc.robot.Constants.*;
+
 /**
  * For robot commands because RobotContainer is frighteningly messy
  */
@@ -26,25 +28,31 @@ public class RobotCommands{
 
     // CLIMBER COMMANDS
     public final StartEndCommand raiseLifter = new StartEndCommand(
-        () -> CLIMBER.setLifterSpeed(0.75),
-        () -> CLIMBER.setLifterSpeed(0),
+        () -> CLIMBER.lifterUp(),
+        () -> CLIMBER.lifterZero(),
         CLIMBER
     );
     
     public final StartEndCommand lowerLifter = new StartEndCommand(
-        () -> CLIMBER.setLifterSpeed(-0.75),
-        () -> CLIMBER.setLifterSpeed(0),
+        () -> CLIMBER.lifterDown(),
+        () -> CLIMBER.lifterZero(),
         CLIMBER
     );
 
     public final StartEndCommand gearClimb = new StartEndCommand(
-        () -> CLIMBER.setGearSpeed(0.75),
-        () -> CLIMBER.setGearSpeed(0),
+        () -> CLIMBER.gearOn(),
+        () -> CLIMBER.gearOff(),
         CLIMBER
     );
 
-    public final InstantCommand doNothing = new InstantCommand(
+    public final ConditionalCommand raiseOrLower = new ConditionalCommand(
+        lowerLifter,
+        raiseLifter,
+        CLIMBER.hasLiftedSupplier
+    );
 
+    public final InstantCommand doNothing = new InstantCommand(
+        
     );
 
 

@@ -14,9 +14,6 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
-
-import frc.robot.subsystems.*;
-
 public class RobotContainer {
 
     // IMPORTING STUFF AND STUFF
@@ -27,17 +24,12 @@ public class RobotContainer {
 
 
     // NEW JOYSTICK
-    public final Joystick driverController = new Joystick(DRIVER_CONTROLLER), opController = new Joystick(OPERATOR_CONTROLLER);
+    public final Joystick opController = new Joystick(OPERATOR_CONTROLLER);
 
     // CONFIG BUTTON BINDINGS (See constants.java to change specific ports etc.)
     // CLIMBER BUTTONS
-    private final JoystickButton raiseUpButton = new JoystickButton(opController, LB),
-                                 lowerDownButton = new JoystickButton(opController, RB),
+    private final JoystickButton raiseAndLowerButton = new JoystickButton(opController, LB),
                                  gearClimbButton = new JoystickButton(opController, BACK);
-                                 
-
-   
-   
 
     // ROBOT CONTAINER
     public RobotContainer() {
@@ -48,15 +40,11 @@ public class RobotContainer {
     private void configureButtonActions() {
 
         // CLIMB BUTTONS
-        raiseUpButton.whenHeld(robotCommands.raiseLifter);
-        lowerDownButton.whenHeld(robotCommands.lowerLifter);
+        raiseAndLowerButton.whenHeld(robotCommands.raiseOrLower);
         gearClimbButton.whenHeld(robotCommands.gearClimb);
         
     }
-
     
-   
-
     /**
      * Use this to pass the autonomous command to the main {@link Robot} class.
      *

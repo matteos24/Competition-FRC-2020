@@ -25,46 +25,15 @@ public final class Constants {
   public static final int GEAR_MOTOR1 = 7;
   public static final int GEAR_MOTOR2 = 8;
 
-
-  // === CONTROLLERS === //
-
-  // CONTROLLERS
-  public static final int DRIVER_CONTROLLER = 0;
   public static final int OPERATOR_CONTROLLER = 1;
 
-  // STICKS (for xbox controler)
-  public static final int HORIZ_AXIS_LEFT = 0;
-  public static final int FORWARD_AXIS_LEFT = 1;
-  public static final int HORIZ_AXIS_RIGHT = 4;
-  public static final int FORWARD_AXIS_RIGHT = 5;
-
-  public static final int LEFT_TRIGGER_AXIS = 2;
-  public static final int RIGHT_TRIGGER_AXIS = 3;
-
-  // CONTROLLER BUTTONS (for xbox controller)
-  public static final int A = 1;
-  public static final int B = 2;
-  public static final int X = 3;
-  public static final int Y = 4;
   public static final int LB = 5;
-  public static final int RB = 6;
   public static final int BACK = 7;
-  public static final int START = 8;
-  public static final int LEFT_STICK_BUTTON = 9;
-  public static final int RIGHT_STICK_BUTTON = 10;
-
-  public static final int MATCH_CONTROL = 11; // TODO: change this because button 11 doesn't exist
-
-
 
   // === SPEED CONSTANTS === //
-  // INTAKE
-  public static final double DEPLOY_INTAKE_SPEED = 0.5;
-  public static final double WHEEL_INTAKE_SPEED = 0.5;
-
-  // STORAGE
-  public static final double GATE_SPEED = 0.3;
-  
+  public static final double LIFTER_SPEED = 0.75;
+  public static final double LIFTER_SPEED_REVERSE = -0.75;
+  public static final double GEAR_SPEED = 0.75;
   
 }
 

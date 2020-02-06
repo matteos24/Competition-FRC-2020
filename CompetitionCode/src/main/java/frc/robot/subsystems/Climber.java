@@ -11,12 +11,17 @@ import edu.wpi.first.wpilibj.VictorSP;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import static frc.robot.Constants.*;
 
+
+import java.util.function.BooleanSupplier;
+
 public class Climber extends SubsystemBase {
 
 
     // Initialize fields
     private VictorSP lifterMotor;
     private VictorSP gearBoxMotor1, gearBoxMotor2;
+    Boolean hasLifted;
+    public BooleanSupplier hasLiftedSupplier = () -> hasLifted;
 
 
     public Climber() {
@@ -27,20 +32,35 @@ public class Climber extends SubsystemBase {
 
     /**
      * Sets the speed of the lifter to the desired speed
-     * 
-     * @param speed Desired speed of the motor lifting the hook
      */
-    public void setLifterSpeed(double speed){
-        lifterMotor.set(speed); 
+    public void lifterUp(){
+        lifterMotor.set(LIFTER_SPEED); 
+        hasLifted = true;
+        hasLiftedSupplier = () -> hasLifted;
+    }
+
+    public void lifterDown() {
+        lifterMotor.set(LIFTER_SPEED_REVERSE);
+        hasLifted = false;
+        hasLiftedSupplier = () -> hasLifted;
+    }
+
+    public void lifterZero() {
+        lifterMotor.set(0);
     }
 
     /**
      * Sets the speed of the gear motors to the desired speed
      * 
-     * @param speed Desired speed of the two gear motors
      */
-    public void setGearSpeed(double speed){ 
-        gearBoxMotor1.set(speed); gearBoxMotor2.set(speed); 
+    public void gearOn(){ 
+        gearBoxMotor1.set(GEAR_SPEED);
+        gearBoxMotor2.set(GEAR_SPEED); 
+    }
+
+    public void gearOff() {
+        gearBoxMotor1.set(0);
+        gearBoxMotor2.set(0);
     }
 
 
