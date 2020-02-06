@@ -1,3 +1,4 @@
+
 /*----------------------------------------------------------------------------*/
 /* Copyright (c) 2018-2019 FIRST. All Rights Reserved.                        */
 /* Open Source Software - may be modified and shared by FRC teams. The code   */
@@ -7,45 +8,90 @@
 
 package frc.robot;
 
-import edu.wpi.first.wpilibj.GenericHID;
-import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj2.command.*;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import frc.robot.subsystems.*;
 
-/**
- * This class is where the bulk of the robot should be declared.  Since Command-based is a
- * "declarative" paradigm, very little robot logic should actually be handled in the {@link Robot}
- * periodic methods (other than the scheduler calls).  Instead, the structure of the robot
- * (including subsystems, commands, and button mappings) should be declared here.
- */
+import static frc.robot.Constants.*;
+
 public class RobotContainer {
-  // The robot's subsystems and commands are defined here...
 
+    // SUBSYSTEMS
+    private final Intake INTAKE = new Intake();
 
-  /**
-   * The container for the robot.  Contains subsystems, OI devices, and commands.
-   */
-  public RobotContainer() {
-    // Configure the button bindings
-    configureButtonBindings();
-  }
+    // INTAKE MOTOR COMMANDS
+    private final StartEndCommand intakeCommand = new StartEndCommand(
+        () -> INTAKE.wheelSpeed(WHEEL_INTAKE_SPEED),
+        () -> INTAKE.wheelOff(),  
+        INTAKE
+    );
 
-  /**
-   * Use this method to define your button->command mappings.  Buttons can be created by
-   * instantiating a {@link GenericHID} or one of its subclasses ({@link
-   * edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then passing it to a
-   * {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
-   */
-  private void configureButtonBindings() {
-  }
+    public final StartEndCommand outtakeCommand = new StartEndCommand(
+        () -> INTAKE.wheelReverseSpeed(WHEEL_INTAKE_SPEED), 
+        () -> INTAKE.wheelOff(), 
+        INTAKE
+    );
 
+    // PISTON INTAKE
 
-  /**
-   * Use this to pass the autonomous command to the main {@link Robot} class.
-   *
-   * @return the command to run in autonomous
-   */
-  public Command getAutonomousCommand() {
-    // An ExampleCommand will run in autonomous
-    return null; //TODO- auto command
-  }
+    private final StartEndCommand pistonMove = new StartEndCommand(
+        () -> INTAKE.deployPiston(),
+        () -> INTAKE.retractPiston(),
+        INTAKE
+
+    );
+
+    private final InstantCommand pistonOffCommand = new InstantCommand(
+      () -> INTAKE.pistonOff(),
+      INTAKE
+    );
+
+    // MAKE A NEW JOYSTICK
+
+    public final Joystick opController = new Joystick(OPERATOR_CONTROLLER);
+  
+    // CONFIG BUTTON BINDINGS (See constants.java to change specific ports etc.)
+
+    // PISTON-Y INTAKE BUTTONS
+    // TODO: piston/motor change
+
+    private final JoystickButton pistonButton = new JoystickButton(opController, INTAKE_PISTON_BUTTON),
+                                 motorIntakeButton = new JoystickButton(opController, INTAKE_MOTOR_BUTTON),
+                                 motorOuttakeButton = new JoystickButton(opController, OUTTAKE_MOTOR_BUTTON);
+    /**
+     * The container for the robot.  Contains subsystems, OI devices, and commands.
+     */
+
+    public RobotContainer() {
+        configureButtonActions();
+    }
+
+    /**
+     * Config button actions: it changes what does each button do. Don't touch this to change bindings
+     */
+    private void configureButtonActions() {
+        // PISTON-Y INTAKE BUTTONS
+        pistonButton.toggleWhenPressed(pistonMove.withTimeout(2).andThen(pistonOffCommand));
+        motorIntakeButton.whenHeld(intakeCommand);
+        motorOuttakeButton.whenHeld(outtakeCommand);
+        /* CODE FOR TESTING
+        wheelOnFore.whenHeld(fore);
+        wheelOnBack.whenHeld(back);
+        */
+
+    }
+
+    /**
+     * Use this to pass the autonomous command to the main {@link Robot} class.
+     *
+     * @return the command to run in autonomous
+     */
+
+    public Command getAutonomousCommand() {
+        // An ExampleCommand will run in autonomous
+        return null;
+
+    }
+
 }

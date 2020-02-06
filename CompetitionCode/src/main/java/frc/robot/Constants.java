@@ -16,4 +16,30 @@ package frc.robot;
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
+
+  // === ROBOT PORTS === //
+
+  // INTAKE MOTORS
+  public static final int WHEEL_INTAKE_MOTOR = 0;
+  
+  // INTAKE PISTONS
+  public static final int INTAKE_PISTON_1 = 2;
+  public static final int INTAKE_PISTON_2 = 3;
+
+  // CONTROLLERS
+  public static final int OPERATOR_CONTROLLER = 1;
+
+  // TODO: MAKE TOGGLEABLE???
+  public static final int INTAKE_PISTON_BUTTON= 1;
+  public static final int INTAKE_MOTOR_BUTTON = 2;
+  public static final int OUTTAKE_MOTOR_BUTTON = 3;
+  
+  // === SPEED CONSTANTS === //
+  
+  // INTAKE
+  public static final double DEPLOY_INTAKE_SPEED = 0.5;
+  public static final double WHEEL_INTAKE_SPEED = 0.5;
+
+
 }
+
