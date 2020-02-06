@@ -15,5 +15,25 @@ package frc.robot;
  * <p>It is advised to statically import this class (or one of its inner classes) wherever the
  * constants are needed, to reduce verbosity.
  */
-public final class Constants {
+public final class Constants {  
+
+  // === ROBOT PORTS === //
+
+
+  // CLIMBER MOTORS
+  public static final int LIFTER_MOTOR = 6;
+  public static final int GEAR_MOTOR1 = 7;
+  public static final int GEAR_MOTOR2 = 8;
+
+  public static final int OPERATOR_CONTROLLER = 1;
+
+  public static final int LB = 5;
+  public static final int BACK = 7;
+
+  // === SPEED CONSTANTS === //
+  public static final double LIFTER_SPEED = 0.75;
+  public static final double LIFTER_SPEED_REVERSE = -0.75;
+  public static final double GEAR_SPEED = 0.75;
+  
 }
+
