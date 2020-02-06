@@ -16,4 +16,24 @@ package frc.robot;
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
+
+    // === CONTROLLERS === //
+    public static final int OPERATOR_CONTROLLER_ID = 2;
+
+    // === BUTTONS === //
+    public static final int BUTTON_A = 1, BUTTON_B = 1, BUTTON_Y = 1, BUTTON_X = 1; //TODO- Add proper buttons
+    public static final int LEFT_TRIGGER = 1, RIGHT_TRIGGER = 1, LEFT_BUMPER = 1, RIGHT_BUMPER = 1;
+
+    // === SHOOTER === //
+
+    public static final int DEFAULT_TARGET_RPM = 5000;
+
+    // RESERVED SHOOTER MOTOR PORTS: [0, 0]
+    public static final int SHOOTER_MOTOR_1 = 0;
+    public static final int SHOOTER_MOTOR_2 = 1;
+
+    // RESERVED SHOOTER SOLENOID PORTS: [0, 0 + 1]
+    public static final int SHOOTER_PISTON_A = 0;
+    public static final int SHOOTER_PISTON_B = SHOOTER_PISTON_A + 1;
+
 }
