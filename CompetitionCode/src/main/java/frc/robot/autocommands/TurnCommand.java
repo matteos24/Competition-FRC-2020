@@ -11,10 +11,10 @@ public class TurnCommand extends CommandBase {
     private final double speed;
     private final double distanceToTurn;
 
-    public TurnCommand(Drivetrain drivetrain, double degrees, double speed) {
+    public TurnCommand(Drivetrain drivetrain, double speed) {
        
+        degrees = (getHorizontalVerticalAngles(Constants.GOAL_COLOR).get(0));
         this.drivetrain = drivetrain;
-        this.degrees = degrees;
         this.speed = speed;
         
         // Calculate the distance to turn based off angle (see isFinished).

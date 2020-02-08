@@ -10,19 +10,21 @@ package frc.robot.autocommands;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
-import frc.robot.subsystems.Shooter;
+import frc.robot.subsystems.*;
 
 public class EnableShooterCommand extends CommandBase {
 
   private Shooter shooter;
   private double targetRPM = Constants.DEFAULT_TARGET_RPM;
+  private Vision vision;
 
   /**
    * Creates a new EnableShooterCommand.
    */
-  public EnableShooterCommand(Shooter shooter) {
+  public EnableShooterCommand(Shooter shooter, Vision vision) {
     this.shooter = shooter;
     addRequirements(shooter);
+    this.vision = vision;
   }
 
   // Called when the command is initially scheduled.
@@ -34,6 +36,12 @@ public class EnableShooterCommand extends CommandBase {
   @Override
   public void execute() {
     shooter.setSpeedWithRPM(targetRPM);
+    if (vision.getGoalList(Constants.GOAL_COLOR).size()<1){
+      double targetRPM = 0;
+    }
+    else{
+      //double velocityOfShooter = vision.getOptimalShootVelocityPower(true, Constants.GOAL_COLOR);
+    }
     SmartDashboard.putNumber("Target RPM", targetRPM);
     SmartDashboard.putNumber("Current RPM", shooter.getMotorSpeed());
     SmartDashboard.putBoolean("Ready To Fire?", Math.abs((shooter.getMotorSpeed() - targetRPM)) < 150);

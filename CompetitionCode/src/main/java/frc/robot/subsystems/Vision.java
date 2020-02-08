@@ -28,14 +28,12 @@ public class Vision extends SubsystemBase {
   Pixy2CCC pixyCCC;
   Pixy2Video pixyVideo;
   SPILink link = new SPILink();
-  private Color goalColor;
 
   public Vision(Color goalColor) {
     pixy = Pixy2.createInstance(link);
     pixy.init();
     pixyCCC = pixy.getCCC();
     pixyVideo = pixy.getVideo();
-    this.goalColor = goalColor;
   }
   
   /**
@@ -78,7 +76,7 @@ public class Vision extends SubsystemBase {
     // This method will be called once per scheduler run
   }
 
-  public double[] getHorizontalVerticalAngles(){
+  public double[] getHorizontalVerticalAngles(Color goalColor){
     Block goal = getGoalList(goalColor).get(0);
     double coordinateX = goal.getX();
     double coordinateY = goal.getY();
@@ -91,14 +89,14 @@ public class Vision extends SubsystemBase {
     temp[1] = angleVertical;
     return temp;
   }
-  public double getDistance(){
-    double[] angles = getHorizontalVerticalAngles();
+  public double getDistance(Color goalColor){
+    double[] angles = getHorizontalVerticalAngles(goalColor);
     double iAngle = angles[1];
     return HEIGHT_OF_CAM/(Math.tan(iAngle));
   }
-  public double getOptimalShootVelocityPower(boolean isFar){
+  public double getOptimalShootVelocityPower(boolean isFar, Color goalColor){
     double angle = isFar? 20: 50;
-    double d = getDistance() + DISTANCE_DIFFERENCE;
+    double d = getDistance(goalColor) + DISTANCE_DIFFERENCE;
     double x;
     x = -9.8*d*d;
     x = x/(2*((HEIGHT_OF_SHOOTER*Math.cos(angle)*Math.cos(angle))-(d*Math.sin(angle)*Math.cos(angle))));
