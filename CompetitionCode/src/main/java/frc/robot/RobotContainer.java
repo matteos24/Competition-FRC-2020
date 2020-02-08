@@ -1,3 +1,4 @@
+
 /*----------------------------------------------------------------------------*/
 /* Copyright (c) 2018-2019 FIRST. All Rights Reserved.                        */
 /* Open Source Software - may be modified and shared by FRC teams. The code   */
@@ -8,8 +9,15 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.GenericHID;
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.StartEndCommand;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import frc.robot.autocommands.EnableShooterCommand;
+import frc.robot.subsystems.*;
+
+import static frc.robot.Constants.*;
 
 /**
  * This class is where the bulk of the robot should be declared.  Since Command-based is a
@@ -20,6 +28,19 @@ import edu.wpi.first.wpilibj2.command.Command;
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
 
+  // Joysticks
+  public final Joystick operator = new Joystick(OPERATOR_CONTROLLER), driverController = new Joystick(DRIVER_CONTROLLER);
+
+  // Buttons
+  public final JoystickButton toggleShooterButton = new JoystickButton(operator, RIGHT_BUMPER);
+  public final JoystickButton shootButton = new JoystickButton(operator, LEFT_BUMPER);
+  public final JoystickButton modeSwitchButton = new JoystickButton(driverController, MODE_SWITCH_BUTTON);
+
+
+  // Subsystems
+  public final Shooter SHOOTER = new Shooter();
+  private final Drivetrain DRIVETRAIN = new Drivetrain();
+
 
   /**
    * The container for the robot.  Contains subsystems, OI devices, and commands.
@@ -29,6 +50,12 @@ public class RobotContainer {
     configureButtonBindings();
   }
 
+  public final StartEndCommand modeSwitch = new StartEndCommand(
+         () -> DRIVETRAIN.modeSlow(),
+         () -> DRIVETRAIN.modeFast(),
+         DRIVETRAIN
+     ); 
+
   /**
    * Use this method to define your button->command mappings.  Buttons can be created by
    * instantiating a {@link GenericHID} or one of its subclasses ({@link
@@ -36,8 +63,10 @@ public class RobotContainer {
    * {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
+    toggleShooterButton.toggleWhenActive(new EnableShooterCommand(SHOOTER));
+    modeSwitchButton.whenHeld(modeSwitch);
+    //shootButton.whenPressed();
   }
-
 
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
@@ -47,5 +76,9 @@ public class RobotContainer {
   public Command getAutonomousCommand() {
     // An ExampleCommand will run in autonomous
     return null; //TODO- auto command
+  }
+
+  public Drivetrain getDrivetrain() {
+    return this.DRIVETRAIN;
   }
 }
