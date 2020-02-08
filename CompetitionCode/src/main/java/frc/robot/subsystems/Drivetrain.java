@@ -52,7 +52,7 @@ public class Drivetrain extends SubsystemBase {
   }
 
   public void tankDrive(double leftSpeed, double rightSpeed){
-    setLeftSpeed(leftSpeed);
+    setLeftSpeed(-leftSpeed);
     setRightSpeed(-rightSpeed);
   }
 
@@ -63,6 +63,7 @@ public class Drivetrain extends SubsystemBase {
     x *= Math.abs(x * x);
     z *= Math.abs(z * z);
     x *= (isFast ? 0.35 : 0.9);
+    z *= 0.1;
     tankDrive(x + z, x - z);
   }
 
