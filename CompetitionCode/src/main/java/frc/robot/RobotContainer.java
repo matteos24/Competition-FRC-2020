@@ -12,8 +12,10 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.StartEndCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import frc.robot.autocommands.AlignTurn;
 import frc.robot.autocommands.EnableShooterCommand;
 import frc.robot.subsystems.*;
 
@@ -57,6 +59,10 @@ public class RobotContainer {
          DRIVETRAIN
      ); 
 
+  public final InstantCommand turnToGoal = new InstantCommand(
+
+
+  );
   /**
    * Use this method to define your button->command mappings.  Buttons can be created by
    * instantiating a {@link GenericHID} or one of its subclasses ({@link
@@ -64,7 +70,7 @@ public class RobotContainer {
    * {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    toggleShooterButton.toggleWhenActive(new EnableShooterCommand(SHOOTER,VISION));
+    toggleShooterButton.toggleWhenActive(new AlignTurn(DRIVETRAIN, 0.5, VISION).andThen(new EnableShooterCommand(SHOOTER,VISION).withTimeout(SHOOTER_SPIN_TIME)));
     modeSwitchButton.whenHeld(modeSwitch);
     //shootButton.whenPressed();
   }

@@ -36,6 +36,7 @@ public final class Constants {
     // === SHOOTER === //
 
     public static final int DEFAULT_TARGET_RPM = 5000;
+    public static final int SHOOTER_SPIN_TIME = 5;
 
     // RESERVED SHOOTER MOTOR PORTS: [0, 0]
     public static final int SHOOTER_MOTOR_1 = 0;
