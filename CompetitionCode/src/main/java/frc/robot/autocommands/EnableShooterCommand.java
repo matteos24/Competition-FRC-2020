@@ -37,7 +37,7 @@ public class EnableShooterCommand extends CommandBase {
   public void execute() {
     shooter.setSpeedWithRPM(targetRPM);
     if (vision.getGoalList(Constants.GOAL_COLOR).size()<1){
-      double targetRPM = 0;
+      targetRPM = 0;
     }
     else{
       //double velocityOfShooter = vision.getOptimalShootVelocityPower(true, Constants.GOAL_COLOR);

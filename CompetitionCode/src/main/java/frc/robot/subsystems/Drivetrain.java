@@ -27,6 +27,7 @@ public class Drivetrain extends SubsystemBase {
   private SpeedControllerGroup left, right;
 
   private double speedMultiplier = 1;
+  private double startAngle;
   private boolean isFast = true;
 
 
@@ -79,6 +80,14 @@ public class Drivetrain extends SubsystemBase {
 
   public double getRightDistance() {
     return (frontRight.getSelectedSensorPosition() + backRight.getSelectedSensorPosition()) / 2;
+  }
+
+  public void startingAngle(double angle){
+    startAngle = angle;
+  }
+
+  public double geetStartAngle(){
+    return startAngle;
   }
 
 /**

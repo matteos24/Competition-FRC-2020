@@ -1,23 +1,25 @@
 package frc.robot.autocommands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Constants;
 import frc.robot.subsystems.Drivetrain;
+import frc.robot.subsystems.Vision;
 
-public class TurnCommand extends CommandBase {
-
+public class AlignTurn extends CommandBase {
 
     private final Drivetrain drivetrain;
     private final double degrees;
     private final double speed;
     private final double distanceToTurn;
 
-    public TurnCommand(Drivetrain drivetrain, double speed) {
+    public AlignTurn(Drivetrain drivetrain, double speed, Vision v) {
        
-        degrees = (getHorizontalVerticalAngles(Constants.GOAL_COLOR).get(0));
+        degrees = (v.getHorizontalVerticalAngles(Constants.GOAL_COLOR)[0]);
         this.drivetrain = drivetrain;
         this.speed = speed;
         
         // Calculate the distance to turn based off angle (see isFinished).
+        drivetrain.startingAngle(degrees);
         this.distanceToTurn = Drivetrain.WHEEL_TO_WHEEL_DIAMETER_INCHES * 2 * Math.PI * (degrees / 360);
 
         // Requires a drivetrain to work

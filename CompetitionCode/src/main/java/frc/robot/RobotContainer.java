@@ -40,6 +40,7 @@ public class RobotContainer {
   // Subsystems
   public final Shooter SHOOTER = new Shooter();
   private final Drivetrain DRIVETRAIN = new Drivetrain();
+  private final Vision VISION = new Vision(GOAL_COLOR);
 
 
   /**
@@ -63,7 +64,7 @@ public class RobotContainer {
    * {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    toggleShooterButton.toggleWhenActive(new EnableShooterCommand(SHOOTER));
+    toggleShooterButton.toggleWhenActive(new EnableShooterCommand(SHOOTER,VISION));
     modeSwitchButton.whenHeld(modeSwitch);
     //shootButton.whenPressed();
   }
