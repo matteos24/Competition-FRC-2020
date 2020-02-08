@@ -84,16 +84,16 @@ public class Vision extends SubsystemBase {
     double angleHorizontal = ((1 - (coordinateX/(Constants.CAMERA_X/2)))*(Constants.HORIZONTAL_TOTAL_INT/2));
     angleHorizontal =- Constants.DIFFERENCE_BETWEEN_SHOOTER_ANGLE_AND_CAM_ANGLE;
     double angleVertical = ((1 - (coordinateY/(Constants.CAMERA_Y/2)))*(Constants.VERTICAL_TOTAL_INT/2));
-    double[] temp = new double[2];
-    temp[0] = angleHorizontal;
-    temp[1] = angleVertical;
+    double[] temp = new double[] {angleHorizontal, angleVertical};
     return temp;
   }
+
   public double getDistance(Color goalColor){
     double[] angles = getHorizontalVerticalAngles(goalColor);
     double iAngle = angles[1];
     return HEIGHT_OF_CAM/(Math.tan(iAngle));
   }
+
   public double getOptimalShootVelocityPower(boolean isFar, Color goalColor){
     double angle = isFar? 20: 50;
     double d = getDistance(goalColor) + DISTANCE_DIFFERENCE;
@@ -104,18 +104,3 @@ public class Vision extends SubsystemBase {
     return x/MAX_VELOCITY_OF_SHOOTER;
   }
 }
-
-
-/* IN COMMAND ALIGNWITHSHOOT
-private Vision vision;
-public AlignWithShoot(Vision vision){
-  this.vision = vision;
-}
-if getGoalList.length<1{
-  double velocityOfShooter = 0.5(real value to be determined)
-}
-else{
-  double velocityOfShooter = vision.getOptimalShootVelocityPower(true);
-  TurnCommand(getHorizontalVerticalAngles[0]);
-}
-*/
