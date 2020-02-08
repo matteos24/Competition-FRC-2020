@@ -58,7 +58,6 @@ public class Vision extends SubsystemBase {
     return temp;
   }
 //TODO: We love you papa patrick
-
   /**
    * Given a block, this method will return the color surrounding the 5x5 space of the 
    * x and y coords of the block
