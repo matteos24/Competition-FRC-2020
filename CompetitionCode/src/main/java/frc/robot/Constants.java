@@ -16,4 +16,17 @@ package frc.robot;
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
+    // == VISION TRACKING CONSTANTS == //
+    //THE CONSTANTS WITH VALUE 0 ARE CURRENTLY UNKNOWN 
+    public static final int DIFFERENCE_BETWEEN_SHOOTER_ANGLE_AND_CAM_ANGLE = 0;
+    public static final int CAMERA_X = 315;
+    public static final int HORIZONTAL_TOTAL_INT = 0;
+    public static final int CAMERA_Y = 207;
+    public static final int VERTICAL_TOTAL_INT = 0;
+    public static final int HEIGHT_OF_SHOOTER = 0;
+    public static final int DISTANCE_DIFFERENCE = 0;
+    public static final int HEIGHT_OF_CAM = 0;
+    public static final int MAX_VELOCITY_OF_SHOOTER = 1;
+
+  
 }
