@@ -1,12 +1,12 @@
-package io.github.pseudoresonance.pixy2api;
+package frc.robot.io.github.pseudoresonance.pixy2api;
 
 import java.awt.Color;
 import java.util.concurrent.TimeUnit;
 
-import io.github.pseudoresonance.pixy2api.links.I2CLink;
-import io.github.pseudoresonance.pixy2api.links.Link;
-import io.github.pseudoresonance.pixy2api.links.SPILink;
-import io.github.pseudoresonance.pixy2api.links.UARTLink;
+import frc.robot.io.github.pseudoresonance.pixy2api.links.I2CLink;
+import frc.robot.io.github.pseudoresonance.pixy2api.links.Link;
+import frc.robot.io.github.pseudoresonance.pixy2api.links.SPILink;
+import frc.robot.io.github.pseudoresonance.pixy2api.links.UARTLink;
 
 /**
  * Java Port of Pixy2 Arduino Library
