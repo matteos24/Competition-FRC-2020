@@ -32,9 +32,7 @@ public final class Constants {
   // === CONTROLLERS === //
   
   // STICKS
-  public static final int HORIZ_AXIS_LEFT = 0;
   public static final int FORWARD_AXIS_LEFT = 1;
-  public static final int FORWARD_AXIS_RIGHT = 5;
   public static final int HORIZ_AXIS_RIGHT = 4;
 
   // CONTROLLERS

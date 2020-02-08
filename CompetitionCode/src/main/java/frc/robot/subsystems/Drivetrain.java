@@ -13,6 +13,8 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import static frc.robot.Constants.*;
 
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
+
 public class Drivetrain extends SubsystemBase {
 
   public static final double MM_TO_IN = 0.0393701;
@@ -21,31 +23,31 @@ public class Drivetrain extends SubsystemBase {
 
   public static final double PULSES_PER_ROTATION = 256;
   
-  private VictorSP frontLeft, frontRight, backLeft, backRight;
+  private WPI_TalonFX frontLeft, frontRight, backLeft, backRight;
 
   private SpeedControllerGroup left, right;
 
-  private double speedMode = 1;
+  private double speedMultiplier = 1;
   private boolean isFast = true;
 
 
   public Drivetrain() {
-    frontLeft = new VictorSP(FRONT_LEFT_DRIVE_MOTOR);
-    backLeft = new VictorSP(BACK_LEFT_DRIVE_MOTOR);
-    frontRight = new VictorSP(FRONT_RIGHT_DRIVE_MOTOR);
-    backRight = new VictorSP(BACK_RIGHT_DRIVE_MOTOR);
+    frontLeft = new WPI_TalonFX(FRONT_LEFT_DRIVE_MOTOR);
+    backLeft = new WPI_TalonFX(BACK_LEFT_DRIVE_MOTOR);
+    frontRight = new WPI_TalonFX(FRONT_RIGHT_DRIVE_MOTOR);
+    backRight = new WPI_TalonFX(BACK_RIGHT_DRIVE_MOTOR);
 
     left = new SpeedControllerGroup(frontLeft, backLeft);
     right = new SpeedControllerGroup(frontRight, backRight);
   }
 
   public void modeSlow(){
-    speedMode = 0.25;
+    speedMultiplier = 0.25;
     isFast = false;
   }
 
   public void modeFast(){
-    speedMode = 1;
+    speedMultiplier = 1;
     isFast = true;
   }
 
@@ -53,19 +55,31 @@ public class Drivetrain extends SubsystemBase {
     setLeftSpeed(leftSpeed);
     setRightSpeed(-rightSpeed);
   }
+
+  /**
+   * X is horizontal, Z is vertical
+   */
   public void arcadeDrive(double x, double z){
-    x *= Math.abs(x*x);
-    z *= Math.abs(z*z);
+    x *= Math.abs(x * x);
+    z *= Math.abs(z * z);
     x *= (isFast ? 0.35 : 0.9);
-    tankDrive(x+z, x-z);
+    tankDrive(x + z, x - z);
   }
 
   private void setLeftSpeed(double speed) {
-    left.set(speed*speedMode);
+    left.set(speed * speedMultiplier);
   }
 
   private void setRightSpeed(double speed) {
-    right.set(speed*speedMode);
+    right.set(speed * speedMultiplier);
+  }
+
+  public double getLeftDistance() {
+    return (frontLeft.getSelectedSensorPosition() + backLeft.getSelectedSensorPosition()) / 2;
+  }
+
+  public double getRightDistance() {
+    return (frontRight.getSelectedSensorPosition() + backRight.getSelectedSensorPosition()) / 2;
   }
 
   @Override
