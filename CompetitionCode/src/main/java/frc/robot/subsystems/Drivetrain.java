@@ -8,7 +8,6 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
-import edu.wpi.first.wpilibj.VictorSP;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import static frc.robot.Constants.*;
@@ -52,7 +51,7 @@ public class Drivetrain extends SubsystemBase {
   }
 
   public void tankDrive(double leftSpeed, double rightSpeed){
-    setLeftSpeed(-leftSpeed);
+    setLeftSpeed(leftSpeed);
     setRightSpeed(-rightSpeed);
   }
 
@@ -63,7 +62,7 @@ public class Drivetrain extends SubsystemBase {
     x *= Math.abs(x * x);
     z *= Math.abs(z * z);
     x *= (isFast ? 0.35 : 0.9);
-    z *= 0.1;
+    z *= 0.3;
     tankDrive(x + z, x - z);
   }
 

@@ -24,16 +24,16 @@ public final class Constants {
   // === ROBOT PORTS === //
 
   // DRIVE MOTORS
-  public static final int FRONT_LEFT_DRIVE_MOTOR = 0;
-  public static final int BACK_LEFT_DRIVE_MOTOR = 2;
-  public static final int FRONT_RIGHT_DRIVE_MOTOR = 3;
-  public static final int BACK_RIGHT_DRIVE_MOTOR = 1;
+  public static final int FRONT_LEFT_DRIVE_MOTOR = 3;
+  public static final int BACK_LEFT_DRIVE_MOTOR = 0;
+  public static final int FRONT_RIGHT_DRIVE_MOTOR = 1;
+  public static final int BACK_RIGHT_DRIVE_MOTOR = 2;
 
   // === CONTROLLERS === //
   
   // STICKS
-  public static final int FORWARD_AXIS_LEFT = 1;
-  public static final int HORIZ_AXIS_RIGHT = 4;
+  public static final int FORWARD_AXIS_LEFT = 4;
+  public static final int HORIZ_AXIS_RIGHT = 1;
 
   // CONTROLLERS
   public static final int DRIVER_CONTROLLER = 0;
