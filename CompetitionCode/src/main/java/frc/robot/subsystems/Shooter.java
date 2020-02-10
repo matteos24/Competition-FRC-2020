@@ -9,8 +9,6 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
-
-import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import static frc.robot.Constants.*;
@@ -25,7 +23,6 @@ public class Shooter extends SubsystemBase {
   // TWO PISTONS IN PARALLEL- PRESUMABLY ONE D.SOLENOID
 
   private WPI_TalonSRX motor1, motor2;
-  private DoubleSolenoid anglePiston;
 
   // LOCAL VARIABLES
   private double speed = 0.0;
