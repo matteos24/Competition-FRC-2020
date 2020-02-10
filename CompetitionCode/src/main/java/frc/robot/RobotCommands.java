@@ -11,8 +11,6 @@ import edu.wpi.first.wpilibj2.command.*;
 
 import frc.robot.subsystems.*;
 
-import static frc.robot.Constants.*;
-
 /**
  * For robot commands because RobotContainer is frighteningly messy
  */
