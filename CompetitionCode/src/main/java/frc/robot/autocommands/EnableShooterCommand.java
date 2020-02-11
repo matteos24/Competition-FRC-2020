@@ -40,7 +40,7 @@ public class EnableShooterCommand extends CommandBase {
       targetRPM = 0;
     }
     else{
-      //double velocityOfShooter = vision.getOptimalShootVelocityPower(true, Constants.GOAL_COLOR);
+      targetRPM = vision.getOptimalShootVelocityPower(true, Constants.GOAL_COLOR)*60/(2*Math.PI*0.0508);
     }
     SmartDashboard.putNumber("Target RPM", targetRPM);
     SmartDashboard.putNumber("Current RPM", shooter.getMotorSpeed());
