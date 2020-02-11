@@ -8,6 +8,9 @@
 
 package frc.robot;
 
+import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj2.command.*;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
@@ -21,8 +24,7 @@ import frc.robot.subsystems.*;
 import static frc.robot.Constants.*;
 
 public class RobotContainer {
-  // The robot's subsystems and commands are defined here...
-
+  
   // JOYSTICKS
   public final Joystick driver = new Joystick(DRIVER_CONTROLLER);
   public final Joystick operator = new Joystick(OPERATOR_CONTROLLER);
@@ -31,9 +33,14 @@ public class RobotContainer {
   public final JoystickButton toggleShooterButton = new JoystickButton(operator, RIGHT_BUMPER);
   public final JoystickButton shootButton = new JoystickButton(operator, LEFT_BUMPER);
   public final JoystickButton modeSwitchButton = new JoystickButton(driver, RIGHT_BUMPER);
+  
+  private final JoystickButton pistonButton = new JoystickButton(opController, INTAKE_PISTON_BUTTON),
+                               motorIntakeButton = new JoystickButton(opController, INTAKE_MOTOR_BUTTON),
+                               motorOuttakeButton = new JoystickButton(opController, OUTTAKE_MOTOR_BUTTON);
 
   // SUBSYSTEMS
   private final Drivetrain DRIVETRAIN = new Drivetrain();
+  private final Intake INTAKE = new Intake();
   
   // COMMANDS
   public final StartEndCommand modeSwitch = new StartEndCommand(
@@ -41,6 +48,32 @@ public class RobotContainer {
          () -> DRIVETRAIN.modeFast(),
          DRIVETRAIN
      ); 
+  
+  private final StartEndCommand intakeCommand = new StartEndCommand(
+        () -> INTAKE.wheelSpeed(WHEEL_INTAKE_SPEED),
+        () -> INTAKE.wheelOff(),  
+        INTAKE
+    );
+
+    public final StartEndCommand outtakeCommand = new StartEndCommand(
+        () -> INTAKE.wheelReverseSpeed(WHEEL_INTAKE_SPEED), 
+        () -> INTAKE.wheelOff(), 
+        INTAKE
+    );
+
+    // PISTON INTAKE
+
+    private final StartEndCommand pistonMove = new StartEndCommand(
+        () -> INTAKE.deployPiston(),
+        () -> INTAKE.retractPiston(),
+        INTAKE
+
+    );
+
+    private final InstantCommand pistonOffCommand = new InstantCommand(
+      () -> INTAKE.pistonOff(),
+      INTAKE
+    );
 
   /**
    * The container for the robot.  Contains subsystems, OI devices, and commands.
@@ -58,6 +91,9 @@ public class RobotContainer {
    */
   private void configureButtonBindings() {
     modeSwitchButton.whenHeld(modeSwitch);
+    pistonButton.toggleWhenPressed(pistonMove.withTimeout(2).andThen(pistonOffCommand));
+    motorIntakeButton.whenHeld(intakeCommand);
+    motorOuttakeButton.whenHeld(outtakeCommand);
   }
 
   /**

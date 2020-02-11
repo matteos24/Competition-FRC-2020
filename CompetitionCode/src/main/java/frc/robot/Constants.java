@@ -21,6 +21,25 @@ import java.awt.Color;
  */
 public final class Constants {
 
+  // === ROBOT PORTS === //
+
+  // INTAKE MOTORS
+  public static final int WHEEL_INTAKE_MOTOR = 0;
+  
+  // INTAKE PISTONS
+  public static final int INTAKE_PISTON_1 = 2;
+  public static final int INTAKE_PISTON_2 = 3;
+
+  public static final int INTAKE_PISTON_BUTTON= 1;
+  public static final int INTAKE_MOTOR_BUTTON = 2;
+  public static final int OUTTAKE_MOTOR_BUTTON = 3;
+  
+  // === SPEED CONSTANTS === //
+  
+  // INTAKE
+  public static final double DEPLOY_INTAKE_SPEED = 0.5;
+  public static final double WHEEL_INTAKE_SPEED = 0.5;
+
   // == BUTTONS == //
   public static final int BUTTON_A = 1, BUTTON_B = 2, BUTTON_Y = 4, BUTTON_X = 3; 
   public static final int LEFT_BUMPER = 5, RIGHT_BUMPER = 6;
@@ -44,3 +63,4 @@ public final class Constants {
   public static final int OPERATOR_CONTROLLER = 1;
   
 }
+
