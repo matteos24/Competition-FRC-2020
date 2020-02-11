@@ -20,19 +20,22 @@ public class RobotContainer {
     // SUBSYSTEMS
     private final Drivetrain DRIVETRAIN = new Drivetrain();
 
+    // CONTROLLERS
     public final Joystick driverController = new Joystick(DRIVER_CONTROLLER);
 
+    // BUTTONS
     public final JoystickButton modeSwitchButton = new JoystickButton(driverController, MODE_SWITCH_BUTTON);
+
+    // COMMANDS
+    public final StartEndCommand modeSwitch = new StartEndCommand(
+         () -> DRIVETRAIN.modeSlow(),
+         () -> DRIVETRAIN.modeFast(),
+         DRIVETRAIN
+    ); 
 
     public RobotContainer() {
         configureButtonActions();
     }
-
-     public final StartEndCommand modeSwitch = new StartEndCommand(
-         () -> DRIVETRAIN.modeSlow(),
-         () -> DRIVETRAIN.modeFast(),
-         DRIVETRAIN
-     ); 
 
     /**
      * Config button actions: it changes what does each button do. Don't touch this to change bindings
