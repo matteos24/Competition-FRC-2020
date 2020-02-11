@@ -27,6 +27,7 @@ public class Drivetrain extends SubsystemBase {
   private SpeedControllerGroup left, right;
 
   private double speedMultiplier = 1;
+
   private boolean isFast = true;
 
   public Drivetrain() {
@@ -62,10 +63,9 @@ public class Drivetrain extends SubsystemBase {
    * X is horizontal, Z is vertical
    */
   public void arcadeDrive(double x, double z){
-    x *= Math.abs(x * x);
-    z *= Math.abs(z * z);
-    x *= (isFast ? 0.35 : 0.9);
-    z *= 0.3;
+    x *= Math.abs(x * x) * (isFast ? 0.35 : 0.9);
+    z *= Math.abs(z * z) * 0.3;
+    
     tankDrive(x + z, x - z);
 
     System.out.println(getLeftDistance());
@@ -79,14 +79,14 @@ public class Drivetrain extends SubsystemBase {
     right.set(speed * speedMultiplier);
   }
 
-  // ENCODERS //
-
-  public double getLeftDistance() {
-    return (frontLeft.getSelectedSensorPosition(1) + backLeft.getSelectedSensorPosition(1)) / 2.;
-  }
-
-  public double getRightDistance() {
-    return (frontRight.getSelectedSensorPosition(1) + backRight.getSelectedSensorPosition(1)) / 2.;
+  /**
+  * Resets the values of both encoders (left and right)
+  */
+  public void resetEncoders() {
+    frontLeft.setSelectedSensorPosition(0, 0, 10);
+    backLeft.setSelectedSensorPosition(0, 0, 10);
+    frontRight.setSelectedSensorPosition(0, 0, 10);
+    backRight.setSelectedSensorPosition(0, 0, 10);
   }
 
   @Override
