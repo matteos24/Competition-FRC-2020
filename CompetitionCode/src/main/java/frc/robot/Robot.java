@@ -65,12 +65,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousInit() {
-    m_autonomousCommand = m_robotContainer.getAutonomousCommand();
-
-    // schedule the autonomous command (example)
-    if (m_autonomousCommand != null) {
-      m_autonomousCommand.schedule();
-    }
+    
   }
 
   /**
@@ -96,6 +91,8 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void teleopPeriodic() {
+    m_robotContainer.getDrivetrain().arcadeDrive(m_robotContainer.driverController.getRawAxis(Constants.HORIZ_AXIS_RIGHT),
+          -m_robotContainer.driverController.getRawAxis(Constants.FORWARD_AXIS_LEFT));
   }
 
   @Override
