@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import static frc.robot.Constants.*;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 
 public class Drivetrain extends SubsystemBase {
@@ -64,6 +65,8 @@ public class Drivetrain extends SubsystemBase {
     x *= (isFast ? 0.35 : 0.9);
     z *= 0.3;
     tankDrive(x + z, x - z);
+
+    System.out.println(getLeftDistance());
   }
 
   private void setLeftSpeed(double speed) {
@@ -75,11 +78,11 @@ public class Drivetrain extends SubsystemBase {
   }
 
   public double getLeftDistance() {
-    return (frontLeft.getSelectedSensorPosition() + backLeft.getSelectedSensorPosition()) / 2;
+    return (frontLeft.getSelectedSensorPosition(1) + backLeft.getSelectedSensorPosition(1)) / 2.;
   }
 
   public double getRightDistance() {
-    return (frontRight.getSelectedSensorPosition() + backRight.getSelectedSensorPosition()) / 2;
+    return (frontRight.getSelectedSensorPosition(1) + backRight.getSelectedSensorPosition(1)) / 2.;
   }
 
   @Override
