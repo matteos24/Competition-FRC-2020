@@ -13,6 +13,7 @@ import static frc.robot.Constants.*;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import frc.robot.triggers.*;
 
 
 
@@ -34,10 +35,11 @@ public class RobotContainer {
     private final JoystickButton 
 
                                  // STORAGE GATE BUTTON
-                                 storageGateButton = new JoystickButton(opController, B);
+                                 storageOverrideButton = new JoystickButton(opController, START);
                                  
 
-   
+    // STORAGE TRIGGER
+    private final StorageLimitSwitchTrigger storageTrigger = new StorageLimitSwitchTrigger();
    
 
     // ROBOT CONTAINER
@@ -51,9 +53,10 @@ public class RobotContainer {
 
 
         // STORAGE
-        storageGateButton.whenHeld(robotCommands.storageGate);
+        storageTrigger.whenActive(robotCommands.storeBall);
+        storageOverrideButton.whenPressed(robotCommands.startStorageOverride);
+        storageOverrideButton.whenHeld(robotCommands.storageOverride);
 
-        // Control Panel Spin Half
         
     }
 

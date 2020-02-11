@@ -10,6 +10,8 @@ package frc.robot.subsystems;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.VictorSP;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
 import static frc.robot.Constants.*;
 
 // Ball storage: this class controls the gate opening onto the shooter. 
@@ -19,54 +21,61 @@ import static frc.robot.Constants.*;
 
 public class Storage extends SubsystemBase {
   // FIELDS
-  private VictorSP motor;
-  private DigitalInput limit1, limit2, limit3, limit4, limit5;
+  private final VictorSP motor;
+  private final DigitalInput[] limit;
+  private boolean isOverrided;
 
   public Storage() {
     motor = new VictorSP(STORAGE_GATE_MOTOR);
-    DigitalInput limit1 = new DigitalInput(1);
-    DigitalInput limit2 = new DigitalInput(2);
-    DigitalInput limit3 = new DigitalInput(3);
-    DigitalInput limit4 = new DigitalInput(4);
-    DigitalInput limit5 = new DigitalInput(5);
+    isOverrided = false;
+
+    limit = new DigitalInput[6];
+    for(int i=0; i<=5; i++){
+      limit[i] = new DigitalInput(i);
+    }
  
   }
 
-  /**
-   * Returns Int of the greatest affected limit switch; 0 if none are affected
-   */
+  public boolean limitPressed(final int index) {
+    return limit[index].get();
+  }
+  
+  // public DigitalInput getStartLimit(){
+  //   return limit[0];
+  // }
 
-   public int limitSwitchAffected() {
-    if(limit5.get() == true) {
-      return 5;
-    } else if(limit4.get() == true) {
-      return 4;
-    } else if(limit3.get() == true) {
-      return 3;
-    } else if(limit2.get() == true) {
-      return 2;
-    } else if(limit1.get() == true) {
-      return 1;
+  public int getCurrentStage(){
+    for(int i=5; i>0; i--){
+      if(limit[i].get()) return i;
     }
     return 0;
-   }
+  }
 
   /**
    * Sets the storage motor (gate) to 0.3 (GATE_SPEED in constants)
    */
-  public void gateSpeed() {
+  public void setGateSpeed() {
     motor.set(GATE_SPEED);
   }
 
   /**
    * Sets the speed of the storage motor (gate) to 0 for stopping
    */
-  public void gateZero() {
+  public void stop() {
     motor.set(0);
+  }
+
+  public void override(){
+    isOverrided = true;
+  }
+  public boolean isOverrided(){
+    return isOverrided;
   }
 
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+    SmartDashboard.putBoolean("intake start", limit[0].get());
+    for(int i=1; i<=5; i++) SmartDashboard.putBoolean("has ball "+i, limit[i].get());
   }
 }

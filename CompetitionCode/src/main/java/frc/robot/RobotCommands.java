@@ -8,7 +8,7 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj2.command.*;
-
+import frc.robot.commands.*;
 import frc.robot.subsystems.*;
 
 import static frc.robot.Constants.*;
@@ -19,19 +19,24 @@ import static frc.robot.Constants.*;
 public class RobotCommands{
 
     // CREATE SUBSYSTEMS
-    public final Storage STORAGE = new Storage();
+    public static final Storage STORAGE = new Storage();
+        // for storage trigger
+        public static boolean StorageShouldIntake(){return STORAGE.limitPressed(0) && !STORAGE.isOverrided(); }
 
-
-
-
-    
     
     // STORAGE COMMANDS
-    public final StartEndCommand storageGate = new StartEndCommand(
-        () -> STORAGE.gateSpeed(),
-        () -> STORAGE.gateZero(),
+    public final StartEndCommand storageOverride = new StartEndCommand(
+        () -> STORAGE.setGateSpeed(),
+        () -> STORAGE.stop(),
         STORAGE
     );
+    public final InstantCommand startStorageOverride = new InstantCommand(
+        () -> STORAGE.override()
+    );
+
+    public final StoreBall storeBall = new StoreBall(STORAGE);
+
+
 
     public final InstantCommand doNothing = new InstantCommand();
    
