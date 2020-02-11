@@ -1,9 +1,9 @@
-package frc.robot.autocommands;
+package frc.robot.commands.auto;
 
 
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import frc.robot.autocommands.MoveCommand;
-import frc.robot.autocommands.TurnCommand;
+import frc.robot.commands.auto.MoveCommand;
+import frc.robot.commands.auto.TurnCommand;
 import frc.robot.subsystems.Drivetrain;
 
 // TestAutoCommandGroup: For testing

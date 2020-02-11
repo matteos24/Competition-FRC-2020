@@ -15,10 +15,6 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.StartEndCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-import frc.robot.autocommands.AlignTurn;
-import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj2.command.StartEndCommand;
-import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 import frc.robot.subsystems.*;
 
@@ -34,12 +30,10 @@ public class RobotContainer {
   // BUTTONS
   public final JoystickButton toggleShooterButton = new JoystickButton(operator, RIGHT_BUMPER);
   public final JoystickButton shootButton = new JoystickButton(operator, LEFT_BUMPER);
-  public final JoystickButton modeSwitchButton = new JoystickButton(driverController, RIGHT_BUMPER);
+  public final JoystickButton modeSwitchButton = new JoystickButton(driver, RIGHT_BUMPER);
 
   // SUBSYSTEMS
-  public final Shooter SHOOTER = new Shooter();
   private final Drivetrain DRIVETRAIN = new Drivetrain();
-  private final Vision VISION = new Vision(GOAL_COLOR);
   
   // COMMANDS
   public final StartEndCommand modeSwitch = new StartEndCommand(

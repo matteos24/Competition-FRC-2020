@@ -79,19 +79,26 @@ public class Drivetrain extends SubsystemBase {
     right.set(speed * speedMultiplier);
   }
 
+  public double getLeftDistance() {
+    return (frontLeft.getSelectedSensorPosition(1) + backLeft.getSelectedSensorPosition(1)) / 2.;
+  }
+
+  public double getRightDistance() {
+    return (frontRight.getSelectedSensorPosition(1) + backRight.getSelectedSensorPosition(1)) / 2.;
+  }
+
   /**
   * Resets the values of both encoders (left and right)
   */
   public void resetEncoders() {
-    frontLeft.setSelectedSensorPosition(0, 0, 10);
-    backLeft.setSelectedSensorPosition(0, 0, 10);
-    frontRight.setSelectedSensorPosition(0, 0, 10);
-    backRight.setSelectedSensorPosition(0, 0, 10);
+    frontLeft.setSelectedSensorPosition(0, 1, 10);
+    backLeft.setSelectedSensorPosition(0, 1, 10);
+    frontRight.setSelectedSensorPosition(0, 1, 10);
+    backRight.setSelectedSensorPosition(0, 1, 10);
   }
 
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    
   }
 }
