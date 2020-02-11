@@ -8,7 +8,7 @@
 package frc.robot.subsystems;
 
 import java.util.ArrayList;
-
+import java.util.List;
 import java.awt.Color;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
@@ -28,36 +28,27 @@ public class Vision extends SubsystemBase {
   Pixy2CCC pixyCCC;
   Pixy2Video pixyVideo;
   SPILink link = new SPILink();
-  private Color goalColor;
 
-  public Vision(Color goalColor) {
+  public Vision() {
     pixy = Pixy2.createInstance(link);
     pixy.init();
     pixyCCC = pixy.getCCC();
     pixyVideo = pixy.getVideo();
-    this.goalColor = goalColor;
   }
-  
-  /**
-   * Gets an arraylist of all the current "blocks" the camera detects and returns true
-   * if the largest block's color matches the one inputed
-   * 
-   Get color of goal and make an array with the blocks of that
-   color; The first block in the array will always be the
-   biggest in size.
-   */
-  public ArrayList<Block> getGoalList(Color goalColor){
-    
-    pixyCCC.getBlocks(true, 255, 255);
-    ArrayList<Block> blocks = pixyCCC.getBlocks();
 
-    ArrayList<Block> temp = new ArrayList<Block>();
-    for(Block blockTemp: blocks){
-      if(getBlockColor(blockTemp).equals(goalColor)) temp.add(blockTemp);
-    } 
-    return temp;
+  /**
+   * Gets blocks of type [Signature]
+   */
+  public List<Block> getBlocksOfType(int signature) {
+    List<Block> output = new ArrayList<>();
+
+    for(Block b: pixyCCC.getBlocks()) {
+      if(b.getSignature() == signature) output.add(b);
+    }
+
+    return output;
   }
-//TODO: We love you papa patrick
+
   /**
    * Given a block, this method will return the color surrounding the 5x5 space of the 
    * x and y coords of the block
@@ -71,34 +62,36 @@ public class Vision extends SubsystemBase {
     RGB myRGB = pixyVideo.new RGB(0, 0, 0);
     pixyVideo.getRGB(x, y, myRGB, false);
     return myRGB.getColor();
-  }
+  } 
 
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
   }
 
-  public double[] getHorizontalVerticalAngles(){
-    Block goal = getGoalList(goalColor).get(0);
-    double coordinateX = goal.getX();
-    double coordinateY = goal.getY();
+  public double[] getAngles(Block block){
+    double coordinateX = block.getX();
+    double coordinateY = block.getY();
+
     //This basically calculates the turn angle needed assuming right is negative and left is positive
-    double angleHorizontal = ((1 - (coordinateX/(Constants.CAMERA_X/2)))*(Constants.HORIZONTAL_TOTAL_INT/2));
+    double angleHorizontal = ((1 - (coordinateX / (Constants.CAMERA_X / 2))) * (Constants.HORIZONTAL_TOTAL_INT / 2));
     angleHorizontal =- Constants.DIFFERENCE_BETWEEN_SHOOTER_ANGLE_AND_CAM_ANGLE;
-    double angleVertical = ((1 - (coordinateY/(Constants.CAMERA_Y/2)))*(Constants.VERTICAL_TOTAL_INT/2));
+    double angleVertical = ((1 - (coordinateY / (Constants.CAMERA_Y / 2))) * (Constants.VERTICAL_TOTAL_INT / 2));
     double[] temp = new double[2];
     temp[0] = angleHorizontal;
     temp[1] = angleVertical;
     return temp;
   }
-  public double getDistance(){
-    double[] angles = getHorizontalVerticalAngles();
+
+  public double getDistance(Block block){
+    double[] angles = getAngles(block);
     double iAngle = angles[1];
     return HEIGHT_OF_CAM/(Math.tan(iAngle));
   }
-  public double getOptimalShootVelocityPower(boolean isFar){
-    double angle = isFar? 20: 50;
-    double d = getDistance() + DISTANCE_DIFFERENCE;
+
+  public double getOptimalShootVelocityPower(Block block, boolean isAgainstWall){
+    double angle = isAgainstWall ? 50 : 20;
+    double d = getDistance(block) + DISTANCE_DIFFERENCE;
     double x;
     x = -9.8*d*d;
     x = x/(2*((HEIGHT_OF_SHOOTER*Math.cos(angle)*Math.cos(angle))-(d*Math.sin(angle)*Math.cos(angle))));

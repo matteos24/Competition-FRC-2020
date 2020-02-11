@@ -7,9 +7,17 @@
 
 package frc.robot;
 
+import java.awt.Color;
+
 import edu.wpi.first.wpilibj.GenericHID;
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.RunCommand;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import frc.robot.subsystems.Vision;
+
+import static frc.robot.Constants.*;
 
 /**
  * This class is where the bulk of the robot should be declared.  Since Command-based is a
@@ -20,6 +28,10 @@ import edu.wpi.first.wpilibj2.command.Command;
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
 
+  public final Vision VISION = new Vision();
+
+  public Joystick op = new Joystick(0);
+  public JoystickButton visionTestButton = new JoystickButton(op, 1);
 
   /**
    * The container for the robot.  Contains subsystems, OI devices, and commands.
@@ -36,6 +48,11 @@ public class RobotContainer {
    * {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
+    visionTestButton.whenPressed(new RunCommand(
+      () -> {
+        VISION.getBlocksOfType(POWER_CELL_SIG);
+      }
+    ));
   }
 
 
