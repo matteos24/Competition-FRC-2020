@@ -16,34 +16,37 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.StartEndCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.autocommands.AlignTurn;
-import frc.robot.autocommands.EnableShooterCommand;
+import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj2.command.StartEndCommand;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+
 import frc.robot.subsystems.*;
 
 import static frc.robot.Constants.*;
 
-/**
- * This class is where the bulk of the robot should be declared.  Since Command-based is a
- * "declarative" paradigm, very little robot logic should actually be handled in the {@link Robot}
- * periodic methods (other than the scheduler calls).  Instead, the structure of the robot
- * (including subsystems, commands, and button mappings) should be declared here.
- */
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
 
-  // Joysticks
-  public final Joystick operator = new Joystick(OPERATOR_CONTROLLER), driverController = new Joystick(DRIVER_CONTROLLER);
+  // JOYSTICKS
+  public final Joystick driver = new Joystick(DRIVER_CONTROLLER);
+  public final Joystick operator = new Joystick(OPERATOR_CONTROLLER);
 
-  // Buttons
+  // BUTTONS
   public final JoystickButton toggleShooterButton = new JoystickButton(operator, RIGHT_BUMPER);
   public final JoystickButton shootButton = new JoystickButton(operator, LEFT_BUMPER);
-  public final JoystickButton modeSwitchButton = new JoystickButton(driverController, MODE_SWITCH_BUTTON);
+  public final JoystickButton modeSwitchButton = new JoystickButton(driverController, RIGHT_BUMPER);
 
-
-  // Subsystems
+  // SUBSYSTEMS
   public final Shooter SHOOTER = new Shooter();
   private final Drivetrain DRIVETRAIN = new Drivetrain();
   private final Vision VISION = new Vision(GOAL_COLOR);
-
+  
+  // COMMANDS
+  public final StartEndCommand modeSwitch = new StartEndCommand(
+         () -> DRIVETRAIN.modeSlow(),
+         () -> DRIVETRAIN.modeFast(),
+         DRIVETRAIN
+     ); 
 
   /**
    * The container for the robot.  Contains subsystems, OI devices, and commands.
@@ -53,16 +56,6 @@ public class RobotContainer {
     configureButtonBindings();
   }
 
-  public final StartEndCommand modeSwitch = new StartEndCommand(
-         () -> DRIVETRAIN.modeSlow(),
-         () -> DRIVETRAIN.modeFast(),
-         DRIVETRAIN
-     ); 
-
-  public final InstantCommand turnToGoal = new InstantCommand(
-
-
-  );
   /**
    * Use this method to define your button->command mappings.  Buttons can be created by
    * instantiating a {@link GenericHID} or one of its subclasses ({@link
@@ -70,9 +63,7 @@ public class RobotContainer {
    * {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    toggleShooterButton.toggleWhenActive(new AlignTurn(DRIVETRAIN, 0.5, VISION).andThen(new EnableShooterCommand(SHOOTER,VISION).withTimeout(SHOOTER_SPIN_TIME)));
     modeSwitchButton.whenHeld(modeSwitch);
-    //shootButton.whenPressed();
   }
 
   /**

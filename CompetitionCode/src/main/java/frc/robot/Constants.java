@@ -20,55 +20,27 @@ import java.awt.Color;
  * wherever the constants are needed, to reduce verbosity.
  */
 public final class Constants {
-    // == VISION TRACKING CONSTANTS == //
-    //THE CONSTANTS WITH VALUE 0 ARE CURRENTLY UNKNOWN 
-    public static final int DIFFERENCE_BETWEEN_SHOOTER_ANGLE_AND_CAM_ANGLE = 0; // Unknown
-    public static final int CAMERA_X = 315;
-    public static final int HORIZONTAL_TOTAL_INT = 0; // Unknown
-    public static final int CAMERA_Y = 207;
-    public static final int VERTICAL_TOTAL_INT = 0; // Unknown
-    public static final int HEIGHT_OF_SHOOTER = 0; // Unknown
-    public static final int DISTANCE_DIFFERENCE = 0; // Unknown
-    public static final int HEIGHT_OF_CAM = 0; // Unknown
-    public static final int MAX_VELOCITY_OF_SHOOTER = 0; // Unknown
-    public static final Color GOAL_COLOR = new Color(0, 1, 0);
 
-    // === SHOOTER === //
+  // == BUTTONS == //
+  public static final int BUTTON_A = 1, BUTTON_B = 2, BUTTON_Y = 4, BUTTON_X = 3; 
+  public static final int LEFT_BUMPER = 5, RIGHT_BUMPER = 6;
 
-    public static final int DEFAULT_TARGET_RPM = 5000;
-    public static final int SHOOTER_SPIN_TIME = 5;
+  // === ROBOT PORTS === //
 
-    // RESERVED SHOOTER MOTOR PORTS: [0, 0]
-    public static final int SHOOTER_MOTOR_1 = 0;
-    public static final int SHOOTER_MOTOR_2 = 1;
+  // DRIVE MOTORS
+  public static final int FRONT_LEFT_DRIVE_MOTOR = 1;
+  public static final int BACK_LEFT_DRIVE_MOTOR = 3;
+  public static final int FRONT_RIGHT_DRIVE_MOTOR = 2;
+  public static final int BACK_RIGHT_DRIVE_MOTOR = 0;
 
-    // RESERVED SHOOTER SOLENOID PORTS: [0, 0 + 1]
-    public static final int SHOOTER_PISTON_A = 0;
-    public static final int SHOOTER_PISTON_B = SHOOTER_PISTON_A + 1;
+  // === CONTROLLERS === //
+  
+  // STICKS
+  public static final int FORWARD_AXIS_LEFT = 4;
+  public static final int HORIZ_AXIS_RIGHT = 1;
 
-    // == BUTTONS == //
-    public static final int MODE_SWITCH_BUTTON = 6; // RIGHT BUMPER
-
-    // === ROBOT PORTS === //
-
-    // DRIVE MOTORS
-    public static final int FRONT_LEFT_DRIVE_MOTOR = 1;
-    public static final int BACK_LEFT_DRIVE_MOTOR = 3;
-    public static final int FRONT_RIGHT_DRIVE_MOTOR = 2;
-    public static final int BACK_RIGHT_DRIVE_MOTOR = 0;
-
-    // === CONTROLLERS === //
-    
-    // STICKS
-    public static final int FORWARD_AXIS_LEFT = 1;
-    public static final int HORIZ_AXIS_RIGHT = 4;
-
-    // CONTROLLERS
-    public static final int DRIVER_CONTROLLER = 0;
-    public static final int OPERATOR_CONTROLLER = 1;
-
-    // BUTTONS
-    public static final int BUTTON_A = 1, BUTTON_B = 2, BUTTON_Y = 4, BUTTON_X = 3; 
-    public static final int LEFT_BUMPER = 5, RIGHT_BUMPER = 6;
+  // CONTROLLERS
+  public static final int DRIVER_CONTROLLER = 0;
+  public static final int OPERATOR_CONTROLLER = 1;
   
 }

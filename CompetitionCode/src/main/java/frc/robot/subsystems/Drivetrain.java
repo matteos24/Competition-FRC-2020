@@ -27,9 +27,8 @@ public class Drivetrain extends SubsystemBase {
   private SpeedControllerGroup left, right;
 
   private double speedMultiplier = 1;
-  private double startAngle;
-  private boolean isFast = true;
 
+  private boolean isFast = true;
 
   public Drivetrain() {
     frontLeft = new WPI_TalonFX(FRONT_LEFT_DRIVE_MOTOR);
@@ -41,6 +40,8 @@ public class Drivetrain extends SubsystemBase {
     right = new SpeedControllerGroup(frontRight, backRight);
   }
 
+  // SPEED MODES
+
   public void modeSlow(){
     speedMultiplier = 0.25;
     isFast = false;
@@ -51,6 +52,8 @@ public class Drivetrain extends SubsystemBase {
     isFast = true;
   }
 
+  // MOTOR SPEEDS
+
   public void tankDrive(double leftSpeed, double rightSpeed){
     setLeftSpeed(leftSpeed);
     setRightSpeed(-rightSpeed);
@@ -60,10 +63,12 @@ public class Drivetrain extends SubsystemBase {
    * X is horizontal, Z is vertical
    */
   public void arcadeDrive(double x, double z){
-    x *= Math.abs(x * x);
-    z *= Math.abs(z * z);
-    x *= (isFast ? 0.35 : 0.9);
+    x *= Math.abs(x * x) * (isFast ? 0.35 : 0.9);
+    z *= Math.abs(z * z) * 0.3;
+    
     tankDrive(x + z, x - z);
+
+    System.out.println(getLeftDistance());
   }
 
   private void setLeftSpeed(double speed) {
@@ -74,23 +79,7 @@ public class Drivetrain extends SubsystemBase {
     right.set(speed * speedMultiplier);
   }
 
-  public double getLeftDistance() {
-    return (frontLeft.getSelectedSensorPosition() + backLeft.getSelectedSensorPosition()) / 2;
-  }
-
-  public double getRightDistance() {
-    return (frontRight.getSelectedSensorPosition() + backRight.getSelectedSensorPosition()) / 2;
-  }
-
-  public void startingAngle(double angle){
-    startAngle = angle;
-  }
-
-  public double geetStartAngle(){
-    return startAngle;
-  }
-
-/**
+  /**
   * Resets the values of both encoders (left and right)
   */
   public void resetEncoders() {
