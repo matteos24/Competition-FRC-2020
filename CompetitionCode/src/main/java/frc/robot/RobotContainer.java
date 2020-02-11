@@ -7,7 +7,7 @@
 /*----------------------------------------------------------------------------*/
 
 package frc.robot;
-
+  
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.*;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
@@ -25,6 +25,10 @@ import static frc.robot.Constants.*;
 
 public class RobotContainer {
   
+  // BASE INITS
+  public final RobotCommands robotCommands = new RobotCommands();
+  int timesSpun;
+  
   // JOYSTICKS
   public final Joystick driver = new Joystick(DRIVER_CONTROLLER);
   public final Joystick operator = new Joystick(OPERATOR_CONTROLLER);
@@ -37,6 +41,8 @@ public class RobotContainer {
   private final JoystickButton pistonButton = new JoystickButton(opController, INTAKE_PISTON_BUTTON),
                                motorIntakeButton = new JoystickButton(opController, INTAKE_MOTOR_BUTTON),
                                motorOuttakeButton = new JoystickButton(opController, OUTTAKE_MOTOR_BUTTON);
+
+  private final JoystickButton storageOverrideButton = new JoystickButton(opController, START);
 
   // SUBSYSTEMS
   private final Drivetrain DRIVETRAIN = new Drivetrain();
@@ -74,6 +80,9 @@ public class RobotContainer {
       () -> INTAKE.pistonOff(),
       INTAKE
     );
+  
+  // STORAGE TRIGGER
+   private final StorageLimitSwitchTrigger storageTrigger = new StorageLimitSwitchTrigger();
 
   /**
    * The container for the robot.  Contains subsystems, OI devices, and commands.
@@ -94,6 +103,11 @@ public class RobotContainer {
     pistonButton.toggleWhenPressed(pistonMove.withTimeout(2).andThen(pistonOffCommand));
     motorIntakeButton.whenHeld(intakeCommand);
     motorOuttakeButton.whenHeld(outtakeCommand);
+    
+    // STORAGE
+    storageTrigger.whenActive(robotCommands.storeBall);
+    storageOverrideButton.whenPressed(robotCommands.startStorageOverride);
+    storageOverrideButton.whenHeld(robotCommands.storageOverride);
   }
 
   /**
