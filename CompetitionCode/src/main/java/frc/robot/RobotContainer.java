@@ -16,6 +16,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.StartEndCommand;
 import frc.robot.commands.StoreBall;
+import frc.robot.commands.auto.TestAutoCommandGroup;
 import frc.robot.subsystems.*;
 import frc.robot.triggers.StorageLimitSwitchTrigger;
 
@@ -25,6 +26,7 @@ public class RobotContainer {
 
   // BASE INITS
   int timesSpun;
+
 
   // JOYSTICKS
   public final Joystick driver = new Joystick(DRIVER_CONTROLLER);
@@ -81,7 +83,8 @@ public class RobotContainer {
   private final StorageLimitSwitchTrigger storageTrigger = new StorageLimitSwitchTrigger(this);
 
   // === AUTO === //
-  public final InstantCommand doNothing = new InstantCommand();
+  private final InstantCommand doNothing = new InstantCommand();
+  private final TestAutoCommandGroup autoCommandGroup = new TestAutoCommandGroup(DRIVETRAIN);
 
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -116,7 +119,7 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An ExampleCommand will run in autonomous
-    return doNothing;
+    return autoCommandGroup;
   }
 
   public Drivetrain getDrivetrain() {
