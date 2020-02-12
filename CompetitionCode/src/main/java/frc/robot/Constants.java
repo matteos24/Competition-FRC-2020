@@ -12,36 +12,35 @@ public final class Constants {
   // === ROBOT PORTS === //
 
   // DRIVE MOTORS
-  public static final int FRONT_LEFT_DRIVE_MOTOR = 1;
+  public static final int FRONT_LEFT_DRIVE_MOTOR = 0;
   public static final int BACK_LEFT_DRIVE_MOTOR = 3;
   public static final int FRONT_RIGHT_DRIVE_MOTOR = 2;
-  public static final int BACK_RIGHT_DRIVE_MOTOR = 0;
-  
+  public static final int BACK_RIGHT_DRIVE_MOTOR = 1;
+
   // INTAKE MOTORS
   public static final int WHEEL_INTAKE_MOTOR = 0;
-  
+
   // INTAKE PISTONS
   public static final int INTAKE_PISTON_1 = 2;
   public static final int INTAKE_PISTON_2 = 3;
 
-  public static final int INTAKE_PISTON_BUTTON= 1;
+  public static final int INTAKE_PISTON_BUTTON = 1;
   public static final int INTAKE_MOTOR_BUTTON = 2;
   public static final int OUTTAKE_MOTOR_BUTTON = 3;
-  
-  // STORAGE MOTOR
+
+  // STORAGE MOTORS
   public static final int STORAGE_GATE_MOTOR = 13;
 
-  // STORAGE
-  public static final double GATE_SPEED = 0.2;
-  
-
   // === SPEED CONSTANTS === //
-  
+
   // INTAKE
   public static final double DEPLOY_INTAKE_SPEED = 0.5;
   public static final double WHEEL_INTAKE_SPEED = 0.5;
 
-   // === CONTROLLERS === //
+  // STORAGE
+  public static final double GATE_SPEED = 0.2;
+
+  // == BUTTONS == //
 
   // CONTROLLERS
   public static final int DRIVER_CONTROLLER = 0;
@@ -69,4 +68,3 @@ public final class Constants {
   public static final int RIGHT_STICK_BUTTON = 10;
   
 }
-
