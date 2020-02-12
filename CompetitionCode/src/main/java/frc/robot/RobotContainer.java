@@ -33,8 +33,8 @@ public class RobotContainer {
   public final Joystick operator = new Joystick(OPERATOR_CONTROLLER);
 
   // BUTTONS
-  public final JoystickButton toggleShooterButton = new JoystickButton(operator, RIGHT_BUMPER);
-  public final JoystickButton shootButton = new JoystickButton(operator, LEFT_BUMPER);
+  public final JoystickButton toggleShooterButton = new JoystickButton(operator, LEFT_BUMPER);
+  public final JoystickButton shootButton = new JoystickButton(operator, RIGHT_BUMPER);
   public final JoystickButton modeSwitchButton = new JoystickButton(driver, RIGHT_BUMPER);
 
   public final JoystickButton pistonButton = new JoystickButton(operator, INTAKE_PISTON_BUTTON),
