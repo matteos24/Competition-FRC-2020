@@ -20,8 +20,6 @@ public class Drivetrain extends SubsystemBase {
   public static final double WHEEL_TO_WHEEL_DIAMETER_INCHES = 320 * MM_TO_IN;
   public static final double WHEEL_DIAMETER_INCHES = 4;
 
-  public static final double PULSES_PER_ROTATION = 256;
-  
   private WPI_TalonFX frontLeft, frontRight, backLeft, backRight;
 
   private SpeedControllerGroup left, right;
@@ -42,19 +40,19 @@ public class Drivetrain extends SubsystemBase {
 
   // SPEED MODES
 
-  public void modeSlow(){
+  public void modeSlow() {
     speedMultiplier = 0.25;
     isFast = false;
   }
 
-  public void modeFast(){
+  public void modeFast() {
     speedMultiplier = 1;
     isFast = true;
   }
 
   // MOTOR SPEEDS
 
-  public void tankDrive(double leftSpeed, double rightSpeed){
+  public void tankDrive(double leftSpeed, double rightSpeed) {
     setLeftSpeed(leftSpeed);
     setRightSpeed(-rightSpeed);
   }
@@ -62,13 +60,11 @@ public class Drivetrain extends SubsystemBase {
   /**
    * X is horizontal, Z is vertical
    */
-  public void arcadeDrive(double x, double z){
+  public void arcadeDrive(double x, double z) {
     x *= Math.abs(x * x) * (isFast ? 0.35 : 0.9);
     z *= Math.abs(z * z) * 0.3;
-    
-    tankDrive(x + z, x - z);
 
-    System.out.println(getLeftDistance());
+    tankDrive(x + z, x - z);
   }
 
   private void setLeftSpeed(double speed) {
@@ -87,14 +83,8 @@ public class Drivetrain extends SubsystemBase {
     return (frontRight.getSelectedSensorPosition(1) + backRight.getSelectedSensorPosition(1)) / 2.;
   }
 
-  /**
-  * Resets the values of both encoders (left and right)
-  */
-  public void resetEncoders() {
-    frontLeft.setSelectedSensorPosition(0, 1, 10);
-    backLeft.setSelectedSensorPosition(0, 1, 10);
-    frontRight.setSelectedSensorPosition(0, 1, 10);
-    backRight.setSelectedSensorPosition(0, 1, 10);
+  public double getAverageDistance () {
+    return (getLeftDistance() + getRightDistance()) / 2.;
   }
 
   @Override

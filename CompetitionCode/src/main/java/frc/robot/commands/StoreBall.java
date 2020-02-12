@@ -20,7 +20,7 @@ public class StoreBall extends CommandBase {
   public StoreBall(Storage s) {
     // Use addRequirements() here to declare subsystem dependencies.
     storage = s;
-    targetStage = storage.getCurrentStage() + 1;
+    targetStage = storage.getBallsInStorage() + 1;
   }
 
   // Called when the command is initially scheduled.
@@ -43,7 +43,6 @@ public class StoreBall extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if(targetStage>5) return true;
-    return storage.limitPressed(targetStage);
+    return storage.isSwitchPressed(targetStage) || targetStage > 5;
   }
 }
