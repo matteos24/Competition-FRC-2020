@@ -7,19 +7,17 @@
 /*----------------------------------------------------------------------------*/
 
 package frc.robot;
-  
+
 import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj2.command.*;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj.GenericHID;
-import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.StartEndCommand;
-import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 import frc.robot.subsystems.*;
+import frc.robot.triggers.*;
 
 import static frc.robot.Constants.*;
 
@@ -34,15 +32,15 @@ public class RobotContainer {
   public final Joystick operator = new Joystick(OPERATOR_CONTROLLER);
 
   // BUTTONS
-  public final JoystickButton toggleShooterButton = new JoystickButton(operator, RIGHT_BUMPER);
-  public final JoystickButton shootButton = new JoystickButton(operator, LEFT_BUMPER);
-  public final JoystickButton modeSwitchButton = new JoystickButton(driver, RIGHT_BUMPER);
+  public final JoystickButton toggleShooterButton = new JoystickButton(operator, LB);
+  public final JoystickButton shootButton = new JoystickButton(operator, RB);
+  public final JoystickButton modeSwitchButton = new JoystickButton(driver, RB);
   
-  private final JoystickButton pistonButton = new JoystickButton(opController, INTAKE_PISTON_BUTTON),
-                               motorIntakeButton = new JoystickButton(opController, INTAKE_MOTOR_BUTTON),
-                               motorOuttakeButton = new JoystickButton(opController, OUTTAKE_MOTOR_BUTTON);
+  private final JoystickButton pistonButton = new JoystickButton(operator, INTAKE_PISTON_BUTTON),
+                               motorIntakeButton = new JoystickButton(operator, INTAKE_MOTOR_BUTTON),
+                               motorOuttakeButton = new JoystickButton(operator, OUTTAKE_MOTOR_BUTTON);
 
-  private final JoystickButton storageOverrideButton = new JoystickButton(opController, START);
+  private final JoystickButton storageOverrideButton = new JoystickButton(operator, START);
 
   // SUBSYSTEMS
   private final Drivetrain DRIVETRAIN = new Drivetrain();

@@ -25,21 +25,16 @@ public final class Constants {
   // STORAGE MOTOR
   public static final int STORAGE_GATE_MOTOR = 13;
 
-  public static final int LEFT_STICK_BUTTON = 9;
-  public static final int RIGHT_STICK_BUTTON = 10;
-
   // STORAGE
   public static final double GATE_SPEED = 0.2;
   
+
   // === SPEED CONSTANTS === //
   
   // INTAKE
   public static final double DEPLOY_INTAKE_SPEED = 0.5;
   public static final double WHEEL_INTAKE_SPEED = 0.5;
 
-  // == BUTTONS == //
-  public static final int BUTTON_A = 1, BUTTON_B = 2, BUTTON_Y = 4, BUTTON_X = 3; 
-  public static final int LEFT_BUMPER = 5, RIGHT_BUMPER = 6;
 
   // === ROBOT PORTS === //
 
@@ -49,15 +44,33 @@ public final class Constants {
   public static final int FRONT_RIGHT_DRIVE_MOTOR = 2;
   public static final int BACK_RIGHT_DRIVE_MOTOR = 0;
 
-  // === CONTROLLERS === //
-  
-  // STICKS
-  public static final int FORWARD_AXIS_LEFT = 4;
-  public static final int HORIZ_AXIS_RIGHT = 1;
+
+   // === CONTROLLERS === //
 
   // CONTROLLERS
   public static final int DRIVER_CONTROLLER = 0;
   public static final int OPERATOR_CONTROLLER = 1;
+
+  // STICKS (for xbox controler)
+  public static final int HORIZ_AXIS_LEFT = 0;
+  public static final int FORWARD_AXIS_LEFT = 1;
+  public static final int HORIZ_AXIS_RIGHT = 4;
+  public static final int FORWARD_AXIS_RIGHT = 5;
+
+  public static final int LEFT_TRIGGER_AXIS = 2;
+  public static final int RIGHT_TRIGGER_AXIS = 3;
+
+  // CONTROLLER BUTTONS (for xbox controller)
+  public static final int A = 1;
+  public static final int B = 2;
+  public static final int X = 3;
+  public static final int Y = 4;
+  public static final int LB = 5;
+  public static final int RB = 6;
+  public static final int BACK = 7;
+  public static final int START = 8;
+  public static final int LEFT_STICK_BUTTON = 9;
+  public static final int RIGHT_STICK_BUTTON = 10;
   
 }
 
