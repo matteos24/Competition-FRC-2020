@@ -30,18 +30,18 @@ public class RobotContainer {
 
   // JOYSTICKS
   public final Joystick driver = new Joystick(DRIVER_CONTROLLER);
-  public final Joystick operator = new Joystick(OPERATOR_CONTROLLER);
+  //public final Joystick operator = new Joystick(OPERATOR_CONTROLLER);
 
   // BUTTONS
-  public final JoystickButton toggleShooterButton = new JoystickButton(operator, LEFT_BUMPER);
-  public final JoystickButton shootButton = new JoystickButton(operator, RIGHT_BUMPER);
-  public final JoystickButton modeSwitchButton = new JoystickButton(driver, RIGHT_BUMPER);
+  // public final JoystickButton toggleShooterButton = new JoystickButton(operator, LEFT_BUMPER);
+  // public final JoystickButton shootButton = new JoystickButton(operator, RIGHT_BUMPER);
+  // public final JoystickButton modeSwitchButton = new JoystickButton(driver, RIGHT_BUMPER);
 
-  public final JoystickButton pistonButton = new JoystickButton(operator, INTAKE_PISTON_BUTTON),
-      motorIntakeButton = new JoystickButton(operator, INTAKE_MOTOR_BUTTON),
-      motorOuttakeButton = new JoystickButton(operator, OUTTAKE_MOTOR_BUTTON);
+  // public final JoystickButton pistonButton = new JoystickButton(operator, INTAKE_PISTON_BUTTON),
+  //     motorIntakeButton = new JoystickButton(operator, INTAKE_MOTOR_BUTTON),
+  //     motorOuttakeButton = new JoystickButton(operator, OUTTAKE_MOTOR_BUTTON);
 
-  public final JoystickButton storageOverrideButton = new JoystickButton(operator, START_BUTTON);
+  // public final JoystickButton storageOverrideButton = new JoystickButton(operator, START_BUTTON);
 
   // SUBSYSTEMS
   public final Drivetrain DRIVETRAIN = new Drivetrain();
@@ -101,15 +101,15 @@ public class RobotContainer {
    * passing it to a {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    modeSwitchButton.whenHeld(modeSwitch);
-    pistonButton.toggleWhenPressed(pistonMove.withTimeout(2).andThen(pistonOffCommand));
-    motorIntakeButton.whenHeld(intakeCommand);
-    motorOuttakeButton.whenHeld(outtakeCommand);
+    // modeSwitchButton.whenHeld(modeSwitch);
+    // pistonButton.toggleWhenPressed(pistonMove.withTimeout(2).andThen(pistonOffCommand));
+    // motorIntakeButton.whenHeld(intakeCommand);
+    // motorOuttakeButton.whenHeld(outtakeCommand);
 
-    // STORAGE
-    storageTrigger.whenActive(storeBall);
-    storageOverrideButton.whenPressed(startStorageOverride);
-    storageOverrideButton.whenHeld(storageOverride);
+    // // STORAGE
+    // storageTrigger.whenActive(storeBall);
+    // storageOverrideButton.whenPressed(startStorageOverride);
+    // storageOverrideButton.whenHeld(storageOverride);
   }
 
   /**
