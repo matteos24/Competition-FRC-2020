@@ -14,24 +14,26 @@ public class StoreBall extends CommandBase {
   /**
    * Creates a new StorageCommand.
    */
-  private int targetStage;
+  private boolean movedOn;
   private Storage storage;
 
   public StoreBall(Storage s) {
     // Use addRequirements() here to declare subsystem dependencies.
     storage = s;
-    targetStage = storage.getBallsInStorage() + 1;
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    storage.setGateSpeed();
+    if(storage.numBalls < 5) storage.setGateSpeed();
+    movedOn = false;
+    storage.numBalls++;
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    if(!storage.hasBall()) movedOn = true;
   }
 
   // Called once the command ends or is interrupted.
@@ -43,6 +45,7 @@ public class StoreBall extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return storage.isSwitchPressed(targetStage) || targetStage > 5;
+    if(storage.numBalls > 5) return true;
+    return movedOn && storage.hasBall();
   }
 }

@@ -68,8 +68,8 @@ public class RobotContainer {
   public final InstantCommand pistonOffCommand = new InstantCommand(() -> INTAKE.pistonOff(), INTAKE);
 
   // for storage trigger
-  public boolean shouldStorageIntake() {
-    return STORAGE.isSwitchPressed(0) && !STORAGE.isOverridden();
+  public boolean storageShouldIntake() {
+    return STORAGE.isIntaking() && !STORAGE.isOverridden();
   }
 
   // STORAGE COMMANDS

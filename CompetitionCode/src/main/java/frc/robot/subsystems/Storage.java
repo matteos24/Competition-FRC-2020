@@ -23,34 +23,31 @@ import static frc.robot.Constants.*;
 public class Storage extends SubsystemBase {
   // FIELDS
   private final VictorSP motor;
-  private final DigitalInput[] limitSwitches;
+  private final DigitalInput intakeSwitch, hasBallSwitch;
   private boolean isOverridden;
+  public int numBalls;
 
   public Storage() {
-    motor = new VictorSP(STORAGE_GATE_MOTOR);
+    motor = new VictorSP(STORAGE_GATE_MOTOR_PORT);
     isOverridden = false;
 
-    limitSwitches = new DigitalInput[6];
-    for (int i = 0; i <= 5; i++) {
-      limitSwitches[i] = new DigitalInput(i);
-    }
+    intakeSwitch = new DigitalInput(STORAGE_INTAKE_SWITCH_PORT);
+    hasBallSwitch = new DigitalInput(STORAGE_BALL_SWITCH_PORT);
 
   }
 
-  public boolean isSwitchPressed(final int index) {
-    return limitSwitches[index].get();
+  /**
+   * intakeSwitchSwitch getter method
+   */
+  public boolean isIntaking() {
+    return intakeSwitch.get();
   }
 
-  public DigitalInput getFirstLimit() {
-    return limitSwitches[0];
-  }
-
-  public int getBallsInStorage() {
-    for (int i = 5; i > 0; i--) {
-      if (limitSwitches[i].get())
-        return i;
-    }
-    return 0;
+  /**
+   * hasBallSwitch getter method
+   */
+  public boolean hasBall() {
+    return hasBallSwitch.get();
   }
 
   /**
@@ -78,11 +75,8 @@ public class Storage extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    SmartDashboard.putBoolean("Intake Start", limitSwitches[0].get()); //TODO- why?
-
-    int count = 0;
-    for (int i = 1; i <= 5; i++) count += limitSwitches[i].get() ? 1 : 0;
-    SmartDashboard.putNumber("# Balls in Storage", count);
-      
+    SmartDashboard.putBoolean("Intake Switch", intakeSwitch.get());
+    SmartDashboard.putBoolean("Has Ball Switch", hasBallSwitch.get());
+          
   }
 }
