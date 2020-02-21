@@ -5,6 +5,7 @@ import frc.robot.subsystems.Drivetrain;
 
 public class TurnCommand extends CommandBase {
 
+    public static final double IN_TO_UNITS = 3200 / Math.PI;
 
     private final Drivetrain drivetrain;
     private final double degrees, speed, startDistanceL, startDistanceR;
@@ -13,6 +14,9 @@ public class TurnCommand extends CommandBase {
     public TurnCommand(Drivetrain drivetrain, double degrees, double speed) {
        
         this.drivetrain = drivetrain;
+
+        drivetrain.resetEncoders();
+
         this.degrees = degrees;
         this.speed = speed;
         
@@ -21,9 +25,11 @@ public class TurnCommand extends CommandBase {
         this.startDistanceR = drivetrain.getRightDistance();
 
         this.distanceToTurnL = Drivetrain.WHEEL_TO_WHEEL_DIAMETER_INCHES * Math.PI * (degrees / 180);
+        this.distanceToTurnL *= IN_TO_UNITS;
         this.distanceToTurnL += startDistanceL;
 
-        this.distanceToTurnR = Drivetrain.WHEEL_TO_WHEEL_DIAMETER_INCHES * Math.PI * (degrees / 180);
+        this.distanceToTurnR = -Drivetrain.WHEEL_TO_WHEEL_DIAMETER_INCHES * Math.PI * (degrees / 180); // IN INCHES
+        this.distanceToTurnR *= IN_TO_UNITS;
         this.distanceToTurnR += startDistanceR;
 
         // Requires a drivetrain to work
@@ -42,7 +48,8 @@ public class TurnCommand extends CommandBase {
 
     @Override
     public void execute() {
-
+        System.out.println("GOAL L: " + (distanceToTurnL - startDistanceL) / IN_TO_UNITS + " GOAL R: " + (distanceToTurnR - startDistanceR) / IN_TO_UNITS);
+        System.out.println("L: " + (drivetrain.getLeftDistance() - startDistanceL) / IN_TO_UNITS + " R: " + ((drivetrain.getRightDistance() - startDistanceR) / IN_TO_UNITS));
     }
 
 
@@ -57,9 +64,11 @@ public class TurnCommand extends CommandBase {
 
         // If distance is greater than distance to turn (w/ respect to direction), end.
         if (degrees > 0) { // positive left, negative right
-            isFinished = drivetrain.getLeftDistance() > startDistanceL + distanceToTurnL && drivetrain.getRightDistance() < startDistanceR - distanceToTurnR;
+            isFinished = drivetrain.getRightDistance() < distanceToTurnR
+                && drivetrain.getLeftDistance() > distanceToTurnL;
         } else { // negative left, positive right
-            isFinished = drivetrain.getLeftDistance() < startDistanceL - distanceToTurnL && drivetrain.getRightDistance() > startDistanceR + distanceToTurnR;
+            isFinished = drivetrain.getRightDistance() > distanceToTurnR
+                && drivetrain.getLeftDistance() < distanceToTurnL;
         }
 
         return isFinished;

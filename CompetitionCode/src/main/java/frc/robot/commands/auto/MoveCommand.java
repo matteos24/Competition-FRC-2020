@@ -6,7 +6,7 @@ import frc.robot.subsystems.Drivetrain;
 // COMMAND to move the robot by a specified amount
 public class MoveCommand extends CommandBase {
 
-    public static final double U_TO_IN = 512 / Math.PI;
+    public static final double IN_TO_UNITS = 3200 / Math.PI;
 
     // Define variables
     private final Drivetrain drivetrain;
@@ -18,9 +18,12 @@ public class MoveCommand extends CommandBase {
 
         // Intialise variables as per constructor
         this.drivetrain = drivetrain;
+        drivetrain.resetEncoders();
 
-        this.goal = goalInInches / U_TO_IN; // INCHES TO UNITS
+        this.goal = goalInInches * IN_TO_UNITS; // INCHES TO UNITS
+        System.out.println("========" + goal);
         this.start = drivetrain.getAverageDistance(); // IN UNITS
+        System.out.println("========" + start);
         goal += start;
 
         this.speed = speed;
@@ -37,7 +40,8 @@ public class MoveCommand extends CommandBase {
 
     @Override
     public void execute() {
-        System.out.println("Amount to goal (in): " + ((goal - start) * U_TO_IN));
+        // System.out.println("Amount to goal (in): " + ((goal / IN_TO_UNITS)));
+        // System.out.println("Current: " + (drivetrain.getAverageDistance() / IN_TO_UNITS));
     }
 
     @Override
@@ -55,5 +59,6 @@ public class MoveCommand extends CommandBase {
     @Override
     public void end(boolean interrupted) {
         drivetrain.tankDrive(0, 0);
+        //drivetrain.resetEncoders();
     }
 }

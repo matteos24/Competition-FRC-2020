@@ -38,6 +38,13 @@ public class Drivetrain extends SubsystemBase {
     right = new SpeedControllerGroup(frontRight, backRight);
   }
 
+  public void resetEncoders() {
+    frontLeft.setSelectedSensorPosition(0, 0, 0);
+    backLeft.setSelectedSensorPosition(0, 0, 0);
+    frontRight.setSelectedSensorPosition(0, 0, 0);
+    backRight.setSelectedSensorPosition(0, 0, 0);
+  }
+
   // SPEED MODES
 
   public void modeSlow() {
@@ -76,11 +83,11 @@ public class Drivetrain extends SubsystemBase {
   }
 
   public double getLeftDistance() {
-    return (frontLeft.getSelectedSensorPosition(1) + backLeft.getSelectedSensorPosition(1)) / 2.;
+    return (frontLeft.getSelectedSensorPosition(0) + backLeft.getSelectedSensorPosition(0)) / 2.;
   }
 
   public double getRightDistance() {
-    return (frontRight.getSelectedSensorPosition(1) + backRight.getSelectedSensorPosition(1)) / 2.;
+    return -(frontRight.getSelectedSensorPosition(0) + backRight.getSelectedSensorPosition(0)) / 2.;
   }
 
   public double getAverageDistance () {
