@@ -9,7 +9,6 @@ package frc.robot;
 
 public final class Constants {
 
-
     // === SHOOTER === //
 
     public static final int DEFAULT_TARGET_RPM = 5000;
@@ -21,6 +20,22 @@ public final class Constants {
     // RESERVED SHOOTER SOLENOID PORTS: [0, 0 + 1]
     public static final int SHOOTER_PISTON_A = 0;
     public static final int SHOOTER_PISTON_B = SHOOTER_PISTON_A + 1;
+  // === VISION TRACKING CONSTANTS === //
+
+  //THE CONSTANTS WITH VALUE 0 ARE CURRENTLY UNKNOWN 
+  public static final int DIFFERENCE_BETWEEN_SHOOTER_ANGLE_AND_CAM_ANGLE = 0;
+  public static final int CAMERA_X = 315;
+  public static final int HORIZONTAL_TOTAL_INT = 0;
+  public static final int CAMERA_Y = 207;
+  public static final int VERTICAL_TOTAL_INT = 0;
+  public static final int HEIGHT_OF_SHOOTER = 0;
+  public static final int DISTANCE_DIFFERENCE = 0;
+  public static final int HEIGHT_OF_CAM = 0;
+  public static final int MAX_VELOCITY_OF_SHOOTER = 1;
+
+  // === PIXY SIGs === //
+  public static final int SHOOTER_TAPE_SIG = 3;
+  public static final int POWER_CELL_SIG = 2;
 
   // === MOTOR PORTS === //
 
