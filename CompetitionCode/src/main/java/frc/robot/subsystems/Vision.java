@@ -54,7 +54,7 @@ public class Vision extends SubsystemBase {
     // This method will be called once per scheduler run
   }
 
-  public double[] getAnglesOfBlock(Block block){
+  public double getAnglesOfBlock(Block block, boolean isVertical){
     double coordinateX = block.getX();
     double coordinateY = block.getY();
 
@@ -65,13 +65,12 @@ public class Vision extends SubsystemBase {
     double[] temp = new double[2];
     temp[0] = angleHorizontal;
     temp[1] = angleVertical;
-    return temp;
+    return isVertical ? temp[1] : temp[0];
   }
 
   public double getDistanceFromObject(Block block){
-    double[] angles = getAnglesOfBlock(block);
-    double iAngle = angles[1];
-    return HEIGHT_OF_CAM/(Math.tan(iAngle));
+    double angle = getAnglesOfBlock(block, true);
+    return HEIGHT_OF_CAM/(Math.tan(angle));
   }
 
   public double getOptimalShootVelocityPower(Block block, boolean isAgainstWall){
