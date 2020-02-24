@@ -8,11 +8,15 @@
 
 package frc.robot;
 
+import java.awt.Color;
+
 import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj.GenericHID;
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.RunCommand;
+import frc.robot.subsystems.Vision;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.StartEndCommand;
 import frc.robot.commands.StoreBall;
@@ -24,13 +28,11 @@ import static frc.robot.Constants.*;
 
 public class RobotContainer {
 
-  // BASE INITS
-  int timesSpun;
-
+  public final Vision VISION = new Vision();
 
   // JOYSTICKS
   public final Joystick driver = new Joystick(DRIVER_CONTROLLER);
-  //public final Joystick operator = new Joystick(OPERATOR_CONTROLLER);
+  public final Joystick operator = new Joystick(OPERATOR_CONTROLLER);
 
   // BUTTONS
   // public final JoystickButton toggleShooterButton = new JoystickButton(operator, LEFT_BUMPER);
@@ -42,6 +44,7 @@ public class RobotContainer {
   //     motorOuttakeButton = new JoystickButton(operator, OUTTAKE_MOTOR_BUTTON);
 
   // public final JoystickButton storageOverrideButton = new JoystickButton(operator, START_BUTTON);
+  public JoystickButton visionTestButton = new JoystickButton(op, 1);
 
   // SUBSYSTEMS
   public final Drivetrain DRIVETRAIN = new Drivetrain();
@@ -101,6 +104,11 @@ public class RobotContainer {
    * passing it to a {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
+    visionTestButton.whenPressed(new RunCommand(
+      () -> {
+        VISION.getBlocksOfType(POWER_CELL_SIG);
+      }
+    ));
     // modeSwitchButton.whenHeld(modeSwitch);
     // pistonButton.toggleWhenPressed(pistonMove.withTimeout(2).andThen(pistonOffCommand));
     // motorIntakeButton.whenHeld(intakeCommand);

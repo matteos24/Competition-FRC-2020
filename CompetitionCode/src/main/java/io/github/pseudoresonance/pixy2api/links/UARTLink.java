@@ -8,15 +8,15 @@ import io.github.pseudoresonance.pixy2api.Pixy2.Checksum;
 
 /**
  * Java Port of Pixy2 Arduino Library
- * 
+ *
  * FIRST Robotics WPI API UART/Serial Link to Pixy2
- * 
+ *
  * CURRENTLY UNTESTED - Use SPI if possible!
- * 
+ *
  * https://github.com/PseudoResonance/Pixy2JavaAPI
- * 
+ *
  * @author PseudoResonance (Josh Otake)
- * 
+ *
  *         ORIGINAL HEADER -
  *         https://github.com/charmedlabs/pixy2/blob/master/src/host/arduino/libraries/Pixy2/Pixy2UART.h
  *         =============================================================================================
@@ -46,7 +46,7 @@ public class UARTLink implements Link {
 	 * Opens UART/Serial port
 	 *
 	 * @param arg UART/Serial port
-	 * 
+	 *
 	 * @return Returns 0
 	 */
 	public int open(int arg) {
@@ -85,7 +85,7 @@ public class UARTLink implements Link {
 	 * @param buffer Byte buffer to return value
 	 * @param length Length of value to read
 	 * @param cs     Checksum
-	 * 
+	 *
 	 * @return Length of value read
 	 */
 	public int receive(byte[] buffer, int length, Checksum cs) {
@@ -121,7 +121,7 @@ public class UARTLink implements Link {
 	 *
 	 * @param buffer Byte buffer to return value
 	 * @param length Length of value to read
-	 * 
+	 *
 	 * @return Length of value read
 	 */
 	public int receive(byte[] buffer, int length) {
@@ -133,7 +133,7 @@ public class UARTLink implements Link {
 	 *
 	 * @param buffer Byte buffer to send
 	 * @param length Length of value to send
-	 * 
+	 *
 	 * @return Length of value sent
 	 */
 	public int send(byte[] buffer, int length) {
