@@ -29,10 +29,10 @@ public class Drivetrain extends SubsystemBase {
   private boolean isFast = true;
 
   public Drivetrain() {
-    frontLeft = new WPI_TalonFX(FRONT_LEFT_DRIVE_MOTOR);
-    backLeft = new WPI_TalonFX(BACK_LEFT_DRIVE_MOTOR);
-    frontRight = new WPI_TalonFX(FRONT_RIGHT_DRIVE_MOTOR);
-    backRight = new WPI_TalonFX(BACK_RIGHT_DRIVE_MOTOR);
+    frontLeft = new WPI_TalonFX(FRONT_LEFT_DRIVE_PORT);
+    backLeft = new WPI_TalonFX(BACK_LEFT_DRIVE_PORT);
+    frontRight = new WPI_TalonFX(FRONT_RIGHT_DRIVE_PORT);
+    backRight = new WPI_TalonFX(BACK_RIGHT_DRIVE_PORT);
 
     left = new SpeedControllerGroup(frontLeft, backLeft);
     right = new SpeedControllerGroup(frontRight, backRight);

@@ -19,8 +19,8 @@ public class Intake extends SubsystemBase {
   private DoubleSolenoid intakePiston;
 
   public Intake() {
-    wheelMotor = new VictorSP(WHEEL_INTAKE_MOTOR);
-    intakePiston = new DoubleSolenoid(INTAKE_PISTON_1, INTAKE_PISTON_2);
+    wheelMotor = new VictorSP(WHEEL_INTAKE_PORT);
+    intakePiston = new DoubleSolenoid(INTAKE_PISTON_PORT_1, INTAKE_PISTON_PORT_2);
   }
 
   // MOTORS & PISTONS
