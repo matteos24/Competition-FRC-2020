@@ -36,14 +36,18 @@ public class Vision extends SubsystemBase {
     pixyVideo = pixy.getVideo();
   }
 
+  //////////////////////////////////////////////////////////
+
+  // == VISION TRACKING GOAL == //
+
   /**
    * Gets blocks of type [Signature]
    */
-  public List<Block> getBlocksOfType(int signature) {
+  public List<Block> getBlocksOfType() {
     List<Block> output = new ArrayList<>();
 
     for(Block b: pixyCCC.getBlocks()) {
-      if(b.getSignature() == signature) output.add(b);
+      if(b.getSignature() == Constants.SHOOTER_TAPE_SIG) output.add(b);
     }
 
     return output;
@@ -69,9 +73,12 @@ public class Vision extends SubsystemBase {
     // This method will be called once per scheduler run
   }
 
-  public double[] getAngles(Block block){
-    double coordinateX = block.getX();
-    double coordinateY = block.getY();
+  public double[] getAngles(){
+    List<Block> blocksOfType = new ArrayList<Block>();
+    blocksOfType = getBlocksOfType();
+    Block blockGoal = blocksOfType.get(0);
+    double coordinateX = blockGoal.getX();
+    double coordinateY = blockGoal.getY();
 
     //This basically calculates the turn angle needed assuming right is negative and left is positive
     double angleHorizontal = ((1 - (coordinateX / (Constants.CAMERA_X / 2))) * (Constants.HORIZONTAL_TOTAL_INT / 2));
@@ -83,23 +90,52 @@ public class Vision extends SubsystemBase {
     return temp;
   }
 
-  public double getDistance(Block block){
-    double[] angles = getAngles(block);
+  public double getDistance(){
+    double[] angles = getAngles();
     double iAngle = angles[1];
     return HEIGHT_OF_CAM/(Math.tan(iAngle));
   }
 
-  public double getOptimalShootVelocityPower(Block block, boolean isAgainstWall){
+  public double getOptimalShootVelocityPower(boolean isAgainstWall){
     double angle = isAgainstWall ? 50 : 20;
-    double d = getDistance(block) + DISTANCE_DIFFERENCE;
+    double d = getDistance() + DISTANCE_DIFFERENCE;
     double x;
     x = -9.8*d*d;
     x = x/(2*((HEIGHT_OF_SHOOTER*Math.cos(angle)*Math.cos(angle))-(d*Math.sin(angle)*Math.cos(angle))));
     x = Math.sqrt(x);
     return x/MAX_VELOCITY_OF_SHOOTER;
   }
-}
 
+
+//////////////////////////////////////////////////////////
+
+  // == VISION TRACKING POWER CELL == //
+
+  public List<Block> getBallBlocksOfType() {
+    List<Block> output = new ArrayList<>();
+
+    for(Block b: pixyCCC.getBlocks()) {
+      if(b.getSignature() == Constants.POWER_CELL_SIG) output.add(b);
+    }
+
+    return output;
+  }
+
+
+  public double getBallAngle(){
+    List<Block> blocksOfType = new ArrayList<Block>();
+    blocksOfType = getBlocksOfType();
+    Block blockGoal = blocksOfType.get(0);
+    double coordinateX = blockGoal.getX();
+
+    //This basically calculates the turn angle needed assuming right is negative and left is positive
+    double angleHorizontal = ((1 - (coordinateX / (Constants.CAMERA_X / 2))) * (Constants.HORIZONTAL_TOTAL_INT / 2));
+    angleHorizontal =- Constants.DIFFERENCE_BETWEEN_SHOOTER_ANGLE_AND_CAM_ANGLE;
+    return angleHorizontal;
+  }
+
+
+}
 
 /* IN COMMAND ALIGNWITHSHOOT
 private Vision vision;
