@@ -8,17 +8,15 @@
 
 package frc.robot;
 
-import java.awt.Color;
-
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.GenericHID;
-import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import frc.robot.subsystems.Vision;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.StartEndCommand;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.StoreBall;
 import frc.robot.commands.auto.TestAutoCommandGroup;
 import frc.robot.subsystems.*;
@@ -35,16 +33,15 @@ public class RobotContainer {
   public final Joystick operator = new Joystick(OPERATOR_CONTROLLER);
 
   // BUTTONS
-  // public final JoystickButton toggleShooterButton = new JoystickButton(operator, LEFT_BUMPER);
-  // public final JoystickButton shootButton = new JoystickButton(operator, RIGHT_BUMPER);
-  // public final JoystickButton modeSwitchButton = new JoystickButton(driver, RIGHT_BUMPER);
+  public final JoystickButton toggleShooterButton = new JoystickButton(operator, LEFT_BUMPER);
+  public final JoystickButton shootButton = new JoystickButton(operator, RIGHT_BUMPER);
+  public final JoystickButton modeSwitchButton = new JoystickButton(driver, RIGHT_BUMPER);
 
-  // public final JoystickButton pistonButton = new JoystickButton(operator, INTAKE_PISTON_BUTTON),
-  //     motorIntakeButton = new JoystickButton(operator, INTAKE_MOTOR_BUTTON),
-  //     motorOuttakeButton = new JoystickButton(operator, OUTTAKE_MOTOR_BUTTON);
+  public final JoystickButton motorIntakeButton = new JoystickButton(operator, BUTTON_A),
+                              motorOuttakeButton = new JoystickButton(operator, BUTTON_Y);
 
-  // public final JoystickButton storageOverrideButton = new JoystickButton(operator, START_BUTTON);
-  public JoystickButton visionTestButton = new JoystickButton(op, 1);
+  public final JoystickButton storageOverrideButton = new JoystickButton(operator, START_BUTTON);
+  public JoystickButton visionTestButton = new JoystickButton(operator, 1);
 
   // SUBSYSTEMS
   public final Drivetrain DRIVETRAIN = new Drivetrain();
@@ -52,23 +49,24 @@ public class RobotContainer {
   public final Storage STORAGE = new Storage();
 
   // COMMANDS
+
+  // INTAKE //
   public final StartEndCommand modeSwitch = new StartEndCommand(() -> DRIVETRAIN.modeSlow(),
       () -> DRIVETRAIN.modeFast(), DRIVETRAIN);
 
-  public final StartEndCommand intakeCommand = new StartEndCommand(() -> INTAKE.wheelSpeed(WHEEL_INTAKE_SPEED),
-      () -> INTAKE.wheelOff(), INTAKE);
+  public final StartEndCommand intakeCommand = new StartEndCommand(() -> { 
+      INTAKE.setSpeed(WHEEL_INTAKE_SPEED); 
+      INTAKE.deployPiston();
+    },
+    () -> { 
+      INTAKE.setSpeed(0);
+      INTAKE.retractPiston();
+    },
+     INTAKE);
 
-  public final StartEndCommand outtakeCommand = new StartEndCommand(() -> INTAKE.wheelReverseSpeed(WHEEL_INTAKE_SPEED),
-      () -> INTAKE.wheelOff(), INTAKE);
+  public final StartEndCommand outtakeCommand = new StartEndCommand(() -> INTAKE.setSpeed(-WHEEL_INTAKE_SPEED),
+      () -> INTAKE.setSpeed(0), INTAKE);
 
-  // PISTON INTAKE
-
-  public final StartEndCommand pistonMove = new StartEndCommand(() -> INTAKE.deployPiston(),
-      () -> INTAKE.retractPiston(), INTAKE
-
-  );
-
-  public final InstantCommand pistonOffCommand = new InstantCommand(() -> INTAKE.pistonOff(), INTAKE);
 
   // for storage trigger
   public boolean shouldStorageIntake() {
@@ -109,15 +107,15 @@ public class RobotContainer {
         VISION.getBlocksOfType(POWER_CELL_SIG);
       }
     ));
-    // modeSwitchButton.whenHeld(modeSwitch);
-    // pistonButton.toggleWhenPressed(pistonMove.withTimeout(2).andThen(pistonOffCommand));
-    // motorIntakeButton.whenHeld(intakeCommand);
-    // motorOuttakeButton.whenHeld(outtakeCommand);
 
-    // // STORAGE
-    // storageTrigger.whenActive(storeBall);
-    // storageOverrideButton.whenPressed(startStorageOverride);
-    // storageOverrideButton.whenHeld(storageOverride);
+    modeSwitchButton.whenHeld(modeSwitch);
+    motorIntakeButton.whenHeld(intakeCommand);
+    motorOuttakeButton.whenHeld(outtakeCommand);
+
+    // STORAGE
+    storageTrigger.whenActive(storeBall);
+    storageOverrideButton.whenPressed(startStorageOverride);
+    storageOverrideButton.whenHeld(storageOverride);
   }
 
   /**
