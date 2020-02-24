@@ -12,10 +12,12 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.StartEndCommand;
 import frc.robot.commands.StoreBall;
+import frc.robot.commands.auto.MoveCommand;
 import frc.robot.commands.auto.TestAutoCommandGroup;
 import frc.robot.subsystems.*;
 import frc.robot.triggers.StorageLimitSwitchTrigger;
@@ -84,6 +86,7 @@ public class RobotContainer {
 
   // === AUTO === //
   private final InstantCommand doNothing = new InstantCommand();
+  private final Command moveForward = new MoveCommand(DRIVETRAIN, 20, .5); // TODO: change number
   private final TestAutoCommandGroup autoCommandGroup = new TestAutoCommandGroup(DRIVETRAIN);
 
   /**
@@ -112,14 +115,22 @@ public class RobotContainer {
     // storageOverrideButton.whenHeld(storageOverride);
   }
 
-  /**
-   * Use this to pass the autonomous command to the main {@link Robot} class.
-   *
-   * @return the command to run in autonomous
-   */
-  public Command getAutonomousCommand() {
-    // An ExampleCommand will run in autonomous
-    return autoCommandGroup;
+  // /**
+  //  * Use this to pass the autonomous command to the main {@link Robot} class.
+  //  *
+  //  * @return the command to run in autonomous
+  //  */
+  // public Command getAutonomousCommand() {
+  //   // An ExampleCommand will run in autonomous
+  //   return autoCommandGroup;
+  // }
+
+  public void addAutosToChooser(SendableChooser<Command> chooser){
+    chooser.setDefaultOption("Do Nothing", doNothing);
+    chooser.addOption("Move 20\"", moveForward);
+    
+    // TODO: add all autos here
+
   }
 
   public Drivetrain getDrivetrain() {
