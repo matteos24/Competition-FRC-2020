@@ -39,7 +39,7 @@ public class Storage extends SubsystemBase {
   /**
    * intakeSwitchSwitch getter method
    */
-  public boolean isIntaking() {
+  public boolean getIntakeSwitch() {
     return intakeSwitch.get();
   }
 

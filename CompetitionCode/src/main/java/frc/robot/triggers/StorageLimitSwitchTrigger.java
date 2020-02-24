@@ -13,6 +13,6 @@ public class StorageLimitSwitchTrigger extends Trigger {
 
     @Override
     public boolean get(){
-        return  rCon.storageShouldIntake();
+        return  rCon.shouldStorageIntake();
     }
 }
