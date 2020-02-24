@@ -10,10 +10,9 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.GenericHID;
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.RunCommand;
-import frc.robot.subsystems.Vision;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.StartEndCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
@@ -25,8 +24,6 @@ import frc.robot.triggers.StorageLimitSwitchTrigger;
 import static frc.robot.Constants.*;
 
 public class RobotContainer {
-
-  public final Vision VISION = new Vision();
 
   // JOYSTICKS
   public final Joystick driver = new Joystick(DRIVER_CONTROLLER);
@@ -43,10 +40,15 @@ public class RobotContainer {
   public final JoystickButton storageOverrideButton = new JoystickButton(operator, START_BUTTON);
   public JoystickButton visionTestButton = new JoystickButton(operator, 1);
 
+  public JoystickButton toggleShooterButton = new JoystickButton(operator, RIGHT_BUMPER);
+  public JoystickButton shootButton = new JoystickButton(operator, RIGHT_TRIGGER);
+
   // SUBSYSTEMS
   public final Drivetrain DRIVETRAIN = new Drivetrain();
   public final Intake INTAKE = new Intake();
   public final Storage STORAGE = new Storage();
+  public final Shooter SHOOTER = new Shooter();
+  public final Vision VISION = new Vision();
 
   // COMMANDS
 
@@ -102,6 +104,10 @@ public class RobotContainer {
    * passing it to a {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
+
+    toggleShooterButton.toggleWhenActive(new EnableShooterCommand(SHOOTER));
+    //shootButton.whenPressed();
+    
     visionTestButton.whenPressed(new RunCommand(
       () -> {
         VISION.getBlocksOfType(POWER_CELL_SIG);

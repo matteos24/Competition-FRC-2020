@@ -9,6 +9,17 @@ package frc.robot;
 
 public final class Constants {
 
+    // === SHOOTER === //
+
+    public static final int DEFAULT_TARGET_RPM = 5000;
+
+    // RESERVED SHOOTER MOTOR PORTS: [0, 0]
+    public static final int SHOOTER_MOTOR_1 = 0;
+    public static final int SHOOTER_MOTOR_2 = 1;
+
+    // RESERVED SHOOTER SOLENOID PORTS: [0, 0 + 1]
+    public static final int SHOOTER_PISTON_A = 0;
+    public static final int SHOOTER_PISTON_B = SHOOTER_PISTON_A + 1;
   // === VISION TRACKING CONSTANTS === //
 
   //THE CONSTANTS WITH VALUE 0 ARE CURRENTLY UNKNOWN 
