@@ -102,6 +102,8 @@ public final class Constants {
   public static final int BUTTON_Y = 4;
   public static final int LEFT_BUMPER = 5;
   public static final int RIGHT_BUMPER = 6;
+  public static final int LEFT_TRIGGER = 7;
+  public static final int RIGHT_TRIGGER = 8;
   public static final int BACK_BUTTON = 7;
   public static final int START_BUTTON = 8;
   public static final int LEFT_STICK_BUTTON = 9;

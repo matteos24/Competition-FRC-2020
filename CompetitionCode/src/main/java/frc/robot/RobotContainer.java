@@ -14,8 +14,10 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.StartEndCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import frc.robot.commands.EnableShooterCommand;
 import frc.robot.commands.StoreBall;
 import frc.robot.commands.auto.TestAutoCommandGroup;
 import frc.robot.subsystems.*;
@@ -30,8 +32,6 @@ public class RobotContainer {
   public final Joystick operator = new Joystick(OPERATOR_CONTROLLER);
 
   // BUTTONS
-  public final JoystickButton toggleShooterButton = new JoystickButton(operator, LEFT_BUMPER);
-  public final JoystickButton shootButton = new JoystickButton(operator, RIGHT_BUMPER);
   public final JoystickButton modeSwitchButton = new JoystickButton(driver, RIGHT_BUMPER);
 
   public final JoystickButton motorIntakeButton = new JoystickButton(operator, BUTTON_A),
