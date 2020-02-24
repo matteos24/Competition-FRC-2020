@@ -25,16 +25,8 @@ public class Intake extends SubsystemBase {
 
   // MOTORS & PISTONS
 
-  public void wheelSpeed(double speed) {
+  public void setSpeed(double speed) {
     wheelMotor.set(speed);
-  }
-
-  public void wheelReverseSpeed(double speed) {
-    wheelMotor.set(-speed);
-  }
-
-  public void wheelOff() {
-    wheelMotor.set(0);
   }
 
   public void deployPiston() {
