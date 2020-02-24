@@ -49,27 +49,12 @@ public class Vision extends SubsystemBase {
     return output;
   }
 
-  /**
-   * Given a block, this method will return the color surrounding the 5x5 space of the 
-   * x and y coords of the block
-   * 
-   * @param block Block to use x and y coords and find color of
-   * @return Returns the color in the 5x5 area of the x and y coords of the block
-   */
-  public Color getBlockColor(Block block) {
-    int x = block.getX();
-    int y = block.getY();
-    RGB myRGB = pixyVideo.new RGB(0, 0, 0);
-    pixyVideo.getRGB(x, y, myRGB, false);
-    return myRGB.getColor();
-  } 
-
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
   }
 
-  public double[] getAngles(Block block){
+  public double[] getAnglesOfBlock(Block block){
     double coordinateX = block.getX();
     double coordinateY = block.getY();
 
@@ -83,15 +68,15 @@ public class Vision extends SubsystemBase {
     return temp;
   }
 
-  public double getDistance(Block block){
-    double[] angles = getAngles(block);
+  public double getDistanceFromObject(Block block){
+    double[] angles = getAnglesOfBlock(block);
     double iAngle = angles[1];
     return HEIGHT_OF_CAM/(Math.tan(iAngle));
   }
 
   public double getOptimalShootVelocityPower(Block block, boolean isAgainstWall){
-    double angle = isAgainstWall ? 50 : 20;
-    double d = getDistance(block) + DISTANCE_DIFFERENCE;
+    double angle = isAgainstWall ? 50 : 20; // ANGLE
+    double d = getDistanceFromObject(block) + DISTANCE_DIFFERENCE;
     double x;
     x = -9.8*d*d;
     x = x/(2*((HEIGHT_OF_SHOOTER*Math.cos(angle)*Math.cos(angle))-(d*Math.sin(angle)*Math.cos(angle))));
@@ -99,19 +84,3 @@ public class Vision extends SubsystemBase {
     return x/MAX_VELOCITY_OF_SHOOTER;
   }
 }
-
-
-/* IN COMMAND ALIGNWITHSHOOT
-private Vision vision;
-public AlignWithShoot(Vision vision){
-  this.vision = vision;
-}
-if getGoalList.length<1{
-  double velocityOfShooter = 0.5(real value to be determined)
-}
-else{
-  double velocityOfShooter = vision.getOptimalShootVelocityPower(true);
-  TurnCommand(getHorizontalVerticalAngles[0]);
-}
-
-*/
