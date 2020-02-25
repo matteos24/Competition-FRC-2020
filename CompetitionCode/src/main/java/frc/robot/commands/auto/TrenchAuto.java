@@ -17,6 +17,12 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 public class TrenchAuto extends SequentialCommandGroup {
 
     public TrenchAuto(/* change */) {
+        /** 
+         * MEASUREMENTS
+         * Middle ball (around 2 other ones) is 114.17in away from starting line (straight ahead).
+         * Middle ball is 65.84in away from the target zone (straight up).
+         * Other measurements can be found here: https://firstfrc.blob.core.windows.net/frc2020/PlayingField/LayoutandMarkingDiagram.pdf
+         */
         super(
             /* code */
         );
