@@ -125,6 +125,7 @@ public class Vision extends SubsystemBase {
     x = -9.8*d*d;
     x = x/(2*((HEIGHT_OF_SHOOTER*Math.cos(angle)*Math.cos(angle))-(d*Math.sin(angle)*Math.cos(angle))));
     x = Math.sqrt(x);
+    //ok x is the optimal velocity and the formula has to be adjusted to the data collected from the shooter
     return x/MAX_VELOCITY_OF_SHOOTER;
   }
   public boolean isWallAligned(){
