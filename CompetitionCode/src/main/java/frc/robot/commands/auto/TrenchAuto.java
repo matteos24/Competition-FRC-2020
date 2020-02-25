@@ -16,7 +16,14 @@ import frc.robot.commands.EnableShooterCommand;
  * Where we start on the starting line shouldn't matter if we use vision
  */
 public class TrenchAuto extends SequentialCommandGroup {
+
     public TrenchAuto(Drivetrain drivetrain, Vision vision) {
+        /** 
+         * MEASUREMENTS
+         * Middle ball (around 2 other ones) is 114.17in away from starting line (straight ahead).
+         * Middle ball is 65.84in away from the target zone (straight up).
+         * Other measurements can be found here: https://firstfrc.blob.core.windows.net/frc2020/PlayingField/LayoutandMarkingDiagram.pdf
+         */
         super(
             new TurnCommand(drivetrain, vision.getAnglesOfBlock(Constants.SHOOTER_TAPE_SIG, false), 0.5), 
             //Shoot command will be here (Soon)
