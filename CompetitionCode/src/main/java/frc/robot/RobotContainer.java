@@ -54,11 +54,39 @@ public class RobotContainer {
 
   // COMMANDS
 
+  public final StartEndCommand shooterPistonOut = new StartEndCommand(
+    () -> {
+      SHOOTER.setPistonsForward();
+    },
+    () -> {
+      SHOOTER.setPistonsOff();
+    }, 
+    SHOOTER);
+
+  public final StartEndCommand shooterPistonIn = new StartEndCommand(
+    () -> {
+      SHOOTER.setPistonsReverse();
+    },
+    () -> {
+      SHOOTER.setPistonsOff();
+    }, 
+    SHOOTER);
+
+  public final StartEndCommand revShooterShortDistance = new StartEndCommand(
+    () -> {
+      SHOOTER.setSpeedWithRPM(Constants.SHORT_DISTANCE_RPM);
+    },
+    () -> {
+      SHOOTER.setSpeedWithRPM(0.0);
+    }, 
+    SHOOTER);
+
   // INTAKE //
   public final StartEndCommand modeSwitch = new StartEndCommand(() -> DRIVETRAIN.modeSlow(),
       () -> DRIVETRAIN.modeFast(), DRIVETRAIN);
 
-  public final StartEndCommand intakeCommand = new StartEndCommand(() -> { 
+  public final StartEndCommand intakeCommand = new StartEndCommand(
+    () -> { 
       INTAKE.setSpeed(WHEEL_INTAKE_SPEED); 
       INTAKE.deployPiston();
     },
@@ -66,7 +94,7 @@ public class RobotContainer {
       INTAKE.setSpeed(0);
       INTAKE.retractPiston();
     },
-     INTAKE);
+    INTAKE);
 
   public final StartEndCommand outtakeCommand = new StartEndCommand(() -> INTAKE.setSpeed(-WHEEL_INTAKE_SPEED),
       () -> INTAKE.setSpeed(0), INTAKE);
