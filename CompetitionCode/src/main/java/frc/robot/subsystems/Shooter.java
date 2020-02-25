@@ -120,6 +120,10 @@ public class Shooter extends SubsystemBase {
     return 600. * (Math.abs((motor1.getSelectedSensorVelocity(0) + motor2.getSelectedSensorVelocity(1)) / 2.) / 4096.);
   }
 
+  public void setPistonsForward(){ anglePiston.set(DoubleSolenoid.Value.kForward);  }
+  public void setPistonsReverse(){ anglePiston.set(DoubleSolenoid.Value.kReverse);  }
+  public void setPistonsOff(){ anglePiston.set(DoubleSolenoid.Value.kOff);  }
+
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
