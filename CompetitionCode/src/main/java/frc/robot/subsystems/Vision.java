@@ -82,4 +82,9 @@ public class Vision extends SubsystemBase {
     x = Math.sqrt(x);
     return x/MAX_VELOCITY_OF_SHOOTER;
   }
+  public boolean isWallAligned(){
+    List<Block> temp = new ArrayList<Block>();
+    temp = getBlocksOfType(SHOOTER_TAPE_SIG);
+    return(temp.size()==0);
+  }
 }
