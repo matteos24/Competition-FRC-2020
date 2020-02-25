@@ -48,12 +48,12 @@ public class Drivetrain extends SubsystemBase {
   // SPEED MODES
 
   public void modeSlow() {
-    speedMultiplier = 0.25;
+    //speedMultiplier = 0.25;
     isFast = false;
   }
 
   public void modeFast() {
-    speedMultiplier = 1;
+    //speedMultiplier = 1;
     isFast = true;
   }
 
@@ -68,7 +68,7 @@ public class Drivetrain extends SubsystemBase {
    * X is horizontal, Z is vertical
    */
   public void arcadeDrive(double x, double z) {
-    x *= Math.abs(x * x) * (isFast ? 0.35 : 0.9);
+    x *= Math.abs(x * x) * (isFast ? 1.0 : 0.35);
     z *= Math.abs(z * z) * 0.3;
 
     tankDrive(x + z, x - z);
@@ -76,6 +76,7 @@ public class Drivetrain extends SubsystemBase {
 
   private void setLeftSpeed(double speed) {
     left.set(speed * speedMultiplier);
+    //System.out.println(speed * speedMultiplier);
   }
 
   private void setRightSpeed(double speed) {

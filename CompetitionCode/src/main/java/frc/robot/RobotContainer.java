@@ -89,8 +89,8 @@ public class RobotContainer {
 
   // === AUTO === //
   private final InstantCommand doNothing = new InstantCommand();
-  private final Command moveForward = new MoveCommand(DRIVETRAIN, 20, .5); // TODO: change number
-  private final TestAutoCommandGroup autoCommandGroup = new TestAutoCommandGroup(DRIVETRAIN);
+  private final Command moveForward = new MoveCommand(DRIVETRAIN, 20, .5);
+  private final TestAutoCommandGroup debugAuto = new TestAutoCommandGroup(DRIVETRAIN);
 
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -111,11 +111,11 @@ public class RobotContainer {
     toggleShooterButton.toggleWhenActive(new EnableShooterCommand(SHOOTER));
     //shootButton.whenPressed();
     
-    visionTestButton.whenPressed(new RunCommand(
-      () -> {
-        VISION.getBlocksOfType(POWER_CELL_SIG);
-      }
-    ));
+    // visionTestButton.whenPressed(new RunCommand(
+    //   () -> {
+    //     VISION.getBlocksOfType(POWER_CELL_SIG);
+    //   }
+    // ));
 
     modeSwitchButton.whenHeld(modeSwitch);
     motorIntakeButton.whenHeld(intakeCommand);
@@ -140,7 +140,7 @@ public class RobotContainer {
   public void addAutosToChooser(SendableChooser<Command> chooser){
     chooser.setDefaultOption("Do Nothing", doNothing);
     chooser.addOption("Move 20\"", moveForward);
-    
+    chooser.addOption("Test Auto", debugAuto);
     // TODO: add all autos here
 
   }

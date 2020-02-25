@@ -39,11 +39,11 @@ public final class Constants {
 
   // === MOTOR PORTS === //
 
-      // DRIVE MOTORS
-  public static final int FRONT_LEFT_DRIVE_PORT = 0;
-  public static final int BACK_LEFT_DRIVE_PORT = 3;
-  public static final int FRONT_RIGHT_DRIVE_PORT = 2;
-  public static final int BACK_RIGHT_DRIVE_PORT = 1;
+      // DRIVE MOTORS NON COMMENTED- 1797 COMMENTED - 1884 
+  public static final int FRONT_LEFT_DRIVE_PORT = 1; // 2
+  public static final int BACK_LEFT_DRIVE_PORT = 3; // 1
+  public static final int FRONT_RIGHT_DRIVE_PORT = 2; // 0
+  public static final int BACK_RIGHT_DRIVE_PORT = 0; // 3
 
       // INTAKE MOTORS
   public static final int WHEEL_INTAKE_PORT = 0;
@@ -73,7 +73,7 @@ public final class Constants {
 
   // INTAKE
   public static final double DEPLOY_INTAKE_SPEED = 0.5;
-  public static final double WHEEL_INTAKE_SPEED = 0.5;
+  public static final double WHEEL_INTAKE_SPEED = 0.75;
 
   // STORAGE
   public static final double GATE_SPEED = 0.2;
@@ -104,9 +104,9 @@ public final class Constants {
   public static final int RIGHT_BUMPER = 6;
   public static final int LEFT_TRIGGER = 7;
   public static final int RIGHT_TRIGGER = 8;
-  public static final int BACK_BUTTON = 7;
-  public static final int START_BUTTON = 8;
-  public static final int LEFT_STICK_BUTTON = 9;
-  public static final int RIGHT_STICK_BUTTON = 10;
+  public static final int BACK_BUTTON = 9;
+  public static final int START_BUTTON = 10;
+  public static final int LEFT_STICK_BUTTON = 11;
+  public static final int RIGHT_STICK_BUTTON = 12;
 
 }
