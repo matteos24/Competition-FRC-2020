@@ -11,9 +11,12 @@ public class TurnCommand extends CommandBase {
     private final double degrees, speed, startDistanceL, startDistanceR;
     private double distanceToTurnL, distanceToTurnR;
 
+    private boolean isTurningRight = false;
+
     public TurnCommand(Drivetrain drivetrain, double degrees, double speed) {
        
         this.drivetrain = drivetrain;
+        this.isTurningRight = (degrees > 0);
 
         drivetrain.resetEncoders();
 
