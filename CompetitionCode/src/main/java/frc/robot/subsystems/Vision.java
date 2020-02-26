@@ -42,9 +42,10 @@ public class Vision extends SubsystemBase {
    */
   public List<Block> getBlocksOfType(int signature) {
     List<Block> output = new ArrayList<>();
-
+    
+    
     for(Block b: pixyCCC.getBlocks()) {
-      if(b.getSignature() == signature) output.add(b);
+      /*if(b.getSignature() == signature)*/ output.add(b);
     }
 
     return output;
@@ -90,27 +91,36 @@ public class Vision extends SubsystemBase {
     //Trouble understanding? Ask Emre!
   }
   public double getAnglesOfBlock(int sig, boolean isVertical){
-    double coordinateX = 0;
-    double coordinateY = 0;
-    if (getBlocksOfType(sig).size() >=0) {
-    Block block = getBlocksOfType(sig).get(0);
-    
-    coordinateX = block.getX();
-    coordinateY = block.getY();
-    
+    double coordinateX;
+    double coordinateY;
+    List<Block> blocks = getBlocksOfType(sig);
 
-    //This basically calculates the turn angle needed assuming right is negative and left is positive
-    double angleHorizontal = ((1 - (coordinateX / (Constants.CAMERA_X / 2))) * (Constants.HORIZONTAL_TOTAL_INT / 2));
-    angleHorizontal =- Constants.DIFFERENCE_BETWEEN_SHOOTER_ANGLE_AND_CAM_ANGLE;
-    double angleVertical = ((1 - (coordinateY / (Constants.CAMERA_Y / 2))) * (Constants.VERTICAL_TOTAL_INT / 2));
-    double[] temp = new double[2];
-    temp[0] = angleHorizontal;
-    temp[1] = angleVertical;
-    if (isVertical){setThetaTrench(temp[0]);}
-    return isVertical ? temp[1] : temp[0];
+    if (blocks.size() > 0) {
+      Block block = null;
+
+      block = blocks.get(0);
+      for(Block b: blocks) {
+        if((b.getWidth() * b.getHeight()) > (block.getWidth() * block.getHeight())) block = b;
+      }
+      
+      System.out.println(block.getX() + " " + block.getY());
+      coordinateX = block.getX() + (block.getWidth() / 2);
+      coordinateY = block.getY() + (block.getHeight() / 2);
+      
+
+      //This basically calculates the turn angle needed assuming right is negative and left is positive
+      double angleHorizontal = -((1 - (coordinateX / (Constants.CAMERA_X / 2))) * (Constants.HORIZONTAL_FOV / 2));
+      double angleVertical = ((1 - (coordinateY / (Constants.CAMERA_Y / 2))) * (Constants.VERTICAL_FOV / 2));
+
+      double[] temp = new double[2];
+      temp[0] = angleHorizontal;
+      temp[1] = angleVertical;
+
+      if (isVertical) { setThetaTrench(temp[0]); }
+      return isVertical ? temp[1] : temp[0];
     }
-    return -1;
 
+    return -1;
   }
 
   public double getDistanceFromObject(int sig){

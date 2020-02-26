@@ -20,7 +20,10 @@ import edu.wpi.first.wpilibj2.command.StartEndCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.EnableShooterCommand;
 import frc.robot.commands.StoreBall;
-import frc.robot.commands.auto.MoveCommand;
+import frc.robot.commands.auto
+
+
+.MoveCommand;
 import frc.robot.commands.auto.TestAutoCommandGroup;
 import frc.robot.subsystems.*;
 import frc.robot.triggers.StorageLimitSwitchTrigger;
@@ -36,7 +39,7 @@ public class RobotContainer {
   // BUTTONS
   public final JoystickButton modeSwitchButton = new JoystickButton(driver, RIGHT_BUMPER);
 
-  public final JoystickButton motorIntakeButton = new JoystickButton(operator, BUTTON_A),
+  public final JoystickButton motorIntakeButton = new JoystickButton(operator, BUTTON_X),
                               motorOuttakeButton = new JoystickButton(operator, BUTTON_Y);
 
   public final JoystickButton storageOverrideButton = new JoystickButton(operator, START_BUTTON);
@@ -90,7 +93,7 @@ public class RobotContainer {
   // === AUTO === //
   private final InstantCommand doNothing = new InstantCommand();
   private final Command moveForward = new MoveCommand(DRIVETRAIN, 20, .5);
-  private final TestAutoCommandGroup debugAuto = new TestAutoCommandGroup(DRIVETRAIN);
+  private final TestAutoCommandGroup debugAuto = new TestAutoCommandGroup(DRIVETRAIN, VISION);
 
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -111,11 +114,13 @@ public class RobotContainer {
     toggleShooterButton.toggleWhenActive(new EnableShooterCommand(SHOOTER));
     //shootButton.whenPressed();
     
-    // visionTestButton.whenPressed(new RunCommand(
-    //   () -> {
-    //     VISION.getBlocksOfType(POWER_CELL_SIG);
-    //   }
-    // ));
+     visionTestButton.whenHeld(new RunCommand(
+       () -> {
+         double angle = VISION.getAnglesOfBlock(Constants.POWER_CELL_SIG, false);
+         System.out.println(angle);
+         DRIVETRAIN.tankDrive((angle)/(180+6*angle), -(angle)/(180+6*angle));
+        }
+     ));
 
     modeSwitchButton.whenHeld(modeSwitch);
     motorIntakeButton.whenHeld(intakeCommand);
