@@ -10,7 +10,6 @@ package frc.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
-import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import static frc.robot.Constants.*;
@@ -22,10 +21,8 @@ public class Shooter extends SubsystemBase {
   }
 
   // TWO MOTORS IN GEARBOX- SAME DIRECTION
-  // TWO PISTONS IN PARALLEL- PRESUMABLY ONE D.SOLENOID
 
   private WPI_TalonSRX motor1, motor2;
-  private DoubleSolenoid anglePiston;
 
   // LOCAL VARIABLES
   private double speed = 0.0;
@@ -119,10 +116,6 @@ public class Shooter extends SubsystemBase {
   public double getMotorSpeed() {
     return 600. * (Math.abs((motor1.getSelectedSensorVelocity(0) + motor2.getSelectedSensorVelocity(1)) / 2.) / 4096.);
   }
-
-  public void setPistonsForward(){ anglePiston.set(DoubleSolenoid.Value.kForward);  }
-  public void setPistonsReverse(){ anglePiston.set(DoubleSolenoid.Value.kReverse);  }
-  public void setPistonsOff(){ anglePiston.set(DoubleSolenoid.Value.kOff);  }
 
   @Override
   public void periodic() {
