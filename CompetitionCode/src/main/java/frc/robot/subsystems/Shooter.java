@@ -30,6 +30,7 @@ public class Shooter extends SubsystemBase {
   // LOCAL VARIABLES
   private double speed = 0.0;
   private State state = State.SPIN_UP;
+  private boolean longRange = true;
 
   /**
    * Creates a new Shooter.
@@ -118,6 +119,22 @@ public class Shooter extends SubsystemBase {
    */
   public double getMotorSpeed() {
     return 600. * (Math.abs((motor1.getSelectedSensorVelocity(0) + motor2.getSelectedSensorVelocity(1)) / 2.) / 4096.);
+  }
+
+  /**
+   * Identifies whether the shooter is set to long range or close range
+   */
+
+  public boolean getRange(){
+    return longRange;
+  }
+
+  public void setLongRange(){
+    longRange = true;
+  }
+
+  public void setShortRange(){
+    longRange = false;
   }
 
   public void setPistonsForward(){ anglePiston.set(DoubleSolenoid.Value.kForward);  }

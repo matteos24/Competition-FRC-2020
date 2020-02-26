@@ -57,6 +57,7 @@ public class RobotContainer {
   public final StartEndCommand shooterPistonOut = new StartEndCommand(
     () -> {
       SHOOTER.setPistonsForward();
+      SHOOTER.setShortRange();
     },
     () -> {
       SHOOTER.setPistonsOff();
@@ -66,18 +67,24 @@ public class RobotContainer {
   public final StartEndCommand shooterPistonIn = new StartEndCommand(
     () -> {
       SHOOTER.setPistonsReverse();
+      SHOOTER.setLongRange();
     },
     () -> {
       SHOOTER.setPistonsOff();
     }, 
     SHOOTER);
 
-  public final StartEndCommand revShooterShortDistance = new StartEndCommand(
+  public final StartEndCommand revShooter = new StartEndCommand(
     () -> {
-      SHOOTER.setSpeedWithRPM(Constants.SHORT_DISTANCE_RPM);
+      if (!SHOOTER.getRange()){
+        SHOOTER.setSpeedWithRPM(Constants.SHORT_DISTANCE_RPM);
+      }
+      else{
+        SHOOTER.setSpeedWithRPM(0); //TODO: Change to value based on current distance from shooter
+      }
     },
     () -> {
-      SHOOTER.setSpeedWithRPM(0.0);
+      SHOOTER.setSpeedWithRPM(0);
     }, 
     SHOOTER);
 
@@ -137,7 +144,7 @@ public class RobotContainer {
   private void configureButtonBindings() {
 
     toggleShooterButton.toggleWhenActive(new EnableShooterCommand(SHOOTER));
-    //shootButton.whenPressed();
+    shootButton.whenPressed(revShooter);
     
     // visionTestButton.whenPressed(new RunCommand(
     //   () -> {
