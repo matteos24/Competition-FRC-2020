@@ -44,6 +44,8 @@ public class RobotContainer {
 
   public JoystickButton toggleShooterButton = new JoystickButton(operator, RIGHT_BUMPER);
   public JoystickButton shootButton = new JoystickButton(operator, RIGHT_TRIGGER);
+  public JoystickButton longShotButton = new JoystickButton(operator, 0);
+  public JoystickButton shortShotButton = new JoystickButton(operator, 1);
 
   // SUBSYSTEMS
   public final Drivetrain DRIVETRAIN = new Drivetrain();
@@ -57,10 +59,21 @@ public class RobotContainer {
   public final StartEndCommand shooterPistonOut = new StartEndCommand(
     () -> {
       SHOOTER.setPistonsForward();
+      SHOOTER.setSpeedWithRPM(Constants.SHORT_DISTANCE_RPM);
       SHOOTER.setShortRange();
     },
     () -> {
       SHOOTER.setPistonsOff();
+      SHOOTER.setSpeedWithRPM(0);
+    }, 
+    SHOOTER);
+  
+  public final StartEndCommand revShort = new StartEndCommand(
+    () -> {
+      SHOOTER.setSpeedWithRPM(Constants.SHORT_DISTANCE_RPM);
+    },
+    () -> {
+      SHOOTER.setSpeedWithRPM(0);
     }, 
     SHOOTER);
 
@@ -71,22 +84,18 @@ public class RobotContainer {
     },
     () -> {
       SHOOTER.setPistonsOff();
-    }, 
-    SHOOTER);
-
-  public final StartEndCommand revShooter = new StartEndCommand(
-    () -> {
-      if (!SHOOTER.getRange()){
-        SHOOTER.setSpeedWithRPM(Constants.SHORT_DISTANCE_RPM);
-      }
-      else{
-        SHOOTER.setSpeedWithRPM(0); //TODO: Change to value based on current distance from shooter
-      }
-    },
-    () -> {
       SHOOTER.setSpeedWithRPM(0);
     }, 
     SHOOTER);
+
+    public final StartEndCommand revLong = new StartEndCommand(
+      () -> {
+        SHOOTER.setSpeedWithRPM(0); //TODO: change to a an rpm based off current distance from target
+      },
+      () -> {
+        SHOOTER.setSpeedWithRPM(0);
+      }, 
+      SHOOTER);
 
   // INTAKE //
   public final StartEndCommand modeSwitch = new StartEndCommand(() -> DRIVETRAIN.modeSlow(),
@@ -144,7 +153,13 @@ public class RobotContainer {
   private void configureButtonBindings() {
 
     toggleShooterButton.toggleWhenActive(new EnableShooterCommand(SHOOTER));
-    shootButton.whenPressed(revShooter);
+    //shootButton.whileHeld();
+    //Extend piston to short range setting and begin revving shooter motors
+    shortShotButton.whenPressed(shooterPistonOut.withTimeout(1)); //TODO: change to time taken for piston to extend
+    shortShotButton.whenHeld(revShort);
+    //Extend piston to long range setting and begin revving shooter motors
+    longShotButton.whenPressed(shooterPistonIn);
+    shortShotButton.whenHeld(revLong);
     
     // visionTestButton.whenPressed(new RunCommand(
     //   () -> {
