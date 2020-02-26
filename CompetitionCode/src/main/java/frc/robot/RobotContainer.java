@@ -48,6 +48,7 @@ public class RobotContainer {
   // SUBSYSTEMS
   public final Drivetrain DRIVETRAIN = new Drivetrain();
   public final Intake INTAKE = new Intake();
+  public final IntakePistons INTAKEPISTONS = new IntakePistons();
   public final Storage STORAGE = new Storage();
   public final Shooter SHOOTER = new Shooter();
   public final Vision VISION = new Vision();
@@ -58,15 +59,31 @@ public class RobotContainer {
   public final StartEndCommand modeSwitch = new StartEndCommand(() -> DRIVETRAIN.modeSlow(),
       () -> DRIVETRAIN.modeFast(), DRIVETRAIN);
 
+  public final StartEndCommand deployIntake = new StartEndCommand(() -> { 
+      INTAKEPISTONS.deployPiston();
+    },
+    () -> { 
+      INTAKEPISTONS.pistonOff();
+    },
+      INTAKEPISTONS);
+
+  public final StartEndCommand retractIntake = new StartEndCommand(() -> { 
+        INTAKEPISTONS.retractPiston();
+      },
+      () -> { 
+        INTAKEPISTONS.pistonOff();
+      },
+        INTAKEPISTONS);
+
   public final StartEndCommand intakeCommand = new StartEndCommand(() -> { 
       INTAKE.setSpeed(WHEEL_INTAKE_SPEED); 
-      INTAKE.deployPiston();
+      INTAKEPISTONS.deployPiston();
     },
     () -> { 
       INTAKE.setSpeed(0);
-      INTAKE.retractPiston();
+      INTAKEPISTONS.retractPiston();
     },
-     INTAKE);
+     INTAKEPISTONS);
 
   public final StartEndCommand outtakeCommand = new StartEndCommand(() -> INTAKE.setSpeed(-WHEEL_INTAKE_SPEED),
       () -> INTAKE.setSpeed(0), INTAKE);
@@ -118,7 +135,9 @@ public class RobotContainer {
     // ));
 
     modeSwitchButton.whenHeld(modeSwitch);
+    motorIntakeButton.whenPressed(deployIntake.withTimeout(1));
     motorIntakeButton.whenHeld(intakeCommand);
+    motorIntakeButton.whenReleased(retractIntake.withTimeout(1));
     motorOuttakeButton.whenHeld(outtakeCommand);
 
     // STORAGE

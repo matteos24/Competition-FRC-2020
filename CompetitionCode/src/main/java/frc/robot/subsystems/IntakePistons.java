@@ -7,23 +7,30 @@
 
 package frc.robot.subsystems;
 
-import edu.wpi.first.wpilibj.VictorSP;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import static frc.robot.Constants.*;
+import edu.wpi.first.wpilibj.DoubleSolenoid;
 
-public class Intake extends SubsystemBase {
+public class IntakePistons extends SubsystemBase {
 
-  // TODO: check intake deploy method (we need a piston??)
-  private VictorSP wheelMotor;
+  private DoubleSolenoid intakePiston;
 
-  public Intake() {
-    wheelMotor = new VictorSP(WHEEL_INTAKE_PORT);
+  public IntakePistons() {
+    intakePiston = new DoubleSolenoid(INTAKE_PISTON_PORT_1, INTAKE_PISTON_PORT_2);
   }
 
-  // MOTORS
+  //PISTONS
 
-  public void setSpeed(double speed) {
-    wheelMotor.set(speed);
+  public void deployPiston() {
+    intakePiston.set(DoubleSolenoid.Value.kForward);
+  }
+
+  public void retractPiston() {
+    intakePiston.set(DoubleSolenoid.Value.kReverse);
+  }
+
+  public void pistonOff() {
+    intakePiston.set(DoubleSolenoid.Value.kOff);
   }
 
   @Override
