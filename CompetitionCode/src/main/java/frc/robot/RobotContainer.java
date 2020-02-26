@@ -52,21 +52,20 @@ public class RobotContainer {
   public final Intake INTAKE = new Intake();
   public final Storage STORAGE = new Storage();
   public final Shooter SHOOTER = new Shooter();
+  public final ShooterPistons SHOOTERPISTONS = new ShooterPistons();
   public final Vision VISION = new Vision();
 
   // COMMANDS
 
   public final StartEndCommand shooterPistonOut = new StartEndCommand(
     () -> {
-      SHOOTER.setPistonsForward();
-      SHOOTER.setSpeedWithRPM(Constants.SHORT_DISTANCE_RPM);
-      SHOOTER.setShortRange();
+      SHOOTERPISTONS.setPistonsForward();
+      SHOOTERPISTONS.setShortRange();
     },
     () -> {
-      SHOOTER.setPistonsOff();
-      SHOOTER.setSpeedWithRPM(0);
+      SHOOTERPISTONS.setPistonsOff();
     }, 
-    SHOOTER);
+    SHOOTERPISTONS);
   
   public final StartEndCommand revShort = new StartEndCommand(
     () -> {
@@ -79,14 +78,13 @@ public class RobotContainer {
 
   public final StartEndCommand shooterPistonIn = new StartEndCommand(
     () -> {
-      SHOOTER.setPistonsReverse();
-      SHOOTER.setLongRange();
+      SHOOTERPISTONS.setPistonsReverse();
+      SHOOTERPISTONS.setLongRange();
     },
     () -> {
-      SHOOTER.setPistonsOff();
-      SHOOTER.setSpeedWithRPM(0);
+      SHOOTERPISTONS.setPistonsOff();
     }, 
-    SHOOTER);
+    SHOOTERPISTONS);
 
     public final StartEndCommand revLong = new StartEndCommand(
       () -> {
