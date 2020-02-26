@@ -10,7 +10,10 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
  * and pick up 3 power cells using ball tracking code and auto aligning, 
  * then go back to the target zone and shoot the power cells
  * by auto aligning and calculating the optimal velocity.
- * Where we start on the starting line shouldn't matter if we use vision
+ * 
+ * THINK about where we start on the starting line, as what your code
+ * may depend on it, but try to make your code so that it can start
+ * anywhere on the starting line.
  */
 public class RendezvousAuto extends SequentialCommandGroup {
 
