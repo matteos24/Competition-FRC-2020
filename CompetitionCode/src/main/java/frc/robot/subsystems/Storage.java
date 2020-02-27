@@ -19,6 +19,9 @@ import static frc.robot.Constants.*;
  * Controls the gate opening for Shooter consumption
  */
 public class Storage extends SubsystemBase {
+
+  // TODO: merge shooter and storage
+
   // FIELDS
   private final VictorSP motor;
   private final DigitalInput intakeSwitch, hasBallSwitch, overrideSwitch;
@@ -68,10 +71,7 @@ public class Storage extends SubsystemBase {
   }
 
   public boolean isOverridden() {
-    if(overrideSwitch.get() == true){
-      return overrideSwitch.get();
-    };
-    return isOverridden;
+    return isOverridden || overrideSwitch.get();
   }
 
   @Override
