@@ -12,7 +12,8 @@ public final class Constants {
     // === SHOOTER === //
 
     public static final int DEFAULT_TARGET_RPM = 5000;
-    public static final int SHORT_DISTANCE_RPM = 0; //TODO: Change the numbers
+    public static final int SHORT_DISTANCE_RPM = 5500; //TODO: Change the numbers
+    public static final int LONG_DIST_RPM = 5500; //TODO: Change the numbers
     public static final double[] DISTANCE_TO_RPM = {0,1,2,3}; //TODO: Change the RPMs
 
     // RESERVED SHOOTER MOTOR PORTS: [0, 0]

@@ -20,12 +20,15 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.BallTrack;
 import frc.robot.commands.EnableShooterCommand;
 import frc.robot.commands.GoalTrack;
+import frc.robot.commands.ShootCommand;
 import frc.robot.commands.StoreBall;
+import frc.robot.commands.auto.FailsafeAuto;
 import frc.robot.commands.auto
 
 
 .MoveCommand;
 import frc.robot.commands.auto.TestAutoCommandGroup;
+import frc.robot.commands.auto.TrenchAuto;
 import frc.robot.subsystems.*;
 import frc.robot.triggers.StorageLimitSwitchTrigger;
 
@@ -35,7 +38,7 @@ public class RobotContainer {
 
   // JOYSTICKS
   public final Joystick driver = new Joystick(DRIVER_CONTROLLER);
-  // public final Joystick operator = new Joystick(OPERATOR_CONTROLLER);
+  public final Joystick operator = new Joystick(OPERATOR_CONTROLLER);
 
   // BUTTONS
   public final JoystickButton modeSwitchButton = new JoystickButton(driver, RIGHT_BUMPER);
@@ -43,7 +46,7 @@ public class RobotContainer {
   public final JoystickButton motorIntakeButton = new JoystickButton(operator, BUTTON_X),
                                motorOuttakeButton = new JoystickButton(operator, BUTTON_Y);
 
-  // public final JoystickButton storageOverrideButton = new JoystickButton(operator, START_BUTTON);
+  public final JoystickButton storageOverrideButton = new JoystickButton(operator, START_BUTTON);
   public final JoystickButton visionTestButton = new JoystickButton(driver, 1);
   public final JoystickButton visionGoalButton = new JoystickButton(driver, 3);
 
@@ -59,10 +62,8 @@ public class RobotContainer {
   // SUBSYSTEMS
   public final Drivetrain DRIVETRAIN = new Drivetrain();
   public final Intake INTAKE = new Intake();
-  public final IntakePistons INTAKEPISTONS = new IntakePistons();
   public final Storage STORAGE = new Storage();
   public final Shooter SHOOTER = new Shooter();
-  public final ShooterPistons SHOOTERPISTONS = new ShooterPistons();
   public final Vision VISION = new Vision();
   public final Climber CLIMBER = new Climber();
 
@@ -70,13 +71,12 @@ public class RobotContainer {
 
   public final StartEndCommand shooterPistonOut = new StartEndCommand(
     () -> {
-      SHOOTERPISTONS.setPistonsForward();
-      SHOOTERPISTONS.setShortRange();
+      SHOOTER.setAngleForward();
     },
     () -> {
-      SHOOTERPISTONS.setPistonsOff();
+      SHOOTER.setPistonsOff();
     }, 
-    SHOOTERPISTONS);
+    SHOOTER);
   
   public final StartEndCommand revShort = new StartEndCommand(
     () -> {
@@ -89,17 +89,16 @@ public class RobotContainer {
 
   public final StartEndCommand shooterPistonIn = new StartEndCommand(
     () -> {
-      SHOOTERPISTONS.setPistonsReverse();
-      SHOOTERPISTONS.setLongRange();
+      SHOOTER.setAngleBack();
     },
     () -> {
-      SHOOTERPISTONS.setPistonsOff();
+      SHOOTER.setPistonsOff();
     }, 
-    SHOOTERPISTONS);
+    SHOOTER);
 
     public final StartEndCommand revLong = new StartEndCommand(
       () -> {
-        SHOOTER.setSpeedWithRPM(0); //TODO: change to a an rpm based off current distance from target
+        SHOOTER.setSpeedWithRPM(Constants.LONG_DIST_RPM); //TODO: change to a an rpm based off current distance from target
       },
       () -> {
         SHOOTER.setSpeedWithRPM(0);
@@ -111,31 +110,31 @@ public class RobotContainer {
       () -> DRIVETRAIN.modeFast(), DRIVETRAIN);
 
   public final StartEndCommand deployIntake = new StartEndCommand(() -> { 
-      INTAKEPISTONS.deployPiston();
+    INTAKE.deployPistons();
     },
     () -> { 
-      INTAKEPISTONS.pistonOff();
+      INTAKE.pistonOff();
     },
-      INTAKEPISTONS);
+      INTAKE);
 
   public final StartEndCommand retractIntake = new StartEndCommand(() -> { 
-        INTAKEPISTONS.retractPiston();
+    INTAKE.retractPistons();
       },
       () -> { 
-        INTAKEPISTONS.pistonOff();
+        INTAKE.pistonOff();
       },
-        INTAKEPISTONS);
+      INTAKE);
 
   public final StartEndCommand intakeCommand = new StartEndCommand(
     () -> {     
       INTAKE.setSpeed(WHEEL_INTAKE_SPEED); 
-      INTAKEPISTONS.deployPiston();
+      INTAKE.deployPistons();
     },
     () -> { 
       INTAKE.setSpeed(0);
-      INTAKEPISTONS.retractPiston();
+      INTAKE.retractPistons();
     },
-     INTAKEPISTONS
+    INTAKE
   );
 
   public final StartEndCommand outtakeCommand = new StartEndCommand(() -> INTAKE.setSpeed(-WHEEL_INTAKE_SPEED),
@@ -180,6 +179,8 @@ public class RobotContainer {
   private final InstantCommand doNothing = new InstantCommand();
   private final Command moveForward = new MoveCommand(DRIVETRAIN, 20, .5);
   private final TestAutoCommandGroup debugAuto = new TestAutoCommandGroup(DRIVETRAIN, VISION);
+  private final FailsafeAuto failsafe = new FailsafeAuto(DRIVETRAIN, SHOOTER, STORAGE);
+  private final TrenchAuto trench = new TrenchAuto(DRIVETRAIN, SHOOTER, STORAGE, INTAKE);
 
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -198,7 +199,7 @@ public class RobotContainer {
   private void configureButtonBindings() {
 
     toggleShooterButton.toggleWhenActive(new EnableShooterCommand(SHOOTER));
-    //shootButton.whileHeld();
+    shootButton.whenHeld(new ShootCommand(SHOOTER, STORAGE, LONG_DIST_RPM));
     //Extend piston to short range setting and begin revving shooter motors
     shortShotButton.whenPressed(shooterPistonOut.withTimeout(1)); //TODO: change to time taken for piston to extend
     shortShotButton.whenHeld(revShort);
@@ -238,6 +239,8 @@ public class RobotContainer {
   public void addAutosToChooser(SendableChooser<Command> chooser){
     chooser.setDefaultOption("Do Nothing", doNothing);
     chooser.addOption("Move 20\"", moveForward);
+    chooser.addOption("Failsafe", failsafe);
+    chooser.addOption("Trench", trench);
     chooser.addOption("Test Auto", debugAuto);
     // TODO: add all autos here
 

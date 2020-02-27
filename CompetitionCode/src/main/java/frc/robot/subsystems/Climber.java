@@ -11,9 +11,6 @@ import edu.wpi.first.wpilibj.VictorSP;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import static frc.robot.Constants.*;
 
-
-import java.util.function.BooleanSupplier;
-
 public class Climber extends SubsystemBase {
 
 

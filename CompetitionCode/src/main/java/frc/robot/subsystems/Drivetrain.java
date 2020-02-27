@@ -48,20 +48,20 @@ public class Drivetrain extends SubsystemBase {
   // SPEED MODES
 
   public void modeSlow() {
-    //speedMultiplier = 0.25;
+    speedMultiplier = 0.25;
     isFast = false;
   }
 
   public void modeFast() {
-    //speedMultiplier = 1;
+    speedMultiplier = 1;
     isFast = true;
   }
 
   // MOTOR SPEEDS
 
   public void tankDrive(double leftSpeed, double rightSpeed) {
-    //setLeftSpeed(leftSpeed);
-    //setRightSpeed(-rightSpeed);
+    setLeftSpeed(leftSpeed);
+    setRightSpeed(-rightSpeed);
   }
 
   /**
@@ -75,12 +75,12 @@ public class Drivetrain extends SubsystemBase {
   }
 
   private void setLeftSpeed(double speed) {
-    //left.set(speed * speedMultiplier);
+    left.set(speed * speedMultiplier);
     //System.out.println(speed * speedMultiplier);
   }
 
   private void setRightSpeed(double speed) {
-    //right.set(speed * speedMultiplier);
+    right.set(speed * speedMultiplier);
   }
 
   public double getLeftDistance() {
