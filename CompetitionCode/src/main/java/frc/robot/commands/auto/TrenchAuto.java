@@ -25,20 +25,7 @@ public class TrenchAuto extends SequentialCommandGroup {
          * Other measurements can be found here: https://firstfrc.blob.core.windows.net/frc2020/PlayingField/LayoutandMarkingDiagram.pdf
          */
         super(
-            new TurnCommand(drivetrain, vision.getAnglesOfBlock(Constants.SHOOTER_TAPE_SIG, false), 0.5), 
-            //Shoot command will be here (Soon)
-            new TurnCommand(drivetrain, vision.getTotalTrenchAngle(), 0.5),
-            //Turn on Intake 
-            new MoveCommand(drivetrain, vision.getTotalDistance(), 0.7), 
-            new TurnCommand(drivetrain, vision.getTheta2Trench(), 0.5),
-            new MoveCommand(drivetrain, 72.5, 0.7), 
-            //I think 72.5 should work but just test an be sure
-            //Turn of Intake
-            new TurnCommand(drivetrain, 180, 0.5),
-            new MoveCommand(drivetrain, 72.5, 0.7),
-            new TurnCommand(drivetrain, vision.getAnglesOfBlock(Constants.SHOOTER_TAPE_SIG, false), 0.5)
-            //Shoot command
-
+            
         );
     }
 }

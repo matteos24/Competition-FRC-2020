@@ -11,7 +11,6 @@ import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants;
 import io.github.pseudoresonance.pixy2api.Pixy2;
 import io.github.pseudoresonance.pixy2api.Pixy2CCC;
 import io.github.pseudoresonance.pixy2api.Pixy2Video;
@@ -27,7 +26,7 @@ public class Vision extends SubsystemBase {
   Pixy2CCC pixyCCC;
   Pixy2Video pixyVideo;
 
-  private double thetaTrench;
+  double[] avg = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 
   public Vision() {
     pixy = Pixy2.createInstance(new SPILink());
@@ -57,48 +56,15 @@ public class Vision extends SubsystemBase {
     // This method will be called once per scheduler run
   }
 
-  public void setThetaTrench(double temp) {
-    thetaTrench = temp;
-  }
-
-  public double getThetaTrench() {
-    return thetaTrench;
-  }
-
-  public double getTotalTrenchAngle() {
-    double z = 90 - Math.abs(getThetaTrench());
-    double x = Math.cos(z) * getDistanceFromObject(SHOOTER_TAPE_SIG);
-    double b = Math.atan(242.63 / (x + 66.91));
-    return (b + z);
-    // The variables cannot be named due to the fact that they are hard to name.
-    // Trouble understanding? Ask Emre!
-  }
-
-  public double getTheta2Trench() {
-    double z = 90 - Math.abs(getThetaTrench());
-    double x = Math.cos(z) * getDistanceFromObject(SHOOTER_TAPE_SIG);
-    double b = Math.atan(242.63 / (x + 66.91));
-    return 90 - b;
-    // The variables cannot be named due to the fact that they are hard to name.
-    // Trouble understanding? Ask Emre!
-  }
-
-  public double getTotalDistance() {
-    double z = 90 - Math.abs(getThetaTrench());
-    double x = Math.cos(z) * getDistanceFromObject(SHOOTER_TAPE_SIG);
-    double hype = Math.sqrt(((x + 66.91) * (x + 66.91)) + (242.63 * 242.63));
-    return hype;
-    // Again the variables cannot be named due to the fact that they are hard to
-    // name.
-    // Trouble understanding? Ask Emre!
-  }
-
-  public double getAnglesOfBlock(int sig, boolean isVertical) {
+  /**
+   * Returns % voltage output to directly plug into tankDrive()
+   */
+  public double getPIDOfBlock(int sig, boolean isVertical) {
     double coordinateX;
     double coordinateY;
     List<Block> blocks = getBlocksOfType(sig);
 
-    if(sig == POWER_CELL_SIG) pixy.setLED(Color.YELLOW);
+    if(sig == Signature.POWER_CELL.value()) pixy.setLED(Color.YELLOW);
     else pixy.setLED(255, 255, 255);
 
     if (blocks.size() > 0) {
@@ -110,40 +76,30 @@ public class Vision extends SubsystemBase {
           block = b;
       }
 
-      coordinateX = block.getX();
+      coordinateX = block.getX(); 
       coordinateY = block.getY();
 
-      double vertAngle = 0, horizAngle = 0;
-
-      horizAngle = HORIZONTAL_FOV * ((2 * coordinateX / pixy.getFrameWidth()) - 1);
-      vertAngle = VERTICAL_FOV * ((2 * coordinateY / pixy.getFrameHeight()) - 1);
-
-      return isVertical ? vertAngle : horizAngle;
+      return isVertical ? ((2 * coordinateY / pixy.getFrameHeight()) - 1) / 2 : ((2 * coordinateX / pixy.getFrameWidth()) - 1) / 2;
     }
 
     return -1000; // TODO- make check for this number
   }
 
-  public double getDistanceFromObject(int sig) {
-    double angle = getAnglesOfBlock(sig, true);
-    return HEIGHT_OF_CAM / (Math.tan(angle));
+  public double getPIDOfGoal() {
+    for (int i = 9; i > avg.length; i--) {
+      avg[i] = avg[i - 1];
+    }
+
+    avg[0] = getPIDOfBlock(Signature.GOAL_BOTTOM_LINE.value(), false);
+
+    double average = 0;
+    for (int i = 0; i < avg.length; i++) {
+      if(avg[i] == 0) continue;
+
+      average += avg[i];
+    }
+
+    return average / avg.length;
   }
 
-  public double getOptimalShootVelocityPower(boolean isAgainstWall) {
-    double angle = isAgainstWall ? 50 : 20; // ANGLE
-    double d = getDistanceFromObject(SHOOTER_TAPE_SIG) + DISTANCE_DIFFERENCE;
-    double x;
-    x = -9.8 * d * d;
-    x = x / (2 * ((HEIGHT_OF_SHOOTER * Math.cos(angle) * Math.cos(angle)) - (d * Math.sin(angle) * Math.cos(angle))));
-    x = Math.sqrt(x);
-    // ok x is the optimal velocity and the formula has to be adjusted to the data
-    // collected from the shooter
-    return x / MAX_VELOCITY_OF_SHOOTER;
-  }
-
-  public boolean isWallAligned() {
-    List<Block> temp = new ArrayList<Block>();
-    temp = getBlocksOfType(SHOOTER_TAPE_SIG);
-    return (temp.size() == 0);
-  }
 }

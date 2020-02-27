@@ -18,6 +18,7 @@ import edu.wpi.first.wpilibj2.command.StartEndCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.BallTrack;
 import frc.robot.commands.EnableShooterCommand;
+import frc.robot.commands.GoalTrack;
 import frc.robot.commands.StoreBall;
 import frc.robot.commands.auto
 
@@ -43,6 +44,7 @@ public class RobotContainer {
 
   // public final JoystickButton storageOverrideButton = new JoystickButton(operator, START_BUTTON);
   public final JoystickButton visionTestButton = new JoystickButton(driver, 1);
+  public final JoystickButton visionGoalButton = new JoystickButton(driver, 3);
 
   // public JoystickButton toggleShooterButton = new JoystickButton(operator, RIGHT_BUMPER);
   // public JoystickButton shootButton = new JoystickButton(operator, RIGHT_TRIGGER);
@@ -114,6 +116,7 @@ public class RobotContainer {
     //shootButton.whenPressed();
     
      visionTestButton.whileHeld(new BallTrack(DRIVETRAIN, VISION));
+     visionGoalButton.whileHeld(new GoalTrack(DRIVETRAIN, VISION));
 
     modeSwitchButton.whenHeld(modeSwitch);
     // motorIntakeButton.whenHeld(intakeCommand);
