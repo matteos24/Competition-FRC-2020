@@ -13,11 +13,11 @@ import static frc.robot.Constants.*;
 
 public class Intake extends SubsystemBase {
 
-  // TODO: check intake deploy method (we need a piston??)
   private VictorSP wheelMotor;
 
   public Intake() {
     wheelMotor = new VictorSP(WHEEL_INTAKE_PORT);
+    //intakePiston = new DoubleSolenoid(INTAKE_PISTON_PORT_1, INTAKE_PISTON_PORT_2);
   }
 
   // MOTORS

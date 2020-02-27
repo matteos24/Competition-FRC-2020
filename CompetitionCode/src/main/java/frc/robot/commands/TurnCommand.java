@@ -8,37 +8,35 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.Constants;
 import frc.robot.subsystems.Drivetrain;
-import frc.robot.subsystems.Vision;
 
-public class BallTrack extends CommandBase {
+public class TurnCommand extends CommandBase {
 
   private Drivetrain drivetrain;
-  private Vision vision;
+  private double targetDist, speed, degrees;
 
   /**
-   * Creates a new EnableShooterCommand.
+   * Creates a new TurnCommand.
    */
-  public BallTrack(Drivetrain drivetrain, Vision vision) {
+  public TurnCommand(Drivetrain drivetrain, double degrees, double speed) {
+    addRequirements(drivetrain);
     this.drivetrain = drivetrain;
-    this.vision = vision;
 
+    this.targetDist = Drivetrain.WHEEL_TO_WHEEL_DIAMETER_INCHES * Math.PI * (degrees / 360) + 
+    (degrees < 0 ? drivetrain.getLeftDistance() : drivetrain.getRightDistance());
+
+    this.speed = speed;
+    this.degrees = degrees;
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    double speed = vision.getPIDOfBlock(Constants.Signature.POWER_CELL.value(), false);
-    if (speed == -1000) return;
-    System.out.println("Speed: " + speed);
-    
     drivetrain.tankDrive(speed, -speed);
   }
 
@@ -50,6 +48,14 @@ public class BallTrack extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    boolean isFinished = false;
+
+    if(degrees < 0) { // left
+      isFinished = drivetrain.getLeftDistance() > targetDist;
+    } else { // right
+      isFinished = drivetrain.getRightDistance() > targetDist;
+    }
+
+    return isFinished;
   }
 }

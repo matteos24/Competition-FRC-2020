@@ -27,18 +27,26 @@ public final class Constants {
 
   //THE CONSTANTS WITH VALUE 0 ARE CURRENTLY UNKNOWN 
   public static final int DIFFERENCE_BETWEEN_SHOOTER_ANGLE_AND_CAM_ANGLE = 0;
-  public static final int CAMERA_X = 315;
-  public static final int HORIZONTAL_TOTAL_INT = 0;
-  public static final int CAMERA_Y = 207;
-  public static final int VERTICAL_TOTAL_INT = 0;
+  public static final int HORIZONTAL_FOV = 60;
+  public static final int VERTICAL_FOV = 40;
   public static final int HEIGHT_OF_SHOOTER = 0;
   public static final int DISTANCE_DIFFERENCE = 0;
-  public static final int HEIGHT_OF_CAM = 0;
+  public static final double HEIGHT_OF_CAM = 24.7401; // IN INCHES
   public static final int MAX_VELOCITY_OF_SHOOTER = 1;
 
   // === PIXY SIGs === //
-  public static final int SHOOTER_TAPE_SIG = 3;
-  public static final int POWER_CELL_SIG = 2;
+
+  public static enum Signature {
+
+    GOAL_BOTTOM_LINE(2), POWER_CELL(-1);
+
+    int sig = -1;
+    Signature(int sig) {
+      this.sig = sig;
+    }
+
+    public int value() { return sig; }
+  }
 
   // === MOTOR PORTS === //
 
@@ -62,6 +70,9 @@ public final class Constants {
       // INTAKE PISTONS
   public static final int INTAKE_PISTON_PORT_1 = 2;
   public static final int INTAKE_PISTON_PORT_2 = 3;
+
+  public static final int SHOOTER_PISTON_PORT_1 = 4;
+  public static final int SHOOTER_PISTON_PORT_2 = 5;
 
       // STORAGE MOTORS
   public static final int STORAGE_GATE_MOTOR_PORT = 13;

@@ -60,8 +60,8 @@ public class Drivetrain extends SubsystemBase {
   // MOTOR SPEEDS
 
   public void tankDrive(double leftSpeed, double rightSpeed) {
-    setLeftSpeed(leftSpeed);
-    setRightSpeed(-rightSpeed);
+    //setLeftSpeed(leftSpeed);
+    //setRightSpeed(-rightSpeed);
   }
 
   /**
@@ -75,12 +75,12 @@ public class Drivetrain extends SubsystemBase {
   }
 
   private void setLeftSpeed(double speed) {
-    left.set(speed * speedMultiplier);
+    //left.set(speed * speedMultiplier);
     //System.out.println(speed * speedMultiplier);
   }
 
   private void setRightSpeed(double speed) {
-    right.set(speed * speedMultiplier);
+    //right.set(speed * speedMultiplier);
   }
 
   public double getLeftDistance() {

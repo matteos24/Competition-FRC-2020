@@ -12,32 +12,32 @@ import frc.robot.Constants;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Vision;
 
-public class BallTrack extends CommandBase {
+public class GoalTrack extends CommandBase {
 
   private Drivetrain drivetrain;
   private Vision vision;
 
   /**
-   * Creates a new EnableShooterCommand.
+   * Creates a new GoalTrack.
    */
-  public BallTrack(Drivetrain drivetrain, Vision vision) {
+  public GoalTrack(Drivetrain drivetrain, Vision vision) {
+    // Use addRequirements() here to declare subsystem dependencies.
+
     this.drivetrain = drivetrain;
     this.vision = vision;
-
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    double speed = vision.getPIDOfBlock(Constants.Signature.POWER_CELL.value(), false);
+    double speed = vision.getPIDOfBlock(Constants.Signature.GOAL_BOTTOM_LINE.value(), false);
     if (speed == -1000) return;
-    System.out.println("Speed: " + speed);
+    System.out.println(speed);
     
     drivetrain.tankDrive(speed, -speed);
   }

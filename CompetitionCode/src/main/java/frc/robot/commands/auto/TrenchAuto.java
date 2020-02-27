@@ -1,30 +1,47 @@
+/*----------------------------------------------------------------------------*/
+/* Copyright (c) 2019 FIRST. All Rights Reserved.                             */
+/* Open Source Software - may be modified and shared by FRC teams. The code   */
+/* must be accompanied by the FIRST BSD license file in the root directory of */
+/* the project.                                                               */
+/*----------------------------------------------------------------------------*/
+
 package frc.robot.commands.auto;
 
+import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import frc.robot.commands.*;
+import frc.robot.commands.DisableShooter;
+import frc.robot.commands.EnableShooter;
+import frc.robot.subsystems.Drivetrain;
+import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.Shooter;
+import frc.robot.subsystems.Storage;
 
-/**
- * READ ME IMPORTANT
- * This auto will shoot 3 preloaded power cells by auto aligning to the
- * target zone and calculating the optimal velocity to shoot at.
- * Then go towards the trench and pick up 3 power cells using ball tracking code
- * and auto aligning, then go back to the target zone and shoot the power cells
- * by auto aligning and calculating the optimal velocity.
- * 
- * THINK about where we start on the starting line, as what your code
- * may depend on it, but try to make your code so that it can start
- * anywhere on the starting line.
- */
+import static frc.robot.Constants.*;
+
 public class TrenchAuto extends SequentialCommandGroup {
+  /**
+   * Creates a new TrenchAuto.
+   */
+  public TrenchAuto(Drivetrain drivetrain, Shooter shooter, Storage storage, Intake intake) {
+    
+    // move forward 160 inches and intake
+    // enable shooter
+    // turn 165 right
+    // shoot
+    // party
 
-    public TrenchAuto(/* change */) {
-        /** 
-         * MEASUREMENTS
-         * Middle ball (around 2 other ones) is 114.17in away from starting line (straight ahead).
-         * Middle ball is 65.84in away from the target zone (straight up).
-         * Other measurements can be found here: https://firstfrc.blob.core.windows.net/frc2020/PlayingField/LayoutandMarkingDiagram.pdf
-         */
-        super(
-            /* code */
-        );
-    }
+    super(
+      parallel(
+        new MoveCommand(drivetrain, 160, 0.75).alongWith(
+          new RunCommand(() -> { intake.setSpeed(WHEEL_INTAKE_SPEED); intake.deployPiston(); }, intake)
+        )
+      ),
+      parallel(new EnableShooter(shooter), new InstantCommand(() -> { shooter.setPistonsForward(); }, shooter)),
+      new TurnCommand(drivetrain, 165, 0.75),
+      new ShootCommand(shooter, storage, 5500).withTimeout(3 + 5 + 2), // 3 to spool, 1 per ball, 3 for safety
+      new DisableShooter(shooter)
+    );
+  }
 }
