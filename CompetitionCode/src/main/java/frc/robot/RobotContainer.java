@@ -10,14 +10,13 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.GenericHID;
-import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.StartEndCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import frc.robot.commands.BallTrack;
 import frc.robot.commands.EnableShooterCommand;
 import frc.robot.commands.StoreBall;
 import frc.robot.commands.auto
@@ -34,19 +33,19 @@ public class RobotContainer {
 
   // JOYSTICKS
   public final Joystick driver = new Joystick(DRIVER_CONTROLLER);
-  public final Joystick operator = new Joystick(OPERATOR_CONTROLLER);
+  //public final Joystick operator = new Joystick(OPERATOR_CONTROLLER);
 
   // BUTTONS
   public final JoystickButton modeSwitchButton = new JoystickButton(driver, RIGHT_BUMPER);
 
-  public final JoystickButton motorIntakeButton = new JoystickButton(operator, BUTTON_X),
-                              motorOuttakeButton = new JoystickButton(operator, BUTTON_Y);
+  // public final JoystickButton motorIntakeButton = new JoystickButton(operator, BUTTON_X),
+  //                             motorOuttakeButton = new JoystickButton(operator, BUTTON_Y);
 
-  public final JoystickButton storageOverrideButton = new JoystickButton(operator, START_BUTTON);
-  public JoystickButton visionTestButton = new JoystickButton(operator, 1);
+  // public final JoystickButton storageOverrideButton = new JoystickButton(operator, START_BUTTON);
+  public final JoystickButton visionTestButton = new JoystickButton(driver, 1);
 
-  public JoystickButton toggleShooterButton = new JoystickButton(operator, RIGHT_BUMPER);
-  public JoystickButton shootButton = new JoystickButton(operator, RIGHT_TRIGGER);
+  // public JoystickButton toggleShooterButton = new JoystickButton(operator, RIGHT_BUMPER);
+  // public JoystickButton shootButton = new JoystickButton(operator, RIGHT_TRIGGER);
 
   // SUBSYSTEMS
   public final Drivetrain DRIVETRAIN = new Drivetrain();
@@ -111,25 +110,19 @@ public class RobotContainer {
    */
   private void configureButtonBindings() {
 
-    toggleShooterButton.toggleWhenActive(new EnableShooterCommand(SHOOTER));
+    // toggleShooterButton.toggleWhenActive(new EnableShooterCommand(SHOOTER));
     //shootButton.whenPressed();
     
-     visionTestButton.whenHeld(new RunCommand(
-       () -> {
-         double angle = VISION.getAnglesOfBlock(Constants.POWER_CELL_SIG, false);
-         System.out.println(angle);
-         DRIVETRAIN.tankDrive((angle)/(180+6*angle), -(angle)/(180+6*angle));
-        }
-     ));
+     visionTestButton.whileHeld(new BallTrack(DRIVETRAIN, VISION));
 
     modeSwitchButton.whenHeld(modeSwitch);
-    motorIntakeButton.whenHeld(intakeCommand);
-    motorOuttakeButton.whenHeld(outtakeCommand);
+    // motorIntakeButton.whenHeld(intakeCommand);
+    // motorOuttakeButton.whenHeld(outtakeCommand);
 
     // STORAGE
     storageTrigger.whenActive(storeBall);
-    storageOverrideButton.whenPressed(startStorageOverride);
-    storageOverrideButton.whenHeld(storageOverride);
+    // storageOverrideButton.whenPressed(startStorageOverride);
+    // storageOverrideButton.whenHeld(storageOverride);
   }
 
   // /**

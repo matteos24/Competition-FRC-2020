@@ -12,17 +12,17 @@ import frc.robot.Constants;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Vision;
 
-
 public class BallTrack extends CommandBase {
 
   private Drivetrain drivetrain;
   private Vision vision;
+
   /**
    * Creates a new EnableShooterCommand.
    */
   public BallTrack(Drivetrain drivetrain, Vision vision) {
-      this.drivetrain = drivetrain;
-      this.vision = vision;
+    this.drivetrain = drivetrain;
+    this.vision = vision;
 
   }
 
@@ -35,11 +35,14 @@ public class BallTrack extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    double angle = -vision.getAnglesOfBlock(Constants.POWER_CELL_SIG, false);
-
+    double angle = vision.getAnglesOfBlock(Constants.POWER_CELL_SIG, false);
+    if (angle == -1000) return;
+    System.out.println("Angle: " + angle);
     // Positive angle turn right
-    if (angle >= 0) drivetrain.tankDrive(-(-angle)/(180+6*angle), (-angle)/(180+6*angle));
-    else drivetrain.tankDrive((-angle)/(180+6*angle), -(-angle)/(180+6*angle));
+    // if (angle >= 0)
+    //   System.out.println(angle); //drivetrain.tankDrive(-(angle) / (180 + 6 * angle), (angle) / (180 + 6 * angle));
+    // else
+    //   System.out.println(); //drivetrain.tankDrive((angle) / (180 + 6 * angle), -(angle) / (180 + 6 * angle));
   }
 
   // Called once the command ends or is interrupted.

@@ -21,9 +21,7 @@ public class MoveCommand extends CommandBase {
         drivetrain.resetEncoders();
 
         this.goal = goalInInches * IN_TO_UNITS; // INCHES TO UNITS
-        System.out.println("========" + goal);
         this.start = drivetrain.getAverageDistance(); // IN UNITS
-        System.out.println("========" + start);
         goal += start;
 
         this.speed = speed;

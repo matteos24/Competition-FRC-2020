@@ -24,10 +24,10 @@ public final class Constants {
 
   //THE CONSTANTS WITH VALUE 0 ARE CURRENTLY UNKNOWN 
   public static final int DIFFERENCE_BETWEEN_SHOOTER_ANGLE_AND_CAM_ANGLE = 0;
-  public static final int CAMERA_X = 315;
-  public static final int HORIZONTAL_FOV = 100;
-  public static final int CAMERA_Y = 207;
-  public static final int VERTICAL_FOV = 100;
+  public static final int CAMERA_X = 316;
+  public static final int HORIZONTAL_FOV = 60;
+  public static final int CAMERA_Y = 208;
+  public static final int VERTICAL_FOV = 40;
   public static final int HEIGHT_OF_SHOOTER = 0;
   public static final int DISTANCE_DIFFERENCE = 0;
   public static final int HEIGHT_OF_CAM = 0;

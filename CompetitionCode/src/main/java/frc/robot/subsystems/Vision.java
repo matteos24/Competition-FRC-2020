@@ -7,6 +7,7 @@
 
 package frc.robot.subsystems;
 
+import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -15,7 +16,6 @@ import io.github.pseudoresonance.pixy2api.Pixy2;
 import io.github.pseudoresonance.pixy2api.Pixy2CCC;
 import io.github.pseudoresonance.pixy2api.Pixy2Video;
 import io.github.pseudoresonance.pixy2api.Pixy2CCC.Block;
-import io.github.pseudoresonance.pixy2api.Pixy2Video.RGB;
 import io.github.pseudoresonance.pixy2api.links.SPILink;
 
 import static frc.robot.Constants.*;
@@ -26,15 +26,16 @@ public class Vision extends SubsystemBase {
   Pixy2 pixy;
   Pixy2CCC pixyCCC;
   Pixy2Video pixyVideo;
-  SPILink link = new SPILink();
 
   private double thetaTrench;
 
   public Vision() {
-    pixy = Pixy2.createInstance(link);
+    pixy = Pixy2.createInstance(new SPILink());
     pixy.init();
     pixyCCC = pixy.getCCC();
     pixyVideo = pixy.getVideo();
+
+    pixy.setLamp((byte) 0, (byte) 1);
   }
 
   /**
@@ -42,10 +43,10 @@ public class Vision extends SubsystemBase {
    */
   public List<Block> getBlocksOfType(int signature) {
     List<Block> output = new ArrayList<>();
-    
-    
-    for(Block b: pixyCCC.getBlocks()) {
-      /*if(b.getSignature() == signature)*/ output.add(b);
+    pixyCCC.getBlocks(false, signature, 25);
+
+    for (Block b : pixyCCC.getBlocks()) {
+      output.add(b);
     }
 
     return output;
@@ -56,91 +57,93 @@ public class Vision extends SubsystemBase {
     // This method will be called once per scheduler run
   }
 
-  public void setThetaTrench(double temp){
+  public void setThetaTrench(double temp) {
     thetaTrench = temp;
   }
 
-  public double getThetaTrench(){
+  public double getThetaTrench() {
     return thetaTrench;
   }
 
-  public double getTotalTrenchAngle(){
+  public double getTotalTrenchAngle() {
     double z = 90 - Math.abs(getThetaTrench());
     double x = Math.cos(z) * getDistanceFromObject(SHOOTER_TAPE_SIG);
-    double b = Math.atan(242.63/(x+66.91));
+    double b = Math.atan(242.63 / (x + 66.91));
     return (b + z);
-    //The variables cannot be named due to the fact that they are hard to name.
-    //Trouble understanding? Ask Emre!
+    // The variables cannot be named due to the fact that they are hard to name.
+    // Trouble understanding? Ask Emre!
   }
 
-  public double getTheta2Trench(){
+  public double getTheta2Trench() {
     double z = 90 - Math.abs(getThetaTrench());
     double x = Math.cos(z) * getDistanceFromObject(SHOOTER_TAPE_SIG);
-    double b = Math.atan(242.63/(x+66.91));
+    double b = Math.atan(242.63 / (x + 66.91));
     return 90 - b;
-    //The variables cannot be named due to the fact that they are hard to name.
-    //Trouble understanding? Ask Emre!
+    // The variables cannot be named due to the fact that they are hard to name.
+    // Trouble understanding? Ask Emre!
   }
 
-  public double getTotalDistance(){
+  public double getTotalDistance() {
     double z = 90 - Math.abs(getThetaTrench());
     double x = Math.cos(z) * getDistanceFromObject(SHOOTER_TAPE_SIG);
-    double hype = Math.sqrt(((x+66.91)*(x+66.91)) + (242.63 * 242.63));
+    double hype = Math.sqrt(((x + 66.91) * (x + 66.91)) + (242.63 * 242.63));
     return hype;
-    //Again the variables cannot be named due to the fact that they are hard to name.
-    //Trouble understanding? Ask Emre!
+    // Again the variables cannot be named due to the fact that they are hard to
+    // name.
+    // Trouble understanding? Ask Emre!
   }
-  public double getAnglesOfBlock(int sig, boolean isVertical){
+
+  public double getAnglesOfBlock(int sig, boolean isVertical) {
     double coordinateX;
     double coordinateY;
     List<Block> blocks = getBlocksOfType(sig);
+
+    if(sig == POWER_CELL_SIG) pixy.setLED(Color.YELLOW);
+    else pixy.setLED(255, 255, 255);
 
     if (blocks.size() > 0) {
       Block block = null;
 
       block = blocks.get(0);
-      for(Block b: blocks) {
-        if((b.getWidth() * b.getHeight()) > (block.getWidth() * block.getHeight())) block = b;
+      for (Block b : blocks) {
+        if ((b.getWidth() * b.getHeight()) > (block.getWidth() * block.getHeight()))
+          block = b;
       }
-      
-      System.out.println(block.getX() + " " + block.getY());
-      coordinateX = block.getX() + (block.getWidth() / 2);
-      coordinateY = block.getY() + (block.getHeight() / 2);
-      
 
-      //This basically calculates the turn angle needed assuming right is negative and left is positive
-      double angleHorizontal = -((1 - (coordinateX / (Constants.CAMERA_X / 2))) * (Constants.HORIZONTAL_FOV / 2));
-      double angleVertical = ((1 - (coordinateY / (Constants.CAMERA_Y / 2))) * (Constants.VERTICAL_FOV / 2));
+      coordinateX = block.getX();
+      coordinateY = block.getY();
 
-      double[] temp = new double[2];
-      temp[0] = angleHorizontal;
-      temp[1] = angleVertical;
+      double vertAngle = 0, horizAngle = 0;
 
-      if (isVertical) { setThetaTrench(temp[0]); }
-      return isVertical ? temp[1] : temp[0];
+      horizAngle = HORIZONTAL_FOV * ((2 * coordinateX / pixy.getFrameWidth()) - 1);
+      vertAngle = VERTICAL_FOV * ((2 * coordinateY / pixy.getFrameHeight()) - 1);
+
+      return isVertical ? vertAngle : horizAngle;
     }
 
-    return -1;
+    return -1000; // TODO- make check for this number
   }
 
-  public double getDistanceFromObject(int sig){
+  public double getDistanceFromObject(int sig) {
     double angle = getAnglesOfBlock(sig, true);
-    return HEIGHT_OF_CAM/(Math.tan(angle));
+    return HEIGHT_OF_CAM / (Math.tan(angle));
   }
 
-  public double getOptimalShootVelocityPower(boolean isAgainstWall){
+  public double getOptimalShootVelocityPower(boolean isAgainstWall) {
     double angle = isAgainstWall ? 50 : 20; // ANGLE
     double d = getDistanceFromObject(SHOOTER_TAPE_SIG) + DISTANCE_DIFFERENCE;
     double x;
-    x = -9.8*d*d;
-    x = x/(2*((HEIGHT_OF_SHOOTER*Math.cos(angle)*Math.cos(angle))-(d*Math.sin(angle)*Math.cos(angle))));
+    x = -9.8 * d * d;
+    x = x / (2 * ((HEIGHT_OF_SHOOTER * Math.cos(angle) * Math.cos(angle)) - (d * Math.sin(angle) * Math.cos(angle))));
     x = Math.sqrt(x);
-    //ok x is the optimal velocity and the formula has to be adjusted to the data collected from the shooter
-    return x/MAX_VELOCITY_OF_SHOOTER;
+    // ok x is the optimal velocity and the formula has to be adjusted to the data
+    // collected from the shooter
+    return x / MAX_VELOCITY_OF_SHOOTER;
   }
-  public boolean isWallAligned(){
+
+  public boolean isWallAligned() {
     List<Block> temp = new ArrayList<Block>();
     temp = getBlocksOfType(SHOOTER_TAPE_SIG);
-    return(temp.size()==0);
+    return (temp.size() == 0);
   }
 }

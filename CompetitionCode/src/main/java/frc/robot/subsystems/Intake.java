@@ -14,13 +14,12 @@ import edu.wpi.first.wpilibj.DoubleSolenoid;
 
 public class Intake extends SubsystemBase {
 
-  // TODO: check intake deploy method (we need a piston??)
   private VictorSP wheelMotor;
   private DoubleSolenoid intakePiston;
 
   public Intake() {
     wheelMotor = new VictorSP(WHEEL_INTAKE_PORT);
-    intakePiston = new DoubleSolenoid(INTAKE_PISTON_PORT_1, INTAKE_PISTON_PORT_2);
+    //intakePiston = new DoubleSolenoid(INTAKE_PISTON_PORT_1, INTAKE_PISTON_PORT_2);
   }
 
   // MOTORS & PISTONS
