@@ -50,7 +50,11 @@ public final class Constants {
 
       // INTAKE MOTORS
   public static final int WHEEL_INTAKE_PORT = 0;
-
+  
+    // CLIMBER MOTORS
+  public static final int LIFTER_MOTOR = 9;
+  public static final int GEAR_MOTOR1 = 7;
+  public static final int GEAR_MOTOR2 = 8;
 
 
   // === PISTON PORTS === //
@@ -83,6 +87,10 @@ public final class Constants {
   // STORAGE
   public static final double GATE_SPEED = 0.2;
 
+  // CLIMBER
+  public static final double LIFTER_SPEED = 1;
+  public static final double LIFTER_SPEED_REVERSE = -1;
+  public static final double GEAR_SPEED = 0.75;
 
 
   // == JOYSTICK CONSTANTS == //
@@ -115,3 +123,4 @@ public final class Constants {
   public static final int RIGHT_STICK_BUTTON = 12;
 
 }
+

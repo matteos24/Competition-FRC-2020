@@ -46,6 +46,10 @@ public class RobotContainer {
   public JoystickButton shootButton = new JoystickButton(operator, RIGHT_TRIGGER);
   public JoystickButton longShotButton = new JoystickButton(operator, 0);
   public JoystickButton shortShotButton = new JoystickButton(operator, 1);
+  
+  private final JoystickButton raiseButton = new JoystickButton(opController, LB),
+                                lowerButton = new JoystickButton(opController, RB),
+                                 gearClimbButton = new JoystickButton(opController, BACK);
 
   // SUBSYSTEMS
   public final Drivetrain DRIVETRAIN = new Drivetrain();
@@ -55,6 +59,7 @@ public class RobotContainer {
   public final Shooter SHOOTER = new Shooter();
   public final ShooterPistons SHOOTERPISTONS = new ShooterPistons();
   public final Vision VISION = new Vision();
+  public final Climber CLIMBER = new Climber();
 
   // COMMANDS
 
@@ -130,6 +135,25 @@ public class RobotContainer {
 
   public final StartEndCommand outtakeCommand = new StartEndCommand(() -> INTAKE.setSpeed(-WHEEL_INTAKE_SPEED),
       () -> INTAKE.setSpeed(0), INTAKE);
+  
+  // CLIMBER COMMANDS //
+  public final StartEndCommand raiseLifter = new StartEndCommand(
+      () -> CLIMBER.lifterUp(),
+      () -> CLIMBER.lifterZero(),
+      CLIMBER
+  );
+
+  public final StartEndCommand lowerLifter = new StartEndCommand(
+      () -> CLIMBER.lifterDown(),
+      () -> CLIMBER.lifterZero(),
+      CLIMBER
+  );
+
+  public final StartEndCommand gearClimb = new StartEndCommand(
+      () -> CLIMBER.gearOn(),
+      () -> CLIMBER.gearOff(),
+      CLIMBER
+  );
 
 
   // for storage trigger
@@ -188,6 +212,11 @@ public class RobotContainer {
     motorIntakeButton.whenHeld(intakeCommand);
     motorIntakeButton.whenReleased(retractIntake.withTimeout(1));
     motorOuttakeButton.whenHeld(outtakeCommand);
+    
+    // CLIMB BUTTONS
+    raiseButton.whenHeld(raiseLifter);
+    lowerButton.whenHeld(lowerLifter);
+    gearClimbButton.whenHeld(gearClimb);
 
     // STORAGE
     storageTrigger.whenActive(storeBall);
