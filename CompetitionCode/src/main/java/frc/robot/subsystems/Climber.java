@@ -20,9 +20,6 @@ public class Climber extends SubsystemBase {
     // Initialize fields
     private VictorSP lifterMotor;
     private VictorSP gearBoxMotor1, gearBoxMotor2;
-    Boolean hasLifted;
-    public BooleanSupplier hasLiftedSupplier = () -> hasLifted;
-
 
     public Climber() {
         lifterMotor = new VictorSP(LIFTER_MOTOR);
@@ -35,14 +32,11 @@ public class Climber extends SubsystemBase {
      */
     public void lifterUp(){
         lifterMotor.set(LIFTER_SPEED); 
-        hasLifted = true;
-        hasLiftedSupplier = () -> hasLifted;
+
     }
 
     public void lifterDown() {
         lifterMotor.set(LIFTER_SPEED_REVERSE);
-        hasLifted = false;
-        hasLiftedSupplier = () -> hasLifted;
     }
 
     public void lifterZero() {

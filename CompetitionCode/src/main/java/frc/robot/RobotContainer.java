@@ -12,12 +12,32 @@ import static frc.robot.Constants.*;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.StartEndCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import frc.robot.subsystems.*;
 
 public class RobotContainer {
 
-    // IMPORTING STUFF AND STUFF
-    private final RobotCommands robotCommands = new RobotCommands();
+    private final Climber CLIMBER = new Climber();
+
+        // CLIMBER COMMANDS
+        public final StartEndCommand raiseLifter = new StartEndCommand(
+            () -> CLIMBER.lifterUp(),
+            () -> CLIMBER.lifterZero(),
+            CLIMBER
+        );
+        
+        public final StartEndCommand lowerLifter = new StartEndCommand(
+            () -> CLIMBER.lifterDown(),
+            () -> CLIMBER.lifterZero(),
+            CLIMBER
+        );
+    
+        public final StartEndCommand gearClimb = new StartEndCommand(
+            () -> CLIMBER.gearOn(),
+            () -> CLIMBER.gearOff(),
+            CLIMBER
+        );
 
 
     // == JOYSTICK & BUTTON BINDINGS == //
@@ -28,7 +48,8 @@ public class RobotContainer {
 
     // CONFIG BUTTON BINDINGS (See constants.java to change specific ports etc.)
     // CLIMBER BUTTONS
-    private final JoystickButton raiseAndLowerButton = new JoystickButton(opController, LB),
+    private final JoystickButton raiseButton = new JoystickButton(opController, LB),
+                                lowerButton = new JoystickButton(opController, RB),
                                  gearClimbButton = new JoystickButton(opController, BACK);
 
     // ROBOT CONTAINER
@@ -40,8 +61,9 @@ public class RobotContainer {
     private void configureButtonActions() {
 
         // CLIMB BUTTONS
-        raiseAndLowerButton.whenHeld(robotCommands.raiseOrLower);
-        gearClimbButton.whenHeld(robotCommands.gearClimb);
+        raiseButton.whenHeld(raiseLifter);
+        lowerButton.whenHeld(lowerLifter);
+        gearClimbButton.whenHeld(gearClimb);
         
     }
     
@@ -51,6 +73,6 @@ public class RobotContainer {
      * @return the command to run in autonomous
      */
     public Command getAutonomousCommand() {
-        return robotCommands.doNothing;
+        return null;
     }
 }
