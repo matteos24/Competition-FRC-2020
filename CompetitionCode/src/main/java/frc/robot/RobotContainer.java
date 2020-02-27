@@ -14,6 +14,7 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.StartEndCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.BallTrack;
@@ -34,13 +35,13 @@ public class RobotContainer {
 
   // JOYSTICKS
   public final Joystick driver = new Joystick(DRIVER_CONTROLLER);
-  //public final Joystick operator = new Joystick(OPERATOR_CONTROLLER);
+  // public final Joystick operator = new Joystick(OPERATOR_CONTROLLER);
 
   // BUTTONS
   public final JoystickButton modeSwitchButton = new JoystickButton(driver, RIGHT_BUMPER);
 
   // public final JoystickButton motorIntakeButton = new JoystickButton(operator, BUTTON_X),
-  //                             motorOuttakeButton = new JoystickButton(operator, BUTTON_Y);
+  //                              motorOuttakeButton = new JoystickButton(operator, BUTTON_Y);
 
   // public final JoystickButton storageOverrideButton = new JoystickButton(operator, START_BUTTON);
   public final JoystickButton visionTestButton = new JoystickButton(driver, 1);
@@ -119,8 +120,8 @@ public class RobotContainer {
      visionGoalButton.whileHeld(new GoalTrack(DRIVETRAIN, VISION));
 
     modeSwitchButton.whenHeld(modeSwitch);
-    // motorIntakeButton.whenHeld(intakeCommand);
-    // motorOuttakeButton.whenHeld(outtakeCommand);
+    // motorIntakeButton.whileHeld(new SequentialCommandGroup(intakeCommand, new StartEndCommand(() -> {}, () -> { INTAKE.pistonOff(); }, INTAKE).withTimeout(1)));
+    // motorOuttakeButton.whileHeld(new SequentialCommandGroup(outtakeCommand, new StartEndCommand(() -> {}, () -> { INTAKE.pistonOff(); }, INTAKE).withTimeout(1)));
 
     // STORAGE
     storageTrigger.whenActive(storeBall);

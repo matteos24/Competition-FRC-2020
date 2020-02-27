@@ -8,43 +8,48 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.Constants;
-import frc.robot.subsystems.Drivetrain;
-import frc.robot.subsystems.Vision;
+import frc.robot.subsystems.Shooter;
+import frc.robot.subsystems.Storage;
 
-public class BallTrack extends CommandBase {
+public class ShootCommand extends CommandBase {
 
-  private Drivetrain drivetrain;
-  private Vision vision;
+  private Shooter shooter;
+  private Storage storage;
+  private double targetRPM;
+
+  private double startTime;
 
   /**
-   * Creates a new EnableShooterCommand.
+   * Creates a new ShootCommand.
    */
-  public BallTrack(Drivetrain drivetrain, Vision vision) {
-    this.drivetrain = drivetrain;
-    this.vision = vision;
+  public ShootCommand(Shooter shooter, Storage storage, int targetRPM) {
+    this.shooter = shooter;
+    this.storage = storage;
+    this.targetRPM = targetRPM;
+    addRequirements(shooter, storage);
 
+    this.startTime = System.currentTimeMillis();
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    double speed = vision.getPIDOfBlock(Constants.Signature.POWER_CELL.value(), false);
-    if (speed == -1000) return;
-    System.out.println("Speed: " + speed);
-    
-    drivetrain.tankDrive(speed, -speed);
+    shooter.setSpeedWithRPM(targetRPM);
+
+    if(System.currentTimeMillis() - startTime > 3000) {
+      storage.setGateSpeed();
+    }
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
+    storage.stop();
   }
 
   // Returns true when the command should end.

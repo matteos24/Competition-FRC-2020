@@ -64,6 +64,9 @@ public final class Constants {
   public static final int INTAKE_PISTON_PORT_1 = 2;
   public static final int INTAKE_PISTON_PORT_2 = 3;
 
+  public static final int SHOOTER_PISTON_PORT_1 = 4;
+  public static final int SHOOTER_PISTON_PORT_2 = 5;
+
       // STORAGE MOTORS
   public static final int STORAGE_GATE_MOTOR_PORT = 13;
 
