@@ -25,7 +25,7 @@ public final class Constants {
   public static final int GEAR_MOTOR1 = 7;
   public static final int GEAR_MOTOR2 = 8;
 
-  public static final int OPERATOR_CONTROLLER = 1;
+  public static final int OPERATOR_CONTROLLER = 0;
 
   public static final int LB = 5;
   public static final int BACK = 7;
