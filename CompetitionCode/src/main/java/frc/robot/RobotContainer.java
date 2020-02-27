@@ -47,9 +47,9 @@ public class RobotContainer {
   public JoystickButton longShotButton = new JoystickButton(operator, 0);
   public JoystickButton shortShotButton = new JoystickButton(operator, 1);
   
-  private final JoystickButton raiseButton = new JoystickButton(opController, LB),
-                                lowerButton = new JoystickButton(opController, RB),
-                                 gearClimbButton = new JoystickButton(opController, BACK);
+  private final JoystickButton raiseButton = new JoystickButton(operator, LEFT_BUMPER),
+                                lowerButton = new JoystickButton(operator, RIGHT_BUMPER),
+                                 gearClimbButton = new JoystickButton(operator, BACK_BUTTON);
 
   // SUBSYSTEMS
   public final Drivetrain DRIVETRAIN = new Drivetrain();
