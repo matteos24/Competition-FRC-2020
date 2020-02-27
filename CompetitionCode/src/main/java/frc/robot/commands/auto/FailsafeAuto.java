@@ -27,7 +27,7 @@ public class FailsafeAuto extends SequentialCommandGroup {
     // party 
 
     super(
-      parallel(new EnableShooter(shooter), new InstantCommand(() -> { shooter.setPistonsForward(); }, shooter)),
+      parallel(new EnableShooter(shooter), new InstantCommand(() -> { shooter.setPistonsReverse(); }, shooter)),
       new MoveCommand(drivetrain, 120, 0.65),
       new ShootCommand(shooter, storage, 5500).withTimeout(3 + 3 + 2), // 3 to spool, 1 per ball, 2 for safety
       new DisableShooter(shooter)
