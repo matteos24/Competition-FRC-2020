@@ -14,7 +14,7 @@ import static frc.robot.Constants.*;
 
 public class ShooterPistons extends SubsystemBase {
 
-  // TWO PISTONS IN PARALLEL- PRESUMABLY ONE D.SOLENOID
+  // TWO PISTONS IN PARALLEL
   private DoubleSolenoid anglePiston;
 
   // LOCAL VARIABLES

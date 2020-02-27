@@ -69,6 +69,8 @@ public final class Constants {
       // STORAGE LIMIT SWITCHES
   public static final int STORAGE_INTAKE_SWITCH_PORT = 0;
   public static final int STORAGE_BALL_SWITCH_PORT = 1;
+  public static final int STORAGE_OVERRIDE_SWITCH_PORT = 2;
+
 
 
 

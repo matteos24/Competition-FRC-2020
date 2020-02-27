@@ -14,8 +14,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import static frc.robot.Constants.*;
 
-//TODO- make gate part of shooter command
-// It could also be an extra motor: that much is unclear. 
 
 /**
  * Controls the gate opening for Shooter consumption
@@ -23,7 +21,7 @@ import static frc.robot.Constants.*;
 public class Storage extends SubsystemBase {
   // FIELDS
   private final VictorSP motor;
-  private final DigitalInput intakeSwitch, hasBallSwitch;
+  private final DigitalInput intakeSwitch, hasBallSwitch, overrideSwitch;
   private boolean isOverridden;
   public int numBalls;
 
@@ -33,6 +31,7 @@ public class Storage extends SubsystemBase {
 
     intakeSwitch = new DigitalInput(STORAGE_INTAKE_SWITCH_PORT);
     hasBallSwitch = new DigitalInput(STORAGE_BALL_SWITCH_PORT);
+    overrideSwitch = new DigitalInput(STORAGE_OVERRIDE_SWITCH_PORT);
 
   }
 
@@ -69,6 +68,9 @@ public class Storage extends SubsystemBase {
   }
 
   public boolean isOverridden() {
+    if(overrideSwitch.get() == true){
+      return overrideSwitch.get();
+    };
     return isOverridden;
   }
 
