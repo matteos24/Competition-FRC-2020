@@ -12,6 +12,8 @@ public final class Constants {
     // === SHOOTER === //
 
     public static final int DEFAULT_TARGET_RPM = 5000;
+    public static final int SHORT_DISTANCE_RPM = 0; //TODO: Change the numbers
+    public static final double[] DISTANCE_TO_RPM = {0,1,2,3}; //TODO: Change the RPMs
 
     // RESERVED SHOOTER MOTOR PORTS: [0, 0]
     public static final int SHOOTER_MOTOR_1 = 0;
@@ -20,6 +22,7 @@ public final class Constants {
     // RESERVED SHOOTER SOLENOID PORTS: [0, 0 + 1]
     public static final int SHOOTER_PISTON_A = 0;
     public static final int SHOOTER_PISTON_B = SHOOTER_PISTON_A + 1;
+
   // === VISION TRACKING CONSTANTS === //
 
   //THE CONSTANTS WITH VALUE 0 ARE CURRENTLY UNKNOWN 
@@ -55,7 +58,11 @@ public final class Constants {
 
       // INTAKE MOTORS
   public static final int WHEEL_INTAKE_PORT = 0;
-
+  
+    // CLIMBER MOTORS
+  public static final int LIFTER_MOTOR = 9;
+  public static final int GEAR_MOTOR1 = 7;
+  public static final int GEAR_MOTOR2 = 8;
 
 
   // === PISTON PORTS === //
@@ -77,6 +84,8 @@ public final class Constants {
       // STORAGE LIMIT SWITCHES
   public static final int STORAGE_INTAKE_SWITCH_PORT = 0;
   public static final int STORAGE_BALL_SWITCH_PORT = 1;
+  public static final int STORAGE_OVERRIDE_SWITCH_PORT = 2;
+
 
 
 
@@ -89,6 +98,10 @@ public final class Constants {
   // STORAGE
   public static final double GATE_SPEED = 0.2;
 
+  // CLIMBER
+  public static final double LIFTER_SPEED = 1;
+  public static final double LIFTER_SPEED_REVERSE = -1;
+  public static final double GEAR_SPEED = 0.75;
 
 
   // == JOYSTICK CONSTANTS == //
@@ -121,3 +134,4 @@ public final class Constants {
   public static final int RIGHT_STICK_BUTTON = 12;
 
 }
+

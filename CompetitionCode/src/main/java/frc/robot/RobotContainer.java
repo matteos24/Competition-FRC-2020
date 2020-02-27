@@ -40,41 +40,125 @@ public class RobotContainer {
   // BUTTONS
   public final JoystickButton modeSwitchButton = new JoystickButton(driver, RIGHT_BUMPER);
 
-  // public final JoystickButton motorIntakeButton = new JoystickButton(operator, BUTTON_X),
-  //                              motorOuttakeButton = new JoystickButton(operator, BUTTON_Y);
+  public final JoystickButton motorIntakeButton = new JoystickButton(operator, BUTTON_X),
+                               motorOuttakeButton = new JoystickButton(operator, BUTTON_Y);
 
   // public final JoystickButton storageOverrideButton = new JoystickButton(operator, START_BUTTON);
   public final JoystickButton visionTestButton = new JoystickButton(driver, 1);
   public final JoystickButton visionGoalButton = new JoystickButton(driver, 3);
 
-  // public JoystickButton toggleShooterButton = new JoystickButton(operator, RIGHT_BUMPER);
-  // public JoystickButton shootButton = new JoystickButton(operator, RIGHT_TRIGGER);
+  public JoystickButton toggleShooterButton = new JoystickButton(operator, RIGHT_BUMPER);
+  public JoystickButton shootButton = new JoystickButton(operator, RIGHT_TRIGGER);
+  public JoystickButton longShotButton = new JoystickButton(operator, 0);
+  public JoystickButton shortShotButton = new JoystickButton(operator, 1);
+  
+  private final JoystickButton raiseButton = new JoystickButton(operator, LEFT_BUMPER),
+                                lowerButton = new JoystickButton(operator, RIGHT_BUMPER),
+                                 gearClimbButton = new JoystickButton(operator, BACK_BUTTON);
 
   // SUBSYSTEMS
   public final Drivetrain DRIVETRAIN = new Drivetrain();
   public final Intake INTAKE = new Intake();
+  public final IntakePistons INTAKEPISTONS = new IntakePistons();
   public final Storage STORAGE = new Storage();
   public final Shooter SHOOTER = new Shooter();
+  public final ShooterPistons SHOOTERPISTONS = new ShooterPistons();
   public final Vision VISION = new Vision();
+  public final Climber CLIMBER = new Climber();
 
   // COMMANDS
+
+  public final StartEndCommand shooterPistonOut = new StartEndCommand(
+    () -> {
+      SHOOTERPISTONS.setPistonsForward();
+      SHOOTERPISTONS.setShortRange();
+    },
+    () -> {
+      SHOOTERPISTONS.setPistonsOff();
+    }, 
+    SHOOTERPISTONS);
+  
+  public final StartEndCommand revShort = new StartEndCommand(
+    () -> {
+      SHOOTER.setSpeedWithRPM(Constants.SHORT_DISTANCE_RPM);
+    },
+    () -> {
+      SHOOTER.setSpeedWithRPM(0);
+    }, 
+    SHOOTER);
+
+  public final StartEndCommand shooterPistonIn = new StartEndCommand(
+    () -> {
+      SHOOTERPISTONS.setPistonsReverse();
+      SHOOTERPISTONS.setLongRange();
+    },
+    () -> {
+      SHOOTERPISTONS.setPistonsOff();
+    }, 
+    SHOOTERPISTONS);
+
+    public final StartEndCommand revLong = new StartEndCommand(
+      () -> {
+        SHOOTER.setSpeedWithRPM(0); //TODO: change to a an rpm based off current distance from target
+      },
+      () -> {
+        SHOOTER.setSpeedWithRPM(0);
+      }, 
+      SHOOTER);
 
   // INTAKE //
   public final StartEndCommand modeSwitch = new StartEndCommand(() -> DRIVETRAIN.modeSlow(),
       () -> DRIVETRAIN.modeFast(), DRIVETRAIN);
 
-  public final StartEndCommand intakeCommand = new StartEndCommand(() -> { 
+  public final StartEndCommand deployIntake = new StartEndCommand(() -> { 
+      INTAKEPISTONS.deployPiston();
+    },
+    () -> { 
+      INTAKEPISTONS.pistonOff();
+    },
+      INTAKEPISTONS);
+
+  public final StartEndCommand retractIntake = new StartEndCommand(() -> { 
+        INTAKEPISTONS.retractPiston();
+      },
+      () -> { 
+        INTAKEPISTONS.pistonOff();
+      },
+        INTAKEPISTONS);
+
+  public final StartEndCommand intakeCommand = new StartEndCommand(
+    () -> {     
       INTAKE.setSpeed(WHEEL_INTAKE_SPEED); 
-      INTAKE.deployPiston();
+      INTAKEPISTONS.deployPiston();
     },
     () -> { 
       INTAKE.setSpeed(0);
-      INTAKE.retractPiston();
+      INTAKEPISTONS.retractPiston();
     },
-     INTAKE);
+     INTAKEPISTONS
+  );
 
   public final StartEndCommand outtakeCommand = new StartEndCommand(() -> INTAKE.setSpeed(-WHEEL_INTAKE_SPEED),
       () -> INTAKE.setSpeed(0), INTAKE);
+  
+  // CLIMBER COMMANDS //
+  public final StartEndCommand raiseLifter = new StartEndCommand(
+      () -> CLIMBER.lifterUp(),
+      () -> CLIMBER.lifterZero(),
+      CLIMBER
+  );
+
+  public final StartEndCommand lowerLifter = new StartEndCommand(
+      () -> CLIMBER.lifterDown(),
+      () -> CLIMBER.lifterZero(),
+      CLIMBER
+  );
+
+  public final StartEndCommand gearClimb = new StartEndCommand(
+      () -> CLIMBER.gearOn(),
+      () -> CLIMBER.gearOff(),
+      CLIMBER
+  );
 
 
   // for storage trigger
@@ -113,15 +197,27 @@ public class RobotContainer {
    */
   private void configureButtonBindings() {
 
-    // toggleShooterButton.toggleWhenActive(new EnableShooterCommand(SHOOTER));
-    //shootButton.whenPressed();
+    toggleShooterButton.toggleWhenActive(new EnableShooterCommand(SHOOTER));
+    //shootButton.whileHeld();
+    //Extend piston to short range setting and begin revving shooter motors
+    shortShotButton.whenPressed(shooterPistonOut.withTimeout(1)); //TODO: change to time taken for piston to extend
+    shortShotButton.whenHeld(revShort);
+    //Extend piston to long range setting and begin revving shooter motors
+    longShotButton.whenPressed(shooterPistonIn);
+    shortShotButton.whenHeld(revLong);
     
      visionTestButton.whileHeld(new BallTrack(DRIVETRAIN, VISION));
      visionGoalButton.whileHeld(new GoalTrack(DRIVETRAIN, VISION));
 
     modeSwitchButton.whenHeld(modeSwitch);
-    // motorIntakeButton.whileHeld(new SequentialCommandGroup(intakeCommand, new StartEndCommand(() -> {}, () -> { INTAKE.pistonOff(); }, INTAKE).withTimeout(1)));
-    // motorOuttakeButton.whileHeld(new SequentialCommandGroup(outtakeCommand, new StartEndCommand(() -> {}, () -> { INTAKE.pistonOff(); }, INTAKE).withTimeout(1)));
+    
+    motorIntakeButton.whileHeld(new SequentialCommandGroup(intakeCommand, new StartEndCommand(() -> {}, () -> { INTAKE.pistonOff(); }, INTAKE).withTimeout(1)));
+    motorOuttakeButton.whileHeld(new SequentialCommandGroup(outtakeCommand, new StartEndCommand(() -> {}, () -> { INTAKE.pistonOff(); }, INTAKE).withTimeout(1)));
+    
+    // CLIMB BUTTONS
+    raiseButton.whenHeld(raiseLifter);
+    lowerButton.whenHeld(lowerLifter);
+    gearClimbButton.whenHeld(gearClimb);
 
     // STORAGE
     storageTrigger.whenActive(storeBall);
