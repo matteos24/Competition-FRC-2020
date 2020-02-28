@@ -7,10 +7,15 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Constants;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.Storage;
 
+/**
+ * COMPETITION READY
+ */
 public class ShootCommand extends CommandBase {
 
   private Shooter shooter;
@@ -39,10 +44,16 @@ public class ShootCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    shooter.setSpeedWithRPM(targetRPM);
+    shooter.setSpeedWithRPM(targetRPM); // Sets target RPM (must be called each frame to update)
 
-    if(System.currentTimeMillis() - startTime > 3000) {
-      storage.setGateSpeed();
+    // Output stats
+    SmartDashboard.putNumber("Target RPM", targetRPM);
+    SmartDashboard.putNumber("Current RPM", shooter.getMotorSpeed());
+
+    // After 3 seconds, begin shooting.
+    // This is because generally it takes 3 seconds to be safe to shoot.
+    if (System.currentTimeMillis() - startTime > Constants.SHOOTER_REV_TIME) {
+      storage.setFeedSpeed();
     }
   }
 

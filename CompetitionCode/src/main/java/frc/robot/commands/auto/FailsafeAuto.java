@@ -16,6 +16,9 @@ import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.Storage;
 
+/**
+ * NOT TESTED
+ */
 public class FailsafeAuto extends SequentialCommandGroup {
   /**
    * Creates a new FailsafeAuto.
@@ -24,13 +27,14 @@ public class FailsafeAuto extends SequentialCommandGroup {
     // START SHOOTER AND SET TO WALL \/
     // MOVE FORWARD 120 INCHES \/
     // shoot \/
-    // party 
+    // party
 
-    super(
-      parallel(new EnableShooter(shooter), new StartEndCommand(() -> { shooter.setAngleForward(); }, () -> { shooter.setPistonsOff(); }, shooter).withTimeout(1)),
-      new MoveCommand(drivetrain, 120, 0.65),
-      new ShootCommand(shooter, storage, 5500).withTimeout(3 + 3 + 2), // 3 to spool, 1 per ball, 2 for safety
-      new DisableShooter(shooter)
-    );
+    super(parallel(new EnableShooter(shooter), new StartEndCommand(() -> {
+      shooter.setAngleForward();
+    }, () -> {
+      shooter.setPistonsOff();
+    }, shooter).withTimeout(1)), new MoveCommand(drivetrain, 120, 0.65),
+        new ShootCommand(shooter, storage, 5500).withTimeout(3 + 3 + 2), // 3 to spool, 1 per ball, 2 for safety
+        new DisableShooter(shooter));
   }
 }

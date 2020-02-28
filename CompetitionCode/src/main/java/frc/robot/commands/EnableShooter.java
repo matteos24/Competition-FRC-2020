@@ -10,6 +10,9 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Shooter;
 
+/**
+ * COMPETITION READY
+ */
 public class EnableShooter extends CommandBase {
 
   private Shooter shooter;
@@ -26,7 +29,7 @@ public class EnableShooter extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    shooter.setSystemSpeed(1.0);
+    shooter.setSystemSpeed(1.0); // Sets shooter to full so by the time we shoot it is ready.
   }
 
   // Called every time the scheduler runs while the command is scheduled.

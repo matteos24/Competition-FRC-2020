@@ -8,10 +8,12 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.Constants;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Vision;
 
+/**
+ * COMPETITION READY
+ */
 public class GoalTrack extends CommandBase {
 
   private Drivetrain drivetrain;
@@ -35,10 +37,12 @@ public class GoalTrack extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    double speed = vision.getPIDOfBlock(Constants.Signature.GOAL_BOTTOM_LINE.value(), false);
-    if (speed == -1000) return;
-    System.out.println(speed);
-    
+    // finds goal and gets speed to turn
+    double speed = vision.getPIDOfGoal();
+    if (speed == -1000)
+      return;
+
+    // System.out.println(speed);
     drivetrain.tankDrive(speed, -speed);
   }
 

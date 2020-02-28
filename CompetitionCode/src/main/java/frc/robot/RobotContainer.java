@@ -166,7 +166,7 @@ public class RobotContainer {
   }
 
   // STORAGE COMMANDS
-  public final StartEndCommand storageOverride = new StartEndCommand(() -> STORAGE.setGateSpeed(), () -> STORAGE.stop(),
+  public final StartEndCommand storageOverride = new StartEndCommand(() -> STORAGE.setFeedSpeed(), () -> STORAGE.stop(),
       STORAGE);
   public final InstantCommand startStorageOverride = new InstantCommand(() -> STORAGE.override());
 

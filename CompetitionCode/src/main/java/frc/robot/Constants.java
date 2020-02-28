@@ -14,9 +14,9 @@ public final class Constants {
     public static final int DEFAULT_TARGET_RPM = 5000;
     public static final int SHORT_DISTANCE_RPM = 5500; //TODO: Change the numbers
     public static final int LONG_DIST_RPM = 5500; //TODO: Change the numbers
-    public static final double[] DISTANCE_TO_RPM = {0,1,2,3}; //TODO: Change the RPMs
+    public static final int SHOOTER_REV_TIME = 3000; // in ms
 
-    // RESERVED SHOOTER MOTOR PORTS: [0, 0]
+    // RESERVED SHOOTER MOTOR PORTS: [0, 1]
     public static final int SHOOTER_MOTOR_1 = 0;
     public static final int SHOOTER_MOTOR_2 = 1;
 
@@ -97,7 +97,7 @@ public final class Constants {
   public static final double WHEEL_INTAKE_SPEED = 0.75;
 
   // STORAGE
-  public static final double GATE_SPEED = 0.2;
+  public static final double FEED_SPEED = 0.2;
 
   // CLIMBER
   public static final double LIFTER_SPEED = 1;

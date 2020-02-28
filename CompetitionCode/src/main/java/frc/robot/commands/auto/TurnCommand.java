@@ -5,11 +5,14 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.commands;
+package frc.robot.commands.auto;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Drivetrain;
 
+/**
+ * NOT TESTED
+ */
 public class TurnCommand extends CommandBase {
 
   private Drivetrain drivetrain;
@@ -22,8 +25,8 @@ public class TurnCommand extends CommandBase {
     addRequirements(drivetrain);
     this.drivetrain = drivetrain;
 
-    this.targetDist = Drivetrain.WHEEL_TO_WHEEL_DIAMETER_INCHES * Math.PI * (degrees / 360) + 
-    (degrees < 0 ? drivetrain.getLeftDistance() : drivetrain.getRightDistance());
+    this.targetDist = Drivetrain.WHEEL_TO_WHEEL_DIAMETER_INCHES * Math.PI * (degrees / 360)
+        + (degrees < 0 ? drivetrain.getLeftDistance() : drivetrain.getRightDistance());
 
     this.speed = speed;
     this.degrees = degrees;
@@ -50,7 +53,7 @@ public class TurnCommand extends CommandBase {
   public boolean isFinished() {
     boolean isFinished = false;
 
-    if(degrees < 0) { // left
+    if (degrees < 0) { // left
       isFinished = drivetrain.getLeftDistance() > targetDist;
     } else { // right
       isFinished = drivetrain.getRightDistance() > targetDist;

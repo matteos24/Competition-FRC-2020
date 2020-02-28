@@ -50,6 +50,7 @@ public class Shooter extends SubsystemBase {
 
   /**
    * Sets motor speed
+   * 
    * @param speed [-1.0, 1.0]
    */
   public void setSpeed(double speed) {
@@ -58,8 +59,9 @@ public class Shooter extends SubsystemBase {
   }
 
   /**
-   * Sets the speed of the Shooter System (good for disabling the shooter)
-   * Please ensure no other command is calling setSpeedWithRPM().
+   * Sets the speed of the Shooter System (good for disabling the shooter) Please
+   * ensure no other command is calling setSpeedWithRPM().
+   * 
    * @param speed [-1.0, 1.0]
    */
   public void setSystemSpeed(double speed) {
@@ -68,6 +70,7 @@ public class Shooter extends SubsystemBase {
 
   /**
    * Gets motor speed
+   * 
    * @return speed [-1.0, 1.0]
    */
   public double getSpeed() {
@@ -75,7 +78,7 @@ public class Shooter extends SubsystemBase {
   }
 
   /**
-   * Gets current state. 
+   * Gets current state.
    * 
    * @return [SPIN_UP, TUNE, HOLD]
    */
@@ -85,6 +88,7 @@ public class Shooter extends SubsystemBase {
 
   /**
    * Changes motor state based off RPM
+   * 
    * @param targetRPM
    */
   private void checkState(double targetRPM) {
@@ -100,6 +104,7 @@ public class Shooter extends SubsystemBase {
 
   /**
    * Sets the motor speeds based on target speed.
+   * 
    * @param targetRPM Target RPM
    */
   public void setSpeedWithRPM(double targetRPM) {
@@ -124,21 +129,29 @@ public class Shooter extends SubsystemBase {
   /**
    * Sets the shooter piston to forward, intended for long range shooting.
    * 
-   * Please call {@link #setPistonsOff() setPistonsOff()} after using this command.
+   * Please call {@link #setPistonsOff() setPistonsOff()} after using this
+   * command.
    */
-  public void setAngleForward(){ anglePiston.set(DoubleSolenoid.Value.kForward);  }
+  public void setAngleForward() {
+    anglePiston.set(DoubleSolenoid.Value.kForward);
+  }
 
   /**
    * Sets the shooter piston to back, intended for short range shooting.
    * 
-   * Please call {@link #setPistonsOff() setPistonsOff()} after using this command.
+   * Please call {@link #setPistonsOff() setPistonsOff()} after using this
+   * command.
    */
-  public void setAngleBack(){ anglePiston.set(DoubleSolenoid.Value.kReverse);  }
+  public void setAngleBack() {
+    anglePiston.set(DoubleSolenoid.Value.kReverse);
+  }
 
   /**
    * Turns the pistons off so we don't lose all of our precious air.
    */
-  public void setPistonsOff(){ anglePiston.set(DoubleSolenoid.Value.kOff);  }
+  public void setPistonsOff() {
+    anglePiston.set(DoubleSolenoid.Value.kOff);
+  }
 
   /**
    * Gets the current motor speed in RPM.

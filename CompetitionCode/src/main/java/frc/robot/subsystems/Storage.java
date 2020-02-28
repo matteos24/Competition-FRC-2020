@@ -25,7 +25,6 @@ public class Storage extends SubsystemBase {
   private final VictorSP motor;
   private final DigitalInput intakeSwitch, hasBallSwitch, overrideSwitch;
   private boolean isOverridden = false;
-  public int numBalls;
 
   public Storage() {
     motor = new VictorSP(STORAGE_GATE_MOTOR_PORT);
@@ -50,14 +49,14 @@ public class Storage extends SubsystemBase {
   }
 
   /**
-   * Sets the storage motor (gate) to 0.3 (GATE_SPEED in constants).
+   * Sets the storage motor (feed wheels) to 0.3 (FEED_SPEED in constants).
    */
-  public void setGateSpeed() {
-    motor.set(GATE_SPEED);
+  public void setFeedSpeed() {
+    motor.set(FEED_SPEED);
   }
 
   /**
-   * Sets the speed of the storage motor (gate) to 0 for stopping.
+   * Sets the speed of the storage motor (feed wheels) to 0 for stopping.
    */
   public void stop() {
     motor.set(0);

@@ -34,7 +34,7 @@ public class Vision extends SubsystemBase {
   /**
    * Used for goal speeds to smooth.
    */
-  double[] avg = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+  double[] avg = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
 
   public Vision() {
     pixy = Pixy2.createInstance(new SPILink());
@@ -67,10 +67,11 @@ public class Vision extends SubsystemBase {
   }
 
   /**
-   * Returns % voltage output to directly plug into tankDrive()
-   * Please ensure you check for -1000, as this is the error value for not detecting anything.
+   * Returns % voltage output to directly plug into tankDrive() to align with
+   * largest object. Please ensure you check for -1000, as this is the error value
+   * for not detecting anything.
    * 
-   * @param sig Targeted object of type [Constants.Signature]
+   * @param sig        Targeted object of type [Constants.Signature]
    * @param isVertical Returns either the horizontal or vertical speed.
    * 
    * @return % voltage [-0.5, 0.5]
@@ -80,9 +81,12 @@ public class Vision extends SubsystemBase {
     double coordinateY;
     List<Block> blocks = getBlocksOfType(sig);
 
-    if(sig == Signature.POWER_CELL.value()) pixy.setLED(Color.YELLOW);
-    else if(sig == Signature.GOAL_BOTTOM_LINE.value()) pixy.setLED(Color.GREEN);
-    else pixy.setLED(255, 255, 255);
+    if (sig == Signature.POWER_CELL.value())
+      pixy.setLED(Color.YELLOW);
+    else if (sig == Signature.GOAL_BOTTOM_LINE.value())
+      pixy.setLED(Color.GREEN);
+    else
+      pixy.setLED(255, 255, 255);
 
     if (blocks.size() > 0) {
       Block block = null;
@@ -93,10 +97,11 @@ public class Vision extends SubsystemBase {
           block = b;
       }
 
-      coordinateX = block.getX(); 
+      coordinateX = block.getX();
       coordinateY = block.getY();
 
-      return isVertical ? ((2 * coordinateY / pixy.getFrameHeight()) - 1) / 2 : ((2 * coordinateX / pixy.getFrameWidth()) - 1) / 2;
+      return isVertical ? ((2 * coordinateY / pixy.getFrameHeight()) - 1) / 2
+          : ((2 * coordinateX / pixy.getFrameWidth()) - 1) / 2;
     }
 
     return -1000;
@@ -104,6 +109,7 @@ public class Vision extends SubsystemBase {
 
   /**
    * Finds the position of the goal (center vertical line).
+   * 
    * @return Speed for drivetrain [-0.5, 0.5]
    */
   public double getPIDOfGoal() {
@@ -116,7 +122,8 @@ public class Vision extends SubsystemBase {
 
     double average = 0;
     for (int i = 0; i < avg.length; i++) {
-      if(avg[i] == 0) continue;
+      if (avg[i] == 0)
+        continue;
 
       average += avg[i];
     }

@@ -12,6 +12,9 @@ import frc.robot.Constants;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Vision;
 
+/**
+ * COMPETITION READY
+ */
 public class BallTrack extends CommandBase {
 
   private Drivetrain drivetrain;
@@ -35,10 +38,12 @@ public class BallTrack extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    // gets speed for turning to largest ball.
     double speed = vision.getPIDOfBlock(Constants.Signature.POWER_CELL.value(), false);
-    if (speed == -1000) return;
-    System.out.println("Speed: " + speed);
-    
+    if (speed == -1000)
+      return;
+
+    // System.out.println("Speed: " + speed);
     drivetrain.tankDrive(speed, -speed);
   }
 

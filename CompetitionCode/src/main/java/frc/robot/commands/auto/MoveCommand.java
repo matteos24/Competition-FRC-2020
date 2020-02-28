@@ -3,7 +3,11 @@ package frc.robot.commands.auto;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Drivetrain;
 
-// COMMAND to move the robot by a specified amount
+/**
+ * COMPETITION READY
+ * 
+ * COMMAND to move the robot by a specified amount
+ */
 public class MoveCommand extends CommandBase {
 
     public static final double IN_TO_UNITS = 3200 / Math.PI;
@@ -39,7 +43,8 @@ public class MoveCommand extends CommandBase {
     @Override
     public void execute() {
         // System.out.println("Amount to goal (in): " + ((goal / IN_TO_UNITS)));
-        // System.out.println("Current: " + (drivetrain.getAverageDistance() / IN_TO_UNITS));
+        // System.out.println("Current: " + (drivetrain.getAverageDistance() /
+        // IN_TO_UNITS));
     }
 
     @Override
@@ -57,6 +62,6 @@ public class MoveCommand extends CommandBase {
     @Override
     public void end(boolean interrupted) {
         drivetrain.tankDrive(0, 0);
-        //drivetrain.resetEncoders();
+        // drivetrain.resetEncoders();
     }
 }

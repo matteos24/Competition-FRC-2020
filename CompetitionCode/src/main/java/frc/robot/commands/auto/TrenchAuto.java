@@ -20,28 +20,30 @@ import frc.robot.subsystems.Storage;
 
 import static frc.robot.Constants.*;
 
+/**
+ * NOT TESTED
+ */
 public class TrenchAuto extends SequentialCommandGroup {
   /**
    * Creates a new TrenchAuto.
    */
   public TrenchAuto(Drivetrain drivetrain, Shooter shooter, Storage storage, Intake intake) {
-    
+
     // move forward 160 inches and intake
     // enable shooter
     // turn 165 right
     // shoot
     // party
 
-    super(
-      parallel(
-        new MoveCommand(drivetrain, 160, 0.75).alongWith(
-          new RunCommand(() -> { intake.setSpeed(WHEEL_INTAKE_SPEED); intake.deployPistons(); }, intake)
-        )
-      ),
-      parallel(new EnableShooter(shooter), new StartEndCommand(() -> { shooter.setAngleForward(); }, () -> { shooter.setPistonsOff(); }, shooter).withTimeout(1)),
-      new TurnCommand(drivetrain, 165, 0.75),
-      new ShootCommand(shooter, storage, 5500).withTimeout(3 + 5 + 2), // 3 to spool, 1 per ball, 3 for safety
-      new DisableShooter(shooter)
-    );
+    super(parallel(new MoveCommand(drivetrain, 160, 0.75).alongWith(new RunCommand(() -> {
+      intake.setSpeed(WHEEL_INTAKE_SPEED);
+      intake.deployPistons();
+    }, intake))), parallel(new EnableShooter(shooter), new StartEndCommand(() -> {
+      shooter.setAngleForward();
+    }, () -> {
+      shooter.setPistonsOff();
+    }, shooter).withTimeout(1)), new TurnCommand(drivetrain, 165, 0.75),
+        new ShootCommand(shooter, storage, 5500).withTimeout(3 + 5 + 2), // 3 to spool, 1 per ball, 3 for safety
+        new DisableShooter(shooter));
   }
 }

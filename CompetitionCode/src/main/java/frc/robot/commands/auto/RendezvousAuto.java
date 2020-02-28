@@ -15,11 +15,15 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
  * may depend on it, but try to make your code so that it can start
  * anywhere on the starting line.
  */
+
+/**
+ * NOT TESTED
+ */
 public class RendezvousAuto extends SequentialCommandGroup {
 
     public RendezvousAuto(/* change */) {
         super(
-            /* code */
+        /* code */
         );
     }
 }
