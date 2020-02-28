@@ -12,6 +12,11 @@ import edu.wpi.first.wpilibj.VictorSP;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import static frc.robot.Constants.*;
 
+/**
+ * COMPETITION READY
+ * 
+ * Our intake class, which consists of a roller and a piston to deploy it.
+ */
 public class Intake extends SubsystemBase {
 
   private VictorSP wheelMotor;
@@ -24,20 +29,38 @@ public class Intake extends SubsystemBase {
 
   // MOTORS
 
+  /**
+   * Sets the speed of the motor.
+   * 
+   * @param speed [-1.0, 1.0]
+   */
   public void setSpeed(double speed) {
     wheelMotor.set(speed);
   }
 
-  //PISTONS
+  // PISTONS
 
+  /**
+   * Deploy the intake (and inherently the pistons).
+   * 
+   * Make sure you run {@link #pistonOff() pistonOff()} to turn off the pistons.
+   */
   public void deployPistons() {
     intakePiston.set(DoubleSolenoid.Value.kForward);
   }
 
+  /**
+   * Raise the intake (and pistons)
+   * 
+   * Make sure you run {@link #pistonOff() pistonOff()} to turn off the pistons.
+   */
   public void retractPistons() {
     intakePiston.set(DoubleSolenoid.Value.kReverse);
   }
 
+  /**
+   * Disables the pistons.
+   */
   public void pistonOff() {
     intakePiston.set(DoubleSolenoid.Value.kOff);
   }

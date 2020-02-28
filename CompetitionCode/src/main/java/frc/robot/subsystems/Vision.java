@@ -19,6 +19,11 @@ import io.github.pseudoresonance.pixy2api.links.SPILink;
 
 import static frc.robot.Constants.*;
 
+/**
+ * COMPETITION READY
+ * 
+ * All vision code for PixyCam2.
+ */
 public class Vision extends SubsystemBase {
 
   // FIELDS
@@ -26,6 +31,9 @@ public class Vision extends SubsystemBase {
   Pixy2CCC pixyCCC;
   Pixy2Video pixyVideo;
 
+  /**
+   * Used for goal speeds to smooth.
+   */
   double[] avg = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 
   public Vision() {
@@ -34,11 +42,13 @@ public class Vision extends SubsystemBase {
     pixyCCC = pixy.getCCC();
     pixyVideo = pixy.getVideo();
 
+    // 0- off, 1- on
+    // First param is headlamps (white), second is RGB LED
     pixy.setLamp((byte) 0, (byte) 1);
   }
 
   /**
-   * Gets blocks of type [Signature]
+   * Gets blocks of type [Constants.Signature]
    */
   public List<Block> getBlocksOfType(int signature) {
     List<Block> output = new ArrayList<>();
@@ -58,6 +68,12 @@ public class Vision extends SubsystemBase {
 
   /**
    * Returns % voltage output to directly plug into tankDrive()
+   * Please ensure you check for -1000, as this is the error value for not detecting anything.
+   * 
+   * @param sig Targeted object of type [Constants.Signature]
+   * @param isVertical Returns either the horizontal or vertical speed.
+   * 
+   * @return % voltage [-0.5, 0.5]
    */
   public double getPIDOfBlock(int sig, boolean isVertical) {
     double coordinateX;
@@ -65,6 +81,7 @@ public class Vision extends SubsystemBase {
     List<Block> blocks = getBlocksOfType(sig);
 
     if(sig == Signature.POWER_CELL.value()) pixy.setLED(Color.YELLOW);
+    else if(sig == Signature.GOAL_BOTTOM_LINE.value()) pixy.setLED(Color.GREEN);
     else pixy.setLED(255, 255, 255);
 
     if (blocks.size() > 0) {
@@ -82,15 +99,20 @@ public class Vision extends SubsystemBase {
       return isVertical ? ((2 * coordinateY / pixy.getFrameHeight()) - 1) / 2 : ((2 * coordinateX / pixy.getFrameWidth()) - 1) / 2;
     }
 
-    return -1000; // TODO- make check for this number
+    return -1000;
   }
 
+  /**
+   * Finds the position of the goal (center vertical line).
+   * @return Speed for drivetrain [-0.5, 0.5]
+   */
   public double getPIDOfGoal() {
     for (int i = 9; i > avg.length; i--) {
       avg[i] = avg[i - 1];
     }
 
-    avg[0] = getPIDOfBlock(Signature.GOAL_BOTTOM_LINE.value(), false);
+    double newSpeed = getPIDOfBlock(Signature.GOAL_BOTTOM_LINE.value(), false);
+    avg[0] = (newSpeed == -1000 ? 0 : newSpeed);
 
     double average = 0;
     for (int i = 0; i < avg.length; i++) {

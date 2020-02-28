@@ -15,6 +15,11 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import static frc.robot.Constants.*;
 
+/**
+ * TODO- MISSING ENCODER IMPLEMENTATION (CTR MAG ENCODER)
+ * 
+ * All code for the shooter assembly (not including storage).
+ */
 public class Shooter extends SubsystemBase {
 
   public enum State {
@@ -70,7 +75,9 @@ public class Shooter extends SubsystemBase {
   }
 
   /**
-   * Gets current state. [SPIN_UP, TUNE, HOLD]
+   * Gets current state. 
+   * 
+   * @return [SPIN_UP, TUNE, HOLD]
    */
   public State getCurrentState() {
     return this.state;
@@ -114,12 +121,29 @@ public class Shooter extends SubsystemBase {
     setSpeed(-speed);
   }
 
+  /**
+   * Sets the shooter piston to forward, intended for long range shooting.
+   * 
+   * Please call {@link #setPistonsOff() setPistonsOff()} after using this command.
+   */
   public void setAngleForward(){ anglePiston.set(DoubleSolenoid.Value.kForward);  }
+
+  /**
+   * Sets the shooter piston to back, intended for short range shooting.
+   * 
+   * Please call {@link #setPistonsOff() setPistonsOff()} after using this command.
+   */
   public void setAngleBack(){ anglePiston.set(DoubleSolenoid.Value.kReverse);  }
+
+  /**
+   * Turns the pistons off so we don't lose all of our precious air.
+   */
   public void setPistonsOff(){ anglePiston.set(DoubleSolenoid.Value.kOff);  }
 
   /**
    * Gets the current motor speed in RPM.
+   * 
+   * @return Motor speed in RPM
    */
   public double getMotorSpeed() {
     return 600. * (Math.abs((motor1.getSelectedSensorVelocity(0) + motor2.getSelectedSensorVelocity(1)) / 2.) / 4096.);

@@ -14,28 +14,25 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import static frc.robot.Constants.*;
 
-
 /**
+ * COMPETITION READY
+ * 
  * Controls the gate opening for Shooter consumption
  */
 public class Storage extends SubsystemBase {
 
-  // TODO: merge shooter and storage
-
   // FIELDS
   private final VictorSP motor;
   private final DigitalInput intakeSwitch, hasBallSwitch, overrideSwitch;
-  private boolean isOverridden;
+  private boolean isOverridden = false;
   public int numBalls;
 
   public Storage() {
     motor = new VictorSP(STORAGE_GATE_MOTOR_PORT);
-    isOverridden = false;
 
     intakeSwitch = new DigitalInput(STORAGE_INTAKE_SWITCH_PORT);
     hasBallSwitch = new DigitalInput(STORAGE_BALL_SWITCH_PORT);
     overrideSwitch = new DigitalInput(STORAGE_OVERRIDE_SWITCH_PORT);
-
   }
 
   /**
@@ -53,23 +50,30 @@ public class Storage extends SubsystemBase {
   }
 
   /**
-   * Sets the storage motor (gate) to 0.3 (GATE_SPEED in constants)
+   * Sets the storage motor (gate) to 0.3 (GATE_SPEED in constants).
    */
   public void setGateSpeed() {
     motor.set(GATE_SPEED);
   }
 
   /**
-   * Sets the speed of the storage motor (gate) to 0 for stopping
+   * Sets the speed of the storage motor (gate) to 0 for stopping.
    */
   public void stop() {
     motor.set(0);
   }
 
+  /**
+   * Manually override the storage system.
+   */
   public void override() {
     isOverridden = true;
   }
 
+  /**
+   * Whether or not the storage system is overriden either by the switch or human
+   * input.
+   */
   public boolean isOverridden() {
     return isOverridden || overrideSwitch.get();
   }
@@ -79,6 +83,6 @@ public class Storage extends SubsystemBase {
     // This method will be called once per scheduler run
     SmartDashboard.putBoolean("Intake Switch", intakeSwitch.get());
     SmartDashboard.putBoolean("Has Ball Switch", hasBallSwitch.get());
-          
   }
+
 }
