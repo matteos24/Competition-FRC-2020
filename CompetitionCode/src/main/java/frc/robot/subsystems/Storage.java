@@ -51,14 +51,14 @@ public class Storage extends SubsystemBase {
   /**
    * Sets the storage motor (feed wheels) to 0.3 (FEED_SPEED in constants).
    */
-  public void setFeedSpeed() {
+  public void startFeeding() {
     motor.set(FEED_SPEED);
   }
 
   /**
    * Sets the speed of the storage motor (feed wheels) to 0 for stopping.
    */
-  public void stop() {
+  public void stopFeeding() {
     motor.set(0);
   }
 

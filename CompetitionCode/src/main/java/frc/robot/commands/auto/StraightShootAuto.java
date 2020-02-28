@@ -20,7 +20,7 @@ public class StraightShootAuto extends SequentialCommandGroup {
     public StraightShootAuto(Drivetrain drivetrain, Vision vision, Shooter shooter, Storage storage) {
         super(
                 // Shoots from starting line then goes backwards
-                parallel(new EnableShooter(shooter), new MoveCommand(drivetrain, -20, 0.5)),
+                parallel(new EnableShooter(shooter, storage), new MoveCommand(drivetrain, -20, 0.5)),
                 new ShootCommand(shooter, storage, 5500).withTimeout(3 + 3 + 2));
     }
 }

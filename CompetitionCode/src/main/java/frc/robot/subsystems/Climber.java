@@ -19,50 +19,38 @@ import static frc.robot.Constants.*;
 public class Climber extends SubsystemBase {
 
     // Initialize fields
-    private VictorSP lifterMotor;
+    private VictorSP hookMotor;
     private VictorSP gearBoxMotor1, gearBoxMotor2;
 
     public Climber() {
-        lifterMotor = new VictorSP(LIFTER_MOTOR);
+        hookMotor = new VictorSP(LIFTER_MOTOR);
         gearBoxMotor1 = new VictorSP(GEAR_MOTOR1);
         gearBoxMotor2 = new VictorSP(GEAR_MOTOR2);
     }
 
     /**
-     * Sets the speed of the lifter to the desired speed
+     * Sets the speed for the initial climbing hook
+     * @param speed [-1.0, 1.0]
      */
-    public void lifterUp() {
-        lifterMotor.set(LIFTER_SPEED);
+    public void setHookSpeed(double speed) {
+        hookMotor.set(speed);
     }
 
     /**
-     * Sets the speed of the lifter to the set speed
+     * Sets the speed of the winch to the desired speed
+     * 
+     * @param speed [0.0, 1.0]
      */
-    public void lifterDown() {
-        lifterMotor.set(LIFTER_SPEED_REVERSE);
-    }
-
-    /**
-     * Turns off the lifter motor
-     */
-    public void lifterZero() {
-        lifterMotor.set(0);
+    public void setWinchSpeed(double speed) {
+        setGearboxSpeed(Math.max(speed, 0));
     }
 
     /**
      * Sets the speed of the winch motors to the desired speed
      */
-    public void gearOn() {
-        gearBoxMotor1.set(GEAR_SPEED);
-        gearBoxMotor2.set(GEAR_SPEED);
-    }
-
-    /**
-     * Turn winch off
-     */
-    public void gearOff() {
-        gearBoxMotor1.set(0);
-        gearBoxMotor2.set(0);
+    public void setGearboxSpeed(double speed) {
+        gearBoxMotor1.set(speed);
+        gearBoxMotor2.set(speed);
     }
 
     @Override

@@ -38,7 +38,7 @@ public class TrenchAuto extends SequentialCommandGroup {
     super(parallel(new MoveCommand(drivetrain, 160, 0.75).alongWith(new RunCommand(() -> {
       intake.setSpeed(WHEEL_INTAKE_SPEED);
       intake.deployPistons();
-    }, intake))), parallel(new EnableShooter(shooter), new StartEndCommand(() -> {
+    }, intake))), parallel(new EnableShooter(shooter, storage), new StartEndCommand(() -> {
       shooter.setAngleForward();
     }, () -> {
       shooter.setPistonsOff();

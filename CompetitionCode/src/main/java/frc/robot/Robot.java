@@ -13,6 +13,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 
+import static frc.robot.Constants.*;
+
 /**
  * The VM is configured to automatically run this class, and to call the
  * functions corresponding to each mode, as described in the TimedRobot
@@ -23,7 +25,7 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
 
-  private RobotContainer m_robotContainer;
+  private RobotContainer rCon;
   private final SendableChooser<Command> autoChooser = new SendableChooser<>();
 
   /**
@@ -35,8 +37,8 @@ public class Robot extends TimedRobot {
     // Instantiate our RobotContainer. This will perform all our button bindings,
     // and put our
     // autonomous chooser on the dashboard.
-    m_robotContainer = new RobotContainer();
-    m_robotContainer.addAutosToChooser(autoChooser);
+    rCon = new RobotContainer();
+    rCon.addAutosToChooser(autoChooser);
     SmartDashboard.putData("Auto choices", autoChooser);
     SmartDashboard.putNumber("Auto Wait Time", 0);
   }
@@ -113,8 +115,12 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void teleopPeriodic() {
-    m_robotContainer.getDrivetrain().arcadeDrive(m_robotContainer.driver.getRawAxis(Constants.FORWARD_AXIS_LEFT),
-        -m_robotContainer.driver.getRawAxis(Constants.HORIZ_AXIS_RIGHT));
+    // DRIVE
+    rCon.DRIVETRAIN.arcadeDrive(rCon.driver.getRawAxis(FORWARD_AXIS_LEFT), -rCon.driver.getRawAxis(HORIZ_AXIS_RIGHT));
+
+    // CLIMB
+    rCon.CLIMBER.setWinchSpeed(rCon.operator.getRawAxis(Math.max(FORWARD_AXIS_LEFT, 0)));
+    rCon.CLIMBER.setHookSpeed(rCon.operator.getRawAxis(FORWARD_AXIS_RIGHT));
   }
 
   @Override

@@ -29,7 +29,7 @@ public class FailsafeAuto extends SequentialCommandGroup {
     // shoot \/
     // party
 
-    super(parallel(new EnableShooter(shooter), new StartEndCommand(() -> {
+    super(parallel(new EnableShooter(shooter, storage), new StartEndCommand(() -> {
       shooter.setAngleForward();
     }, () -> {
       shooter.setPistonsOff();

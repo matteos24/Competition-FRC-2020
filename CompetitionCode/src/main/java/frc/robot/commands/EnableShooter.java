@@ -7,44 +7,19 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.Shooter;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
+import frc.robot.subsystems.*;
 
 /**
  * COMPETITION READY
  */
-public class EnableShooter extends CommandBase {
-
-  private Shooter shooter;
-
-  /**
-   * Creates a new EnableShooter.
-   */
-  public EnableShooter(Shooter shooter) {
-    // Use addRequirements() here to declare subsystem dependencies.
-    this.shooter = shooter;
-    addRequirements(shooter);
-  }
-
-  // Called when the command is initially scheduled.
-  @Override
-  public void initialize() {
-    shooter.setSystemSpeed(1.0); // Sets shooter to full so by the time we shoot it is ready.
-  }
-
-  // Called every time the scheduler runs while the command is scheduled.
-  @Override
-  public void execute() {
-  }
-
-  // Called once the command ends or is interrupted.
-  @Override
-  public void end(boolean interrupted) {
-  }
-
-  // Returns true when the command should end.
-  @Override
-  public boolean isFinished() {
-    return false;
+public class EnableShooter extends ParallelCommandGroup {
+  
+  public EnableShooter(Shooter shooter, Storage storage) {
+    super(
+      new InstantCommand(() -> { shooter.setSystemSpeed(0.5); }, shooter),
+      new ReadyBalls(storage)
+    );
   }
 }

@@ -18,15 +18,12 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.StartEndCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.BallTrack;
-import frc.robot.commands.EnableShooterCommand;
+import frc.robot.commands.EnableShooter;
 import frc.robot.commands.GoalTrack;
 import frc.robot.commands.ShootCommand;
 import frc.robot.commands.StoreBall;
 import frc.robot.commands.auto.FailsafeAuto;
-import frc.robot.commands.auto
-
-
-.MoveCommand;
+import frc.robot.commands.auto.MoveCommand;
 import frc.robot.commands.auto.TestAutoCommandGroup;
 import frc.robot.commands.auto.TrenchAuto;
 import frc.robot.subsystems.*;
@@ -41,23 +38,30 @@ public class RobotContainer {
   public final Joystick operator = new Joystick(OPERATOR_CONTROLLER);
 
   // BUTTONS
-  public final JoystickButton modeSwitchButton = new JoystickButton(driver, RIGHT_BUMPER);
 
-  public final JoystickButton motorIntakeButton = new JoystickButton(operator, BUTTON_X),
-                               motorOuttakeButton = new JoystickButton(operator, BUTTON_Y);
+  // Drivetrain
+  public final JoystickButton modeSwitchButton = new JoystickButton(driver, RIGHT_BUMPER); // FAST SLOW
 
+  // Intake
+  public final JoystickButton intakeButton = new JoystickButton(operator, BUTTON_A),
+      outttakeButton = new JoystickButton(operator, BUTTON_Y),
+      raiseIntakeButton = new JoystickButton(operator, BUTTON_X);
+
+  // Storage
   public final JoystickButton storageOverrideButton = new JoystickButton(operator, START_BUTTON);
-  public final JoystickButton visionTestButton = new JoystickButton(driver, 1);
-  public final JoystickButton visionGoalButton = new JoystickButton(driver, 3);
 
+  // Vision
+  public final JoystickButton visionAlignBall = new JoystickButton(driver, 1);
+  public final JoystickButton visionAlignGoal = new JoystickButton(driver, 3);
+
+  // Shooter
   public JoystickButton toggleShooterButton = new JoystickButton(operator, RIGHT_BUMPER);
+
   public JoystickButton shootButton = new JoystickButton(operator, RIGHT_TRIGGER);
-  public JoystickButton longShotButton = new JoystickButton(operator, 0);
-  public JoystickButton shortShotButton = new JoystickButton(operator, 1);
-  
-  private final JoystickButton raiseButton = new JoystickButton(operator, LEFT_BUMPER),
-                                lowerButton = new JoystickButton(operator, RIGHT_BUMPER),
-                                 gearClimbButton = new JoystickButton(operator, BACK_BUTTON);
+
+  public JoystickButton longShotButton = new JoystickButton(operator, 0); // TODO- find button for this and make
+                                                                          // automatic
+  public JoystickButton shortShotButton = new JoystickButton(operator, LEFT_TRIGGER);
 
   // SUBSYSTEMS
   public final Drivetrain DRIVETRAIN = new Drivetrain();
@@ -69,104 +73,57 @@ public class RobotContainer {
 
   // COMMANDS
 
-  public final StartEndCommand shooterPistonOut = new StartEndCommand(
-    () -> {
-      SHOOTER.setAngleForward();
-    },
-    () -> {
-      SHOOTER.setPistonsOff();
-    }, 
-    SHOOTER);
-  
-  public final StartEndCommand revShort = new StartEndCommand(
-    () -> {
-      SHOOTER.setSpeedWithRPM(Constants.SHORT_DISTANCE_RPM);
-    },
-    () -> {
-      SHOOTER.setSpeedWithRPM(0);
-    }, 
-    SHOOTER);
+  // Shooter
+  public final StartEndCommand setShooterFar = new StartEndCommand(() -> {
+    SHOOTER.setAngleForward();
+  }, () -> {
+    SHOOTER.setPistonsOff();
+  }, SHOOTER);
 
-  public final StartEndCommand shooterPistonIn = new StartEndCommand(
-    () -> {
-      SHOOTER.setAngleBack();
-    },
-    () -> {
-      SHOOTER.setPistonsOff();
-    }, 
-    SHOOTER);
+  public final StartEndCommand setShooterClose = new StartEndCommand(() -> {
+    SHOOTER.setAngleBack();
+  }, () -> {
+    SHOOTER.setPistonsOff();
+  }, SHOOTER);
 
-    public final StartEndCommand revLong = new StartEndCommand(
-      () -> {
-        SHOOTER.setSpeedWithRPM(Constants.LONG_DIST_RPM); //TODO: change to a an rpm based off current distance from target
-      },
-      () -> {
-        SHOOTER.setSpeedWithRPM(0);
-      }, 
-      SHOOTER);
+  public final ShootCommand revShort = new ShootCommand(SHOOTER, STORAGE, SHORT_DISTANCE_RPM);
+  public final ShootCommand revLong = new ShootCommand(SHOOTER, STORAGE, LONG_DIST_RPM);
 
-  // INTAKE //
+  // Drivetrain
   public final StartEndCommand modeSwitch = new StartEndCommand(() -> DRIVETRAIN.modeSlow(),
       () -> DRIVETRAIN.modeFast(), DRIVETRAIN);
 
-  public final StartEndCommand deployIntake = new StartEndCommand(() -> { 
+  // Intake
+  public final StartEndCommand deployIntake = new StartEndCommand(() -> {
     INTAKE.deployPistons();
-    },
-    () -> { 
-      INTAKE.pistonOff();
-    },
-      INTAKE);
+  }, () -> {
+    INTAKE.pistonOff();
+  }, INTAKE);
 
-  public final StartEndCommand retractIntake = new StartEndCommand(() -> { 
+  public final StartEndCommand retractIntake = new StartEndCommand(() -> {
     INTAKE.retractPistons();
-      },
-      () -> { 
-        INTAKE.pistonOff();
-      },
-      INTAKE);
+  }, () -> {
+    INTAKE.pistonOff();
+  }, INTAKE);
 
-  public final StartEndCommand intakeCommand = new StartEndCommand(
-    () -> {     
-      INTAKE.setSpeed(WHEEL_INTAKE_SPEED); 
-      INTAKE.deployPistons();
-    },
-    () -> { 
-      INTAKE.setSpeed(0);
-      INTAKE.retractPistons();
-    },
-    INTAKE
-  );
+  public final StartEndCommand intakeCommand = new StartEndCommand(() -> {
+    INTAKE.setSpeed(WHEEL_INTAKE_SPEED);
+    INTAKE.deployPistons();
+  }, () -> {
+    INTAKE.setSpeed(0);
+    INTAKE.retractPistons();
+  }, INTAKE);
 
   public final StartEndCommand outtakeCommand = new StartEndCommand(() -> INTAKE.setSpeed(-WHEEL_INTAKE_SPEED),
       () -> INTAKE.setSpeed(0), INTAKE);
-  
-  // CLIMBER COMMANDS //
-  public final StartEndCommand raiseLifter = new StartEndCommand(
-      () -> CLIMBER.lifterUp(),
-      () -> CLIMBER.lifterZero(),
-      CLIMBER
-  );
-
-  public final StartEndCommand lowerLifter = new StartEndCommand(
-      () -> CLIMBER.lifterDown(),
-      () -> CLIMBER.lifterZero(),
-      CLIMBER
-  );
-
-  public final StartEndCommand gearClimb = new StartEndCommand(
-      () -> CLIMBER.gearOn(),
-      () -> CLIMBER.gearOff(),
-      CLIMBER
-  );
-
 
   // for storage trigger
   public boolean shouldStorageIntake() {
     return STORAGE.getIntakeSwitch() && !STORAGE.isOverridden();
   }
 
-  // STORAGE COMMANDS
-  public final StartEndCommand storageOverride = new StartEndCommand(() -> STORAGE.setFeedSpeed(), () -> STORAGE.stop(),
+  // Storage
+  public final StartEndCommand storageOverride = new StartEndCommand(() -> STORAGE.startFeeding(), () -> STORAGE.stopFeeding(),
       STORAGE);
   public final InstantCommand startStorageOverride = new InstantCommand(() -> STORAGE.override());
 
@@ -198,55 +155,44 @@ public class RobotContainer {
    */
   private void configureButtonBindings() {
 
-    toggleShooterButton.toggleWhenActive(new EnableShooterCommand(SHOOTER));
+    // Shooter
+    toggleShooterButton.toggleWhenActive(new EnableShooter(SHOOTER, STORAGE));
     shootButton.whenHeld(new ShootCommand(SHOOTER, STORAGE, LONG_DIST_RPM));
-    //Extend piston to short range setting and begin revving shooter motors
-    shortShotButton.whenPressed(shooterPistonOut.withTimeout(1)); //TODO: change to time taken for piston to extend
-    shortShotButton.whenHeld(revShort);
-    //Extend piston to long range setting and begin revving shooter motors
-    longShotButton.whenPressed(shooterPistonIn);
-    shortShotButton.whenHeld(revLong);
-    
-     visionTestButton.whileHeld(new BallTrack(DRIVETRAIN, VISION));
-     visionGoalButton.whileHeld(new GoalTrack(DRIVETRAIN, VISION));
 
+    shortShotButton.whenPressed(setShooterFar.withTimeout(1));
+    shortShotButton.whenHeld(revShort);
+
+    longShotButton.whenPressed(setShooterClose.withTimeout(1));
+    shortShotButton.whenHeld(revLong);
+
+    // Vision
+    visionAlignBall.whenHeld(new BallTrack(DRIVETRAIN, VISION));
+    visionAlignGoal.whenHeld(new GoalTrack(DRIVETRAIN, VISION));
+
+    // Drivetrain
     modeSwitchButton.whenHeld(modeSwitch);
-    
-    motorIntakeButton.whileHeld(new SequentialCommandGroup(intakeCommand, new StartEndCommand(() -> {}, () -> { INTAKE.pistonOff(); }, INTAKE).withTimeout(1)));
-    motorOuttakeButton.whileHeld(new SequentialCommandGroup(outtakeCommand, new StartEndCommand(() -> {}, () -> { INTAKE.pistonOff(); }, INTAKE).withTimeout(1)));
-    
-    // CLIMB BUTTONS
-    raiseButton.whenHeld(raiseLifter);
-    lowerButton.whenHeld(lowerLifter);
-    gearClimbButton.whenHeld(gearClimb);
+
+    // Intake
+    intakeButton.whileHeld(new SequentialCommandGroup(intakeCommand, new StartEndCommand(() -> {
+    }, () -> {
+      INTAKE.pistonOff();
+    }, INTAKE).withTimeout(1)));
+
+    outttakeButton.whileHeld(outtakeCommand);
+
+    raiseIntakeButton.whenPressed(retractIntake.withTimeout(1));
 
     // STORAGE
     storageTrigger.whenActive(storeBall);
-    // storageOverrideButton.whenPressed(startStorageOverride);
-    // storageOverrideButton.whenHeld(storageOverride);
+    storageOverrideButton.whenPressed(startStorageOverride);
+    storageOverrideButton.whenHeld(storageOverride);
   }
 
-  // /**
-  //  * Use this to pass the autonomous command to the main {@link Robot} class.
-  //  *
-  //  * @return the command to run in autonomous
-  //  */
-  // public Command getAutonomousCommand() {
-  //   // An ExampleCommand will run in autonomous
-  //   return autoCommandGroup;
-  // }
-
-  public void addAutosToChooser(SendableChooser<Command> chooser){
+  public void addAutosToChooser(SendableChooser<Command> chooser) {
     chooser.setDefaultOption("Do Nothing", doNothing);
     chooser.addOption("Move 20\"", moveForward);
     chooser.addOption("Failsafe", failsafe);
     chooser.addOption("Trench", trench);
     chooser.addOption("Test Auto", debugAuto);
-    // TODO: add all autos here
-
-  }
-
-  public Drivetrain getDrivetrain() {
-    return this.DRIVETRAIN;
   }
 }

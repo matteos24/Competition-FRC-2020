@@ -34,7 +34,7 @@ public class StoreBall extends CommandBase {
   @Override
   public void initialize() {
     if (!storage.isOverridden())
-      storage.setFeedSpeed();
+      storage.startFeeding();
     movedOn = false;
   }
 
@@ -53,7 +53,7 @@ public class StoreBall extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    storage.stop();
+    storage.stopFeeding();
   }
 
   // Returns true when the command should end.
