@@ -34,8 +34,8 @@ public final class Constants {
   public static final int WHEEL_INTAKE_PORT = 0;
 
   // Climber
-  public static final int LIFTER_MOTOR = 9;
-  public static final int GEAR_MOTOR1 = 7;
+  public static final int LIFTER_MOTOR = 6;
+  public static final int GEAR_MOTOR1 = 9;
   public static final int GEAR_MOTOR2 = 8;
 
   // Shooter
@@ -106,12 +106,10 @@ public final class Constants {
   public static final int BUTTON_Y = 4;
   public static final int LEFT_BUMPER = 5;
   public static final int RIGHT_BUMPER = 6;
-  public static final int LEFT_TRIGGER = 7;
-  public static final int RIGHT_TRIGGER = 8;
-  public static final int BACK_BUTTON = 9;
-  public static final int START_BUTTON = 10;
-  public static final int LEFT_STICK_BUTTON = 11;
-  public static final int RIGHT_STICK_BUTTON = 12;
+  public static final int BACK_BUTTON = 7;
+  public static final int START_BUTTON = 8;
+  public static final int LEFT_STICK_BUTTON = 9;
+  public static final int RIGHT_STICK_BUTTON = 10;
 
 
   // === PIXY SIGs === //
