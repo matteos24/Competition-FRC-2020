@@ -17,6 +17,7 @@ import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.Storage;
+import frc.robot.subsystems.Vision;
 
 import static frc.robot.Constants.*;
 
@@ -27,7 +28,7 @@ public class TrenchAuto extends SequentialCommandGroup {
   /**
    * Creates a new TrenchAuto.
    */
-  public TrenchAuto(Drivetrain drivetrain, Shooter shooter, Storage storage, Intake intake) {
+  public TrenchAuto(Drivetrain drivetrain, Shooter shooter, Storage storage, Intake intake, Vision vision) {
 
     // move forward 160 inches and intake
     // enable shooter
@@ -43,7 +44,8 @@ public class TrenchAuto extends SequentialCommandGroup {
     }, () -> {
       shooter.setPistonsOff();
     }, shooter).withTimeout(1)), new TurnCommand(drivetrain, 165, 0.75),
-        new ShootCommand(shooter, storage, 5500).withTimeout(3 + 5 + 2), // 3 to spool, 1 per ball, 3 for safety
+        new GoalTrack(drivetrain, vision).withTimeout(3),
+        new ShootCommand(shooter, storage, 5500).withTimeout(3 + 5),
         new DisableShooter(shooter));
   }
 }

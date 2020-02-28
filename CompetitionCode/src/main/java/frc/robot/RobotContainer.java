@@ -137,7 +137,7 @@ public class RobotContainer {
   private final Command moveForward = new MoveCommand(DRIVETRAIN, 20, .5);
   private final TestAutoCommandGroup debugAuto = new TestAutoCommandGroup(DRIVETRAIN, VISION);
   private final FailsafeAuto failsafe = new FailsafeAuto(DRIVETRAIN, SHOOTER, STORAGE);
-  private final TrenchAuto trench = new TrenchAuto(DRIVETRAIN, SHOOTER, STORAGE, INTAKE);
+  private final TrenchAuto trench = new TrenchAuto(DRIVETRAIN, SHOOTER, STORAGE, INTAKE, VISION);
 
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
