@@ -11,6 +11,7 @@ import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import static frc.robot.Constants.*;
@@ -35,6 +36,8 @@ public class Shooter extends SubsystemBase {
   private double speed = 0.0;
   private State state = State.SPIN_UP;
 
+  private Encoder flywheelEncoder;
+
   /**
    * Creates a new Shooter.
    */
@@ -46,6 +49,9 @@ public class Shooter extends SubsystemBase {
     motor2.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 1, 10);
 
     anglePiston = new DoubleSolenoid(SHOOTER_PISTON_PORT_1, SHOOTER_PISTON_PORT_2);
+    flywheelEncoder = new Encoder(SHOOTER_ENCODER_1, SHOOTER_ENCODER_1 + 1);
+
+    flywheelEncoder.setDistancePerPulse(2. / 1024.); // 2 to 1, 1024 per rot
   }
 
   /**
@@ -159,7 +165,7 @@ public class Shooter extends SubsystemBase {
    * @return Motor speed in RPM
    */
   public double getMotorSpeed() {
-    return 600. * (Math.abs((motor1.getSelectedSensorVelocity(0) + motor2.getSelectedSensorVelocity(1)) / 2.) / 4096.);
+    return flywheelEncoder.getRate();
   }
 
   @Override
