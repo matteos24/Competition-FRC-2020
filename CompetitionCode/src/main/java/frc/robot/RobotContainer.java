@@ -55,7 +55,6 @@ public class RobotContainer {
   public JoystickTrigger shortShotTrigger = new JoystickTrigger(operator, RIGHT_TRIGGER_AXIS);
   public JoystickTrigger shootTrigger = new JoystickTrigger(operator, LEFT_TRIGGER_AXIS);
 
-
   // SUBSYSTEMS
   public final Drivetrain DRIVETRAIN = new Drivetrain(driver);
   public final Intake INTAKE = new Intake();
@@ -184,8 +183,8 @@ public class RobotContainer {
   public void addAutosToChooser(SendableChooser<Command> chooser) {
     chooser.setDefaultOption("Do Nothing", doNothing);
     chooser.addOption("Move 20\"", moveForward);
-    chooser.addOption("Failsafe", failsafe);
-    chooser.addOption("Trench", trench);
+    chooser.addOption("Failsafe (Ram and 3 in the hole)", failsafe);
+    chooser.addOption("Trench (5 balls)", trench);
     chooser.addOption("Test Auto", debugAuto);
   }
 }
