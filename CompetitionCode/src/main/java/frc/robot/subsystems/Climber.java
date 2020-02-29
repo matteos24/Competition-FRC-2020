@@ -9,8 +9,6 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.VictorSP;
-import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import static frc.robot.Constants.*;
 
@@ -24,13 +22,11 @@ public class Climber extends SubsystemBase {
     // Initialize fields
     private VictorSP hookMotor;
     private VictorSP gearBoxMotor1, gearBoxMotor2;
-    private Joystick operator;
 
-    public Climber(Joystick op) {
+    public Climber() {
         hookMotor = new VictorSP(LIFTER_MOTOR);
         gearBoxMotor1 = new VictorSP(GEAR_MOTOR1);
         gearBoxMotor2 = new VictorSP(GEAR_MOTOR2);
-        operator = op;
     }
 
     /**
@@ -64,16 +60,4 @@ public class Climber extends SubsystemBase {
 
     }
 
-    @Override
-    public void setDefaultCommand(Command defaultCommand) {
-        super.setDefaultCommand(
-            new RunCommand(
-                () -> {
-                    setWinchSpeed(-operator.getRawAxis(FORWARD_AXIS_LEFT));
-                    setHookSpeed(operator.getRawAxis(FORWARD_AXIS_RIGHT));
-                }, 
-                this
-            )
-        );
-    }
 }

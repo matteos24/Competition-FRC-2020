@@ -163,13 +163,4 @@ public class Drivetrain extends SubsystemBase {
     
   }
 
-  @Override
-  public void setDefaultCommand(Command defaultCommand) {
-    super.setDefaultCommand(
-      new RunCommand(
-        () -> arcadeDrive(driver.getRawAxis(FORWARD_AXIS_LEFT), -driver.getRawAxis(HORIZ_AXIS_RIGHT)),
-        this
-      )
-    );
-  }
 }

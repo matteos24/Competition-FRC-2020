@@ -14,6 +14,7 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.StartEndCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.*;
@@ -58,7 +59,7 @@ public class RobotContainer {
   public final Storage STORAGE = new Storage();
   public final Shooter SHOOTER = new Shooter();
   public final Vision VISION = new Vision();
-  public final Climber CLIMBER = new Climber(operator);
+  public final Climber CLIMBER = new Climber();
 
   // COMMANDS
 
@@ -99,10 +100,10 @@ public class RobotContainer {
 
   // === AUTO === //
   private final InstantCommand doNothing = new InstantCommand();
-  private final Command moveForward = new MoveCommand(DRIVETRAIN, 20, .5);
-  private final TestAutoCommandGroup debugAuto = new TestAutoCommandGroup(DRIVETRAIN, VISION);
-  private final FailsafeAuto failsafe = new FailsafeAuto(DRIVETRAIN, SHOOTER, STORAGE);
-  private final TrenchAuto trench = new TrenchAuto(DRIVETRAIN, SHOOTER, STORAGE, INTAKE, VISION);
+  // private final Command moveForward = new MoveCommand(DRIVETRAIN, 20, .5);
+  // private final TestAutoCommandGroup debugAuto = new TestAutoCommandGroup(DRIVETRAIN, VISION);
+  // private final FailsafeAuto failsafe = new FailsafeAuto(DRIVETRAIN, SHOOTER, STORAGE);
+  // private final TrenchAuto trench = new TrenchAuto(DRIVETRAIN, SHOOTER, STORAGE, INTAKE, VISION);
 
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -119,6 +120,22 @@ public class RobotContainer {
    * passing it to a {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
+    // Climber
+    CLIMBER.setDefaultCommand(
+      new RunCommand(
+        () -> {
+            CLIMBER.setWinchSpeed(-operator.getRawAxis(FORWARD_AXIS_LEFT));
+            CLIMBER.setHookSpeed(operator.getRawAxis(FORWARD_AXIS_RIGHT));
+            System.out.println(-operator.getRawAxis(FORWARD_AXIS_LEFT)+", "+operator.getRawAxis(FORWARD_AXIS_RIGHT));
+        }, 
+        CLIMBER
+      )
+  );
+  DRIVETRAIN.setDefaultCommand(
+    new RunCommand(
+      () -> DRIVETRAIN.arcadeDrive(driver.getRawAxis(FORWARD_AXIS_LEFT), -driver.getRawAxis(HORIZ_AXIS_RIGHT)),
+      DRIVETRAIN
+  ));
 
     // Shooter
     toggleShooterButton.toggleWhenPressed(new EnableShooter(SHOOTER, STORAGE));
@@ -148,9 +165,9 @@ public class RobotContainer {
 
   public void addAutosToChooser(SendableChooser<Command> chooser) {
     chooser.setDefaultOption("Do Nothing", doNothing);
-    chooser.addOption("Move 20\"", moveForward);
-    chooser.addOption("Failsafe (Ram and 3 in the hole)", failsafe);
-    chooser.addOption("Trench (5 balls)", trench);
-    chooser.addOption("Test Auto", debugAuto);
+    // chooser.addOption("Move 20\"", moveForward);
+    // chooser.addOption("Failsafe (Ram and 3 in the hole)", failsafe);
+    // chooser.addOption("Trench (5 balls)", trench);
+    // chooser.addOption("Test Auto", debugAuto);
   }
 }
