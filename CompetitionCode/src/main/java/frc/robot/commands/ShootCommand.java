@@ -22,23 +22,27 @@ public class ShootCommand extends CommandBase {
   private Storage storage;
   private double targetRPM;
 
-  private double startTime;
+  private long startTime;
+  private boolean isClose;
 
   /**
    * Creates a new ShootCommand.
    */
-  public ShootCommand(Shooter shooter, Storage storage, int targetRPM) {
+  public ShootCommand(Shooter shooter, Storage storage, int targetRPM, boolean isClose) {
     this.shooter = shooter;
     this.storage = storage;
     this.targetRPM = targetRPM;
     addRequirements(shooter, storage);
 
     this.startTime = System.currentTimeMillis();
+    this.isClose = isClose;
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    if(isClose) shooter.setAngleBack();
+    else shooter.setAngleForward();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -55,12 +59,16 @@ public class ShootCommand extends CommandBase {
     if (System.currentTimeMillis() - startTime > Constants.SHOOTER_REV_TIME) {
       storage.startFeeding();
     }
+
+    // turn pistons off
+    if (System.currentTimeMillis() - startTime > 1) shooter.setPistonsOff();
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
     storage.stopFeeding();
+    shooter.setPistonsOff();
   }
 
   // Returns true when the command should end.

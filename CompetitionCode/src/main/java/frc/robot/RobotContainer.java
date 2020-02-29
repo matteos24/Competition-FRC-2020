@@ -14,7 +14,6 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.StartEndCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.*;
@@ -33,11 +32,11 @@ public class RobotContainer {
   // == BUTTONS == //
 
   // Drivetrain
-  public final JoystickButton modeSwitchButton = new JoystickButton(driver, RIGHT_BUMPER); // FAST SLOW
+  public final JoystickButton modeSwitchButton = new JoystickButton(driver, RIGHT_BUMPER); // stray kids going FAST or SLOW
 
   // Vision
-  public final JoystickButton visionAlignBall = new JoystickButton(driver, 1);
-  public final JoystickButton visionAlignGoal = new JoystickButton(driver, 3);
+  public final JoystickButton visionAlignBall = new JoystickButton(driver, BUTTON_A);
+  public final JoystickButton visionAlignGoal = new JoystickButton(driver, BUTTON_Y);
 
   // Intake
   public final JoystickButton intakeButton = new JoystickButton(operator, BUTTON_A),
@@ -50,10 +49,8 @@ public class RobotContainer {
   // Shooter
   public JoystickButton toggleShooterButton = new JoystickButton(operator, RIGHT_BUMPER);
 
-  public JoystickButton longShotButton = new JoystickButton(operator, 0); // TODO- find button for this and make
-                                                                          // automatic
-  public JoystickTrigger shortShotTrigger = new JoystickTrigger(operator, RIGHT_TRIGGER_AXIS);
-  public JoystickTrigger shootTrigger = new JoystickTrigger(operator, LEFT_TRIGGER_AXIS);
+  public JoystickTrigger shootCloseTrigger = new JoystickTrigger(operator, LEFT_TRIGGER_AXIS);
+  public JoystickTrigger shootFarTrigger = new JoystickTrigger(operator, RIGHT_TRIGGER_AXIS);
 
   // SUBSYSTEMS
   public final Drivetrain DRIVETRAIN = new Drivetrain(driver);
@@ -66,44 +63,20 @@ public class RobotContainer {
   // COMMANDS
 
   // Shooter
-  public final StartEndCommand setShooterFar = new StartEndCommand(() -> {
-    SHOOTER.setAngleForward();
-  }, () -> {
-    SHOOTER.setPistonsOff();
-  }, SHOOTER);
 
-  public final StartEndCommand setShooterClose = new StartEndCommand(() -> {
-    SHOOTER.setAngleBack();
-  }, () -> {
-    SHOOTER.setPistonsOff();
-  }, SHOOTER);
-
-  public final ShootCommand revShort = new ShootCommand(SHOOTER, STORAGE, SHORT_DISTANCE_RPM);
-  public final ShootCommand revLong = new ShootCommand(SHOOTER, STORAGE, LONG_DIST_RPM);
+  public final ShootCommand shootClose = new ShootCommand(SHOOTER, STORAGE, SHORT_DISTANCE_RPM, true);
+  public final ShootCommand shootFar = new ShootCommand(SHOOTER, STORAGE, LONG_DIST_RPM, false);
 
   // Drivetrain
   public final StartEndCommand modeSwitch = new StartEndCommand(() -> DRIVETRAIN.modeSlow(),
       () -> DRIVETRAIN.modeFast(), DRIVETRAIN);
 
   // Intake
-  public final StartEndCommand deployIntake = new StartEndCommand(() -> {
-    INTAKE.deployPistons();
-  }, () -> {
-    INTAKE.pistonOff();
-  }, INTAKE);
 
   public final StartEndCommand retractIntake = new StartEndCommand(() -> {
     INTAKE.retractPistons();
   }, () -> {
     INTAKE.pistonOff();
-  }, INTAKE);
-
-  public final StartEndCommand intakeCommand = new StartEndCommand(() -> {
-    INTAKE.setSpeed(WHEEL_INTAKE_SPEED);
-    INTAKE.deployPistons();
-  }, () -> {
-    INTAKE.setSpeed(0);
-    INTAKE.retractPistons();
   }, INTAKE);
 
   public final StartEndCommand outtakeCommand = new StartEndCommand(() -> INTAKE.setSpeed(-WHEEL_INTAKE_SPEED),
@@ -148,14 +121,10 @@ public class RobotContainer {
   private void configureButtonBindings() {
 
     // Shooter
-    toggleShooterButton.toggleWhenActive(new EnableShooter(SHOOTER, STORAGE));
-    shootTrigger.whileActiveOnce(new ShootCommand(SHOOTER, STORAGE, LONG_DIST_RPM));
+    toggleShooterButton.toggleWhenPressed(new EnableShooter(SHOOTER, STORAGE));
 
-    shortShotTrigger.whenActive(setShooterFar.withTimeout(1));
-    shortShotTrigger.whileActiveOnce(revShort);
-
-    longShotButton.whenPressed(setShooterClose.withTimeout(1));
-    shortShotTrigger.whileActiveOnce(revLong);
+    shootCloseTrigger.whileActiveOnce(shootClose);
+    shootFarTrigger.whileActiveOnce(shootFar);
 
     // Vision
     visionAlignBall.whenHeld(new BallTrack(DRIVETRAIN, VISION));
@@ -165,12 +134,9 @@ public class RobotContainer {
     modeSwitchButton.whenHeld(modeSwitch);
 
     // Intake
-    intakeButton.whileHeld(new SequentialCommandGroup(intakeCommand, new StartEndCommand(() -> {
-    }, () -> {
-      INTAKE.pistonOff();
-    }, INTAKE).withTimeout(1)));
+    intakeButton.whileHeld(new IntakeCommand(INTAKE));
 
-    outttakeButton.whileHeld(outtakeCommand);
+    outttakeButton.whileHeld(new OuttakeCommand(INTAKE));
 
     raiseIntakeButton.whenPressed(retractIntake.withTimeout(1));
 

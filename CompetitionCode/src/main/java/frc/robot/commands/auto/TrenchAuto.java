@@ -45,7 +45,7 @@ public class TrenchAuto extends SequentialCommandGroup {
       shooter.setPistonsOff();
     }, shooter).withTimeout(1)), new TurnCommand(drivetrain, 165, 0.75),
         new GoalTrack(drivetrain, vision).withTimeout(3),
-        new ShootCommand(shooter, storage, 5500).withTimeout(3 + 5),
+        new ShootCommand(shooter, storage, 5500, false).withTimeout(3 + 5),
         new DisableShooter(shooter));
   }
 }

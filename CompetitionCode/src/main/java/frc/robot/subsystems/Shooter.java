@@ -17,7 +17,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import static frc.robot.Constants.*;
 
 /**
- * TODO- MISSING ENCODER IMPLEMENTATION (CTR MAG ENCODER)
+ * COMPETITION READY
  * 
  * All code for the shooter assembly (not including storage).
  */
@@ -46,7 +46,7 @@ public class Shooter extends SubsystemBase {
     motor2 = new WPI_TalonSRX(SHOOTER_MOTOR_2);
 
     motor1.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 10);
-    motor2.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 1, 10);
+    motor2.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 10);
 
     anglePiston = new DoubleSolenoid(SHOOTER_PISTON_PORT_1, SHOOTER_PISTON_PORT_2);
     flywheelEncoder = new Encoder(SHOOTER_ENCODER_1, SHOOTER_ENCODER_1 + 1);
