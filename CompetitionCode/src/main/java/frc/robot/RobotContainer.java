@@ -20,7 +20,7 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.*;
 import frc.robot.commands.auto.*;
 import frc.robot.subsystems.*;
-import frc.robot.triggers.StorageLimitSwitchTrigger;
+import frc.robot.triggers.*;
 
 import static frc.robot.Constants.*;
 
@@ -39,11 +39,6 @@ public class RobotContainer {
   public final JoystickButton visionAlignBall = new JoystickButton(driver, 1);
   public final JoystickButton visionAlignGoal = new JoystickButton(driver, 3);
 
-  // Climber
-  public final JoystickButton hookUpButton = new JoystickButton(operator, START_BUTTON);
-  public final JoystickButton hookDownButton = new JoystickButton(operator, BACK_BUTTON);
-  public final JoystickButton climbButton = new JoystickButton(operator, RIGHT_STICK_BUTTON);
-
   // Intake
   public final JoystickButton intakeButton = new JoystickButton(operator, BUTTON_A),
       outttakeButton = new JoystickButton(operator, BUTTON_Y),
@@ -55,40 +50,21 @@ public class RobotContainer {
   // Shooter
   public JoystickButton toggleShooterButton = new JoystickButton(operator, RIGHT_BUMPER);
 
-  public JoystickButton shootButton = new JoystickButton(operator, -1); // TODO: make this a trigger
-
   public JoystickButton longShotButton = new JoystickButton(operator, 0); // TODO- find button for this and make
                                                                           // automatic
-  public JoystickButton shortShotButton = new JoystickButton(operator, -1); // TODO: make this a trigger
+  public JoystickTrigger shortShotTrigger = new JoystickTrigger(operator, RIGHT_TRIGGER_AXIS);
+  public JoystickTrigger shootTrigger = new JoystickTrigger(operator, LEFT_TRIGGER_AXIS);
+
 
   // SUBSYSTEMS
-  public final Drivetrain DRIVETRAIN = new Drivetrain();
+  public final Drivetrain DRIVETRAIN = new Drivetrain(driver);
   public final Intake INTAKE = new Intake();
   public final Storage STORAGE = new Storage();
   public final Shooter SHOOTER = new Shooter();
   public final Vision VISION = new Vision();
-  public final Climber CLIMBER = new Climber();
+  public final Climber CLIMBER = new Climber(operator);
 
   // COMMANDS
-
-  // CLIMBER
-    public final StartEndCommand raiseHook = new StartEndCommand(
-      () -> CLIMBER.setHookSpeed(.75), 
-      () -> CLIMBER.setHookSpeed(0), 
-      CLIMBER
-    );
-
-    public final StartEndCommand lowerHook = new StartEndCommand(
-      () -> CLIMBER.setHookSpeed(-.75), 
-      () -> CLIMBER.setHookSpeed(0), 
-      CLIMBER
-    );
-
-    public final StartEndCommand climb = new StartEndCommand(
-      () -> CLIMBER.setGearboxSpeed(.5), 
-      () -> CLIMBER.setGearboxSpeed(0), 
-      CLIMBER
-    );
 
   // Shooter
   public final StartEndCommand setShooterFar = new StartEndCommand(() -> {
@@ -174,13 +150,13 @@ public class RobotContainer {
 
     // Shooter
     toggleShooterButton.toggleWhenActive(new EnableShooter(SHOOTER, STORAGE));
-    shootButton.whenHeld(new ShootCommand(SHOOTER, STORAGE, LONG_DIST_RPM));
+    shootTrigger.whileActiveOnce(new ShootCommand(SHOOTER, STORAGE, LONG_DIST_RPM));
 
-    shortShotButton.whenPressed(setShooterFar.withTimeout(1));
-    shortShotButton.whenHeld(revShort);
+    shortShotTrigger.whenActive(setShooterFar.withTimeout(1));
+    shortShotTrigger.whileActiveOnce(revShort);
 
     longShotButton.whenPressed(setShooterClose.withTimeout(1));
-    shortShotButton.whenHeld(revLong);
+    shortShotTrigger.whileActiveOnce(revLong);
 
     // Vision
     visionAlignBall.whenHeld(new BallTrack(DRIVETRAIN, VISION));
