@@ -7,6 +7,7 @@
 
 package frc.robot.subsystems;
 
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
@@ -33,7 +34,9 @@ public class Drivetrain extends SubsystemBase {
 
   private boolean isFast = true;
 
-  public Drivetrain() {
+  private Joystick driver;
+
+  public Drivetrain(Joystick drive) {
     frontLeft = new WPI_TalonFX(FRONT_LEFT_DRIVE_PORT);
     backLeft = new WPI_TalonFX(BACK_LEFT_DRIVE_PORT);
     frontRight = new WPI_TalonFX(FRONT_RIGHT_DRIVE_PORT);
@@ -41,6 +44,8 @@ public class Drivetrain extends SubsystemBase {
 
     left = new SpeedControllerGroup(frontLeft, backLeft);
     right = new SpeedControllerGroup(frontRight, backRight);
+
+    driver = drive;
 
     resetEncoders();
   }
@@ -153,5 +158,6 @@ public class Drivetrain extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+    arcadeDrive(driver.getRawAxis(FORWARD_AXIS_LEFT), -driver.getRawAxis(HORIZ_AXIS_RIGHT));
   }
 }

@@ -115,12 +115,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void teleopPeriodic() {
-    // DRIVE
-    rCon.DRIVETRAIN.arcadeDrive(rCon.driver.getRawAxis(FORWARD_AXIS_LEFT), -rCon.driver.getRawAxis(HORIZ_AXIS_RIGHT));
 
-    // CLIMB
-    rCon.CLIMBER.setWinchSpeed(rCon.operator.getRawAxis(Math.max(FORWARD_AXIS_LEFT, 0)));
-    rCon.CLIMBER.setHookSpeed(rCon.operator.getRawAxis(FORWARD_AXIS_RIGHT));
   }
 
   @Override
