@@ -36,8 +36,6 @@ public class Shooter extends SubsystemBase {
   private double speed = 0.0;
   private State state = State.SPIN_UP;
 
-  private Encoder flywheelEncoder;
-
   /**
    * Creates a new Shooter.
    */
@@ -49,9 +47,6 @@ public class Shooter extends SubsystemBase {
     motor2.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 10);
 
     anglePiston = new DoubleSolenoid(SHOOTER_PISTON_PORT_1, SHOOTER_PISTON_PORT_2);
-    flywheelEncoder = new Encoder(SHOOTER_ENCODER_1, SHOOTER_ENCODER_1 + 1);
-
-    flywheelEncoder.setDistancePerPulse(2. / 1024.); // 2 to 1, 1024 per rot
   }
 
   /**
@@ -165,7 +160,7 @@ public class Shooter extends SubsystemBase {
    * @return Motor speed in RPM
    */
   public double getMotorSpeed() {
-    return flywheelEncoder.getRate();
+    return (motor1.getSelectedSensorVelocity(0) + motor2.getSelectedSensorVelocity(0)) / 2;
   }
 
   @Override
