@@ -29,12 +29,11 @@ public class FailsafeAuto extends SequentialCommandGroup {
     // shoot \/
     // party
 
-    super(parallel(new EnableShooter(shooter, storage), new StartEndCommand(() -> {
-      shooter.setAngleForward();
-    }, () -> {
-      shooter.setPistonsOff();
-    }, shooter).withTimeout(1)), new MoveCommand(drivetrain, 120, 0.65),
-        new ShootCommand(shooter, storage, 5500, true).withTimeout(3 + 3 + 2), // 3 to spool, 1 per ball, 2 for safety
-        new DisableShooter(shooter));
+    super(
+      new EnableShooter(shooter, storage),
+      new MoveCommand(drivetrain, 120, 0.65),
+      new ShootCommand(shooter, storage, 5500, true).withTimeout(3 + 3 + 2), // 3 to spool, 1 per ball, 2 for safety
+      new DisableShooter(shooter)
+    );
   }
 }
