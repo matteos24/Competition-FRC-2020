@@ -100,7 +100,7 @@ public class RobotContainer {
 
   // === AUTO === //
   private final InstantCommand doNothing = new InstantCommand();
-  // private final Command moveForward = new MoveCommand(DRIVETRAIN, 20, .5);
+  // private final Command moveForward = new MoveCommand(DRIVETRAIN, 20, .5);                     // TODO: FIX THIS
   // private final TestAutoCommandGroup debugAuto = new TestAutoCommandGroup(DRIVETRAIN, VISION);
   // private final FailsafeAuto failsafe = new FailsafeAuto(DRIVETRAIN, SHOOTER, STORAGE);
   // private final TrenchAuto trench = new TrenchAuto(DRIVETRAIN, SHOOTER, STORAGE, INTAKE, VISION);
