@@ -22,7 +22,7 @@ public class ShootCommand extends CommandBase {
   private Storage storage;
   private double targetRPM;
 
-  private double startTime;
+  private long startTime;
   private boolean isClose;
 
   /**

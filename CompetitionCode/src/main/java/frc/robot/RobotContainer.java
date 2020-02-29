@@ -63,17 +63,6 @@ public class RobotContainer {
   // COMMANDS
 
   // Shooter
-  public final StartEndCommand setShooterFar = new StartEndCommand(() -> {
-    SHOOTER.setAngleForward();
-  }, () -> {
-    SHOOTER.setPistonsOff();
-  }, SHOOTER);
-
-  public final StartEndCommand setShooterClose = new StartEndCommand(() -> {
-    SHOOTER.setAngleBack();
-  }, () -> {
-    SHOOTER.setPistonsOff();
-  }, SHOOTER);
 
   public final ShootCommand shootClose = new ShootCommand(SHOOTER, STORAGE, SHORT_DISTANCE_RPM, true);
   public final ShootCommand shootFar = new ShootCommand(SHOOTER, STORAGE, LONG_DIST_RPM, false);
@@ -83,24 +72,11 @@ public class RobotContainer {
       () -> DRIVETRAIN.modeFast(), DRIVETRAIN);
 
   // Intake
-  public final StartEndCommand deployIntake = new StartEndCommand(() -> {
-    INTAKE.deployPistons();
-  }, () -> {
-    INTAKE.pistonOff();
-  }, INTAKE);
 
   public final StartEndCommand retractIntake = new StartEndCommand(() -> {
     INTAKE.retractPistons();
   }, () -> {
     INTAKE.pistonOff();
-  }, INTAKE);
-
-  public final StartEndCommand intakeCommand = new StartEndCommand(() -> {
-    INTAKE.setSpeed(WHEEL_INTAKE_SPEED);
-    INTAKE.deployPistons();
-  }, () -> {
-    INTAKE.setSpeed(0);
-    INTAKE.retractPistons();
   }, INTAKE);
 
   public final StartEndCommand outtakeCommand = new StartEndCommand(() -> INTAKE.setSpeed(-WHEEL_INTAKE_SPEED),
@@ -158,9 +134,9 @@ public class RobotContainer {
     modeSwitchButton.whenHeld(modeSwitch);
 
     // Intake
-    intakeButton.whileHeld(intakeCommand);
+    intakeButton.whileHeld(new IntakeCommand(INTAKE));
 
-    outttakeButton.whileHeld(outtakeCommand);
+    outttakeButton.whileHeld(new OuttakeCommand(INTAKE));
 
     raiseIntakeButton.whenPressed(retractIntake.withTimeout(1));
 
