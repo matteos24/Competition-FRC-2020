@@ -66,11 +66,10 @@ public class Climber extends SubsystemBase {
 
     @Override
     public void setDefaultCommand(Command defaultCommand) {
-        // TODO Auto-generated method stub
         super.setDefaultCommand(
             new RunCommand(
                 () -> {
-                    setWinchSpeed(operator.getRawAxis(FORWARD_AXIS_LEFT));
+                    setWinchSpeed(-operator.getRawAxis(FORWARD_AXIS_LEFT));
                     setHookSpeed(operator.getRawAxis(FORWARD_AXIS_RIGHT));
                 }, 
                 this

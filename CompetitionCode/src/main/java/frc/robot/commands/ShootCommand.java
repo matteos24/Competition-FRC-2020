@@ -43,11 +43,14 @@ public class ShootCommand extends CommandBase {
   public void initialize() {
     if(isClose) shooter.setAngleBack();
     else shooter.setAngleForward();
+    storage.resetBalls();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    boolean alreadyPressed = false;
+
     shooter.setSpeedWithRPM(targetRPM); // Sets target RPM (must be called each frame to update)
 
     // Output stats
@@ -62,6 +65,9 @@ public class ShootCommand extends CommandBase {
 
     // turn pistons off
     if (System.currentTimeMillis() - startTime > 1) shooter.setPistonsOff();
+
+    // TODO: de-incremembing balls
+
   }
 
   // Called once the command ends or is interrupted.

@@ -34,8 +34,8 @@ public final class Constants {
   public static final int WHEEL_INTAKE_PORT = 0;
 
   // Climber
-  public static final int LIFTER_MOTOR = 6;
-  public static final int GEAR_MOTOR1 = 9;
+  public static final int LIFTER_MOTOR = 9;
+  public static final int GEAR_MOTOR1 = 7;
   public static final int GEAR_MOTOR2 = 8;
 
   // Shooter

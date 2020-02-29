@@ -25,6 +25,7 @@ public class Storage extends SubsystemBase {
   private final VictorSP motor;
   private final DigitalInput intakeSwitch, hasBallSwitch, overrideSwitch;
   private boolean isOverridden = false;
+  private int numBalls;
 
   public Storage() {
     motor = new VictorSP(STORAGE_GATE_MOTOR_PORT);
@@ -32,7 +33,29 @@ public class Storage extends SubsystemBase {
     intakeSwitch = new DigitalInput(STORAGE_INTAKE_SWITCH_PORT);
     hasBallSwitch = new DigitalInput(STORAGE_BALL_SWITCH_PORT);
     overrideSwitch = new DigitalInput(STORAGE_OVERRIDE_SWITCH_PORT);
+
+    numBalls = 0;
   }
+
+  /**
+   * incrememts numBalls by 1
+   */
+  public void addBall(){ numBalls++; }
+
+  /**
+   * subtracts 1 from numBalls
+   */
+  public void loseBall(){ numBalls--; }
+
+  /**
+   * resets numBalls to 0
+   */
+  public void resetBalls(){ numBalls = 0; }
+
+  /**
+   * numBalls getter method
+   */
+  public int getNumBalls(){ return numBalls;}
 
   /**
    * intakeSwitchSwitch getter method
