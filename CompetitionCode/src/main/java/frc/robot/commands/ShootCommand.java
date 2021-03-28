@@ -75,6 +75,7 @@ public class ShootCommand extends CommandBase {
   public void end(boolean interrupted) {
     storage.stopFeeding();
     shooter.setPistonsOff();
+    shooter.setSystemSpeed(0);
   }
 
   // Returns true when the command should end.
