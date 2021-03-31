@@ -160,7 +160,7 @@ public class Shooter extends SubsystemBase {
    * @return Motor speed in RPM
    */
   public double getMotorSpeed() {
-    return (motor1.getSelectedSensorVelocity(0) + motor2.getSelectedSensorVelocity(0)) / 2;
+    return motor1.getSelectedSensorVelocity(0);
   }
 
   @Override
