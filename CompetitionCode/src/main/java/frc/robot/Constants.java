@@ -63,9 +63,7 @@ public final class Constants {
   // === SENSOR PORTS === //
 
   // STORAGE LIMIT SWITCHES
-  public static final int STORAGE_INTAKE_SWITCH_PORT = 0;
-  public static final int STORAGE_BALL_SWITCH_PORT = 1;
-  public static final int STORAGE_OVERRIDE_SWITCH_PORT = 2;
+  public static final int STORAGE_TOP_SWITCH_PORT = 2;
 
   // SHOOTER ENCODER
   public static final int SHOOTER_ENCODER_1 = 0;

@@ -85,7 +85,7 @@ public class RobotContainer {
 
   // for storage trigger
   public boolean shouldStorageIntake() {
-    return STORAGE.getIntakeSwitch() && !STORAGE.isOverridden();
+    return (!STORAGE.getTopSwitch() && !STORAGE.isOverridden());
   }
 
   // Storage
