@@ -23,52 +23,20 @@ public class Storage extends SubsystemBase {
 
   // FIELDS
   private final VictorSP motor;
-  private final DigitalInput intakeSwitch, hasBallSwitch, overrideSwitch;
+  private final DigitalInput topSwitch;
   private boolean isOverridden = false;
-  private int numBalls;
 
   public Storage() {
     motor = new VictorSP(STORAGE_GATE_MOTOR_PORT);
 
-    intakeSwitch = new DigitalInput(STORAGE_INTAKE_SWITCH_PORT);
-    hasBallSwitch = new DigitalInput(STORAGE_BALL_SWITCH_PORT);
-    overrideSwitch = new DigitalInput(STORAGE_OVERRIDE_SWITCH_PORT);
-
-    numBalls = 0;
+    topSwitch = new DigitalInput(STORAGE_TOP_SWITCH_PORT);
   }
-
-  /**
-   * incrememts numBalls by 1
-   */
-  public void addBall(){ numBalls++; }
-
-  /**
-   * subtracts 1 from numBalls
-   */
-  public void loseBall(){ numBalls--; }
-
-  /**
-   * resets numBalls to 0
-   */
-  public void resetBalls(){ numBalls = 0; }
-
-  /**
-   * numBalls getter method
-   */
-  public int getNumBalls(){ return numBalls;}
 
   /**
    * intakeSwitchSwitch getter method
    */
-  public boolean getIntakeSwitch() {
-    return intakeSwitch.get();
-  }
-
-  /**
-   * hasBallSwitch getter method
-   */
-  public boolean hasBall() {
-    return hasBallSwitch.get();
+  public boolean getTopSwitch() {
+    return topSwitch.get();
   }
 
   /**
@@ -97,14 +65,13 @@ public class Storage extends SubsystemBase {
    * input.
    */
   public boolean isOverridden() {
-    return isOverridden || overrideSwitch.get();
+    return (isOverridden || topSwitch.get());
   }
 
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    SmartDashboard.putBoolean("Intake Switch", intakeSwitch.get());
-    SmartDashboard.putBoolean("Has Ball Switch", hasBallSwitch.get());
+    SmartDashboard.putBoolean("Top Switch", topSwitch.get());
   }
 
 }
