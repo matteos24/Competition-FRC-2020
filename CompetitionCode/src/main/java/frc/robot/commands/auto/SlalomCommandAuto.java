@@ -4,12 +4,14 @@ package frc.robot.commands.auto;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Vision;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import static java.lang.Math.sqrt;
 
 // TestAutoCommandGroup: For testing
 public class SlalomCommandAuto extends SequentialCommandGroup {
     public SlalomCommandAuto(Drivetrain drivetrain) {
         super();
+        SmartDashboard.putData("Can you read this?", 0);
         new TurnCommand(drivetrain, -45, 0.4); //Initial turn out of base
         new MoveCommand(drivetrain, sqrt(4896), 0.8); //Moving above the 5ft slaloms
         new TurnCommand(drivetrain, 45, 0.4); //Adjusting to straight line parallel to original start
