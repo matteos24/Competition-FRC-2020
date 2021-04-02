@@ -169,6 +169,7 @@ public class RobotContainer {
     chooser.setDefaultOption("Do Nothing", doNothing);
     chooser.addOption("Slalom Auto", slalom);
     chooser.addOption("Bounce Auto", bounce);
+
     // chooser.addOption("Move 20\"", moveForward);
     // chooser.addOption("Failsafe (Ram and 3 in the hole)", failsafe);
     // chooser.addOption("Trench (5 balls)", trench);
