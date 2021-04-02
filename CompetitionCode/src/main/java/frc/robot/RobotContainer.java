@@ -101,9 +101,11 @@ public class RobotContainer {
   // === AUTO === //
   private final InstantCommand doNothing = new InstantCommand();
   private final SlalomCommandAuto slalom = new SlalomCommandAuto(DRIVETRAIN);
+  
   private final BounceCommandAuto bounce = new BounceCommandAuto(DRIVETRAIN);
   private final TestAutoCommandGroup testAuto = new TestAutoCommandGroup(DRIVETRAIN);
   private final SequentialCommandGroup testAuto2 = new SequentialCommandGroup(new MoveCommand(DRIVETRAIN, 24, 0.5));
+  private final BarrelCommandAuto barrel = new BarrelCommandAuto(DRIVETRAIN);
   // private final Command moveForward = new MoveCommand(DRIVETRAIN, 20, .5);                     // TODO: FIX THIS
   // private final TestAutoCommandGroup debugAuto = new TestAutoCommandGroup(DRIVETRAIN, VISION);
   // private final FailsafeAuto failsafe = new FailsafeAuto(DRIVETRAIN, SHOOTER, STORAGE);
@@ -170,6 +172,7 @@ public class RobotContainer {
   public void addAutosToChooser(SendableChooser<Command> chooser) {
     chooser.setDefaultOption("Do Nothing", doNothing);
     chooser.addOption("Slalom Auto", slalom);
+    chooser.addOption("Barrel Auto", barrel);
     chooser.addOption("Bounce Auto", bounce);
     chooser.addOption("Test Auto", testAuto);
     chooser.addOption("Test Auto 2", testAuto2);
