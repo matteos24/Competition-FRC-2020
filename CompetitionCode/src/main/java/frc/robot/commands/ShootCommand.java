@@ -43,7 +43,7 @@ public class ShootCommand extends CommandBase {
   public void initialize() {
     if(isClose) shooter.setAngleBack();
     else shooter.setAngleForward();
-    storage.resetBalls();
+    //storage.resetBalls();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -75,6 +75,8 @@ public class ShootCommand extends CommandBase {
   public void end(boolean interrupted) {
     storage.stopFeeding();
     shooter.setPistonsOff();
+    shooter.setSystemSpeed(0);
+    shooter.setSpeed(0);
   }
 
   // Returns true when the command should end.
