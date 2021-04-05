@@ -8,42 +8,47 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.Constants;
-import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.Drivetrain;
+import frc.robot.subsystems.Vision;
 
-public class IntakeCommand extends CommandBase {
+/**
+ * COMPETITION READY
+ */
+public class GoalTrack extends CommandBase {
 
-  private Intake INTAKE;
-  private long startTime;
+  private Drivetrain drivetrain;
+  private Vision vision;
 
   /**
-   * Creates a new IntakeCommand.
+   * Creates a new GoalTrack.
    */
-  public IntakeCommand(Intake intake) {
-    addRequirements(intake);
-    this.INTAKE = intake;
+  public GoalTrack(Drivetrain drivetrain, Vision vision) {
     // Use addRequirements() here to declare subsystem dependencies.
+
+    this.drivetrain = drivetrain;
+    this.vision = vision;
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    INTAKE.setSpeed(Constants.WHEEL_INTAKE_SPEED);
-    INTAKE.deployPistons();
-    this.startTime = System.currentTimeMillis();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if(System.currentTimeMillis() - startTime > 1000) INTAKE.pistonOff();
+    // finds goal and gets speed to turn
+    double speed = vision.getPIDOfGoal();
+    if (speed == -1000)
+      return;
+
+    // System.out.println(speed);
+    drivetrain.tankDrive(speed, -speed);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    INTAKE.setSpeed(0);
-    INTAKE.pistonOff();
   }
 
   // Returns true when the command should end.

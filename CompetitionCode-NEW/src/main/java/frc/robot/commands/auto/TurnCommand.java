@@ -5,50 +5,60 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.commands;
+package frc.robot.commands.auto;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.Constants;
-import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.Drivetrain;
 
-public class IntakeCommand extends CommandBase {
+/**
+ * NOT TESTED
+ */
+public class TurnCommand extends CommandBase {
 
-  private Intake INTAKE;
-  private long startTime;
+  private Drivetrain drivetrain;
+  private double targetDist, speed, degrees;
 
   /**
-   * Creates a new IntakeCommand.
+   * Creates a new TurnCommand.
    */
-  public IntakeCommand(Intake intake) {
-    addRequirements(intake);
-    this.INTAKE = intake;
-    // Use addRequirements() here to declare subsystem dependencies.
+  public TurnCommand(Drivetrain drivetrain, double degrees, double speed) {
+    addRequirements(drivetrain);
+    this.drivetrain = drivetrain;
+
+    this.targetDist = Drivetrain.WHEEL_TO_WHEEL_DIAMETER_INCHES * Math.PI * (degrees / 360)
+        + (degrees < 0 ? drivetrain.getLeftDistance() : drivetrain.getRightDistance());
+
+    this.speed = speed;
+    this.degrees = degrees;
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    INTAKE.setSpeed(Constants.WHEEL_INTAKE_SPEED);
-    INTAKE.deployPistons();
-    this.startTime = System.currentTimeMillis();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if(System.currentTimeMillis() - startTime > 1000) INTAKE.pistonOff();
+    drivetrain.tankDrive(speed, -speed);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    INTAKE.setSpeed(0);
-    INTAKE.pistonOff();
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    boolean isFinished = false;
+
+    if (degrees < 0) { // left
+      isFinished = drivetrain.getLeftDistance() > targetDist;
+    } else { // right
+      isFinished = drivetrain.getRightDistance() > targetDist;
+    }
+
+    return isFinished;
   }
 }

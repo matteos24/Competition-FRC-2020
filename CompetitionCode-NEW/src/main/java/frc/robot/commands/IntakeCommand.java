@@ -22,6 +22,7 @@ public class IntakeCommand extends CommandBase {
   public IntakeCommand(Intake intake) {
     addRequirements(intake);
     this.INTAKE = intake;
+    this.startTime = System.currentTimeMillis();
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
@@ -30,13 +31,12 @@ public class IntakeCommand extends CommandBase {
   public void initialize() {
     INTAKE.setSpeed(Constants.WHEEL_INTAKE_SPEED);
     INTAKE.deployPistons();
-    this.startTime = System.currentTimeMillis();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if(System.currentTimeMillis() - startTime > 1000) INTAKE.pistonOff();
+    if(System.currentTimeMillis() - startTime > 1) INTAKE.pistonOff();
   }
 
   // Called once the command ends or is interrupted.

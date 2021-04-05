@@ -9,41 +9,47 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
-import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.Drivetrain;
+import frc.robot.subsystems.Vision;
 
-public class IntakeCommand extends CommandBase {
+/**
+ * COMPETITION READY
+ */
+public class BallTrack extends CommandBase {
 
-  private Intake INTAKE;
-  private long startTime;
+  private Drivetrain drivetrain;
+  private Vision vision;
 
   /**
-   * Creates a new IntakeCommand.
+   * Creates a new EnableShooterCommand.
    */
-  public IntakeCommand(Intake intake) {
-    addRequirements(intake);
-    this.INTAKE = intake;
-    // Use addRequirements() here to declare subsystem dependencies.
+  public BallTrack(Drivetrain drivetrain, Vision vision) {
+    this.drivetrain = drivetrain;
+    this.vision = vision;
+
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    INTAKE.setSpeed(Constants.WHEEL_INTAKE_SPEED);
-    INTAKE.deployPistons();
-    this.startTime = System.currentTimeMillis();
+
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if(System.currentTimeMillis() - startTime > 1000) INTAKE.pistonOff();
+    // gets speed for turning to largest ball.
+    double speed = vision.getPIDOfBlock(Constants.Signature.POWER_CELL.value(), false);
+    if (speed == -1000)
+      return;
+
+    // System.out.println("Speed: " + speed);
+    drivetrain.tankDrive(speed, -speed);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    INTAKE.setSpeed(0);
-    INTAKE.pistonOff();
   }
 
   // Returns true when the command should end.

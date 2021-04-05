@@ -8,42 +8,38 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.Constants;
-import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.Shooter;
 
-public class IntakeCommand extends CommandBase {
+/**
+ * COMPETITION READY
+ */
+public class DisableShooter extends CommandBase {
 
-  private Intake INTAKE;
-  private long startTime;
+  private Shooter shooter;
 
   /**
-   * Creates a new IntakeCommand.
+   * Creates a new EnableShooter.
    */
-  public IntakeCommand(Intake intake) {
-    addRequirements(intake);
-    this.INTAKE = intake;
+  public DisableShooter(Shooter shooter) {
     // Use addRequirements() here to declare subsystem dependencies.
+    this.shooter = shooter;
+    addRequirements(shooter);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    INTAKE.setSpeed(Constants.WHEEL_INTAKE_SPEED);
-    INTAKE.deployPistons();
-    this.startTime = System.currentTimeMillis();
+    shooter.setSystemSpeed(0);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if(System.currentTimeMillis() - startTime > 1000) INTAKE.pistonOff();
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    INTAKE.setSpeed(0);
-    INTAKE.pistonOff();
   }
 
   // Returns true when the command should end.

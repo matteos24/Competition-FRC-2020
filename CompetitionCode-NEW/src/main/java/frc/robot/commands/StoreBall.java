@@ -8,47 +8,57 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.Constants;
-import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.Storage;
 
-public class IntakeCommand extends CommandBase {
-
-  private Intake INTAKE;
-  private long startTime;
-
+/**
+ * COMPETITION READY
+ * 
+ * Triggered when intake switch is pressed.
+ */
+public class StoreBall extends CommandBase {
   /**
-   * Creates a new IntakeCommand.
+   * Creates a new StorageCommand.
    */
-  public IntakeCommand(Intake intake) {
-    addRequirements(intake);
-    this.INTAKE = intake;
+  private boolean movedOn;
+  private Storage storage;
+  private double startTime;
+
+  public StoreBall(Storage s) {
     // Use addRequirements() here to declare subsystem dependencies.
+    storage = s;
+
+    this.startTime = System.currentTimeMillis();
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    INTAKE.setSpeed(Constants.WHEEL_INTAKE_SPEED);
-    INTAKE.deployPistons();
-    this.startTime = System.currentTimeMillis();
+    if (!storage.isOverridden())
+      storage.startFeeding();
+    movedOn = false;
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if(System.currentTimeMillis() - startTime > 1000) INTAKE.pistonOff();
+    if (storage.hasBall())
+      movedOn = true;
+
+    // ignores the first 350 ms otherwise this will end immediately (ball hasnt gone
+    // far enough).
+    if (System.currentTimeMillis() - startTime < 350)
+      movedOn = false;
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    INTAKE.setSpeed(0);
-    INTAKE.pistonOff();
+    storage.stopFeeding();
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return (movedOn && storage.hasBall()) || storage.isOverridden();
   }
 }

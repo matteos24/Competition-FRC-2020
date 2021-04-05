@@ -11,7 +11,7 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
 import frc.robot.subsystems.Intake;
 
-public class IntakeCommand extends CommandBase {
+public class OuttakeCommand extends CommandBase {
 
   private Intake INTAKE;
   private long startTime;
@@ -19,24 +19,24 @@ public class IntakeCommand extends CommandBase {
   /**
    * Creates a new IntakeCommand.
    */
-  public IntakeCommand(Intake intake) {
+  public OuttakeCommand(Intake intake) {
     addRequirements(intake);
     this.INTAKE = intake;
+    this.startTime = System.currentTimeMillis();
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    INTAKE.setSpeed(Constants.WHEEL_INTAKE_SPEED);
+    INTAKE.setSpeed(-Constants.WHEEL_INTAKE_SPEED);
     INTAKE.deployPistons();
-    this.startTime = System.currentTimeMillis();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if(System.currentTimeMillis() - startTime > 1000) INTAKE.pistonOff();
+    if(System.currentTimeMillis() - startTime > 1) INTAKE.pistonOff();
   }
 
   // Called once the command ends or is interrupted.

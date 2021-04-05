@@ -34,7 +34,6 @@ public class ShootCommand extends CommandBase {
     this.targetRPM = targetRPM;
     addRequirements(shooter, storage);
 
-    this.startTime = System.currentTimeMillis();
     this.isClose = isClose;
   }
 
@@ -43,16 +42,16 @@ public class ShootCommand extends CommandBase {
   public void initialize() {
     if(isClose) shooter.setAngleBack();
     else shooter.setAngleForward();
-    //storage.resetBalls();
+    storage.resetBalls();
+    this.startTime = System.currentTimeMillis();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    boolean alreadyPressed = false;
+    // shooter.setSpeedWithRPM(targetRPM); // Sets target RPM (must be called each frame to update)
 
-    shooter.setSpeedWithRPM(targetRPM); // Sets target RPM (must be called each frame to update)
-
+    shooter.setSpeed(targetRPM / 6500f);
     // Output stats
     SmartDashboard.putNumber("Target RPM", targetRPM);
     SmartDashboard.putNumber("Current RPM", shooter.getMotorSpeed());
@@ -64,7 +63,11 @@ public class ShootCommand extends CommandBase {
     }
 
     // turn pistons off
-    if (System.currentTimeMillis() - startTime > 1) shooter.setPistonsOff();
+    System.out.println(System.currentTimeMillis() - startTime > 1000);
+    if (System.currentTimeMillis() - startTime > 1000) {
+      shooter.setPistonsOff();
+      System.out.println("Disabled Shooter pistons.");
+    }
 
     // TODO: de-incremembing balls
 
@@ -74,6 +77,7 @@ public class ShootCommand extends CommandBase {
   @Override
   public void end(boolean interrupted) {
     storage.stopFeeding();
+    System.out.println("finished shoot");
     shooter.setPistonsOff();
     shooter.setSystemSpeed(0);
     shooter.setSpeed(0);

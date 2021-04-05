@@ -15,7 +15,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
-import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.StartEndCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.*;
@@ -77,8 +76,10 @@ public class RobotContainer {
 
   public final StartEndCommand retractIntake = new StartEndCommand(() -> {
     INTAKE.retractPistons();
+    System.out.println("retract");
   }, () -> {
     INTAKE.pistonOff();
+    System.out.println("stop!");
   }, INTAKE);
 
   public final StartEndCommand outtakeCommand = new StartEndCommand(() -> INTAKE.setSpeed(-WHEEL_INTAKE_SPEED),
@@ -86,7 +87,7 @@ public class RobotContainer {
 
   // for storage trigger
   public boolean shouldStorageIntake() {
-    return (!STORAGE.getTopSwitch() && !STORAGE.isOverridden());
+    return STORAGE.getIntakeSwitch() && !STORAGE.isOverridden();
   }
 
   // Storage
@@ -101,12 +102,6 @@ public class RobotContainer {
 
   // === AUTO === //
   private final InstantCommand doNothing = new InstantCommand();
-  private final SlalomCommandAuto slalom = new SlalomCommandAuto(DRIVETRAIN);
-  
-  private final BounceCommandAuto bounce = new BounceCommandAuto(DRIVETRAIN);
-  private final TestAutoCommandGroup testAuto = new TestAutoCommandGroup(DRIVETRAIN);
-  private final SequentialCommandGroup testAuto2 = new SequentialCommandGroup(new MoveCommand(DRIVETRAIN, 24, 0.5));
-  private final BarrelCommandAuto barrel = new BarrelCommandAuto(DRIVETRAIN);
   // private final Command moveForward = new MoveCommand(DRIVETRAIN, 20, .5);                     // TODO: FIX THIS
   // private final TestAutoCommandGroup debugAuto = new TestAutoCommandGroup(DRIVETRAIN, VISION);
   // private final FailsafeAuto failsafe = new FailsafeAuto(DRIVETRAIN, SHOOTER, STORAGE);
@@ -133,7 +128,7 @@ public class RobotContainer {
         () -> {
             CLIMBER.setWinchSpeed(-operator.getRawAxis(FORWARD_AXIS_LEFT));
             CLIMBER.setHookSpeed(operator.getRawAxis(FORWARD_AXIS_RIGHT));
-            System.out.println(-operator.getRawAxis(FORWARD_AXIS_LEFT)+", "+operator.getRawAxis(FORWARD_AXIS_RIGHT));
+            // System.out.println(-operator.getRawAxis(FORWARD_AXIS_LEFT)+", "+operator.getRawAxis(FORWARD_AXIS_RIGHT));
         }, 
         CLIMBER
       )
@@ -145,7 +140,7 @@ public class RobotContainer {
   ));
 
     // Shooter
-    toggleShooterButton.toggleWhenPressed(new EnableShooter(SHOOTER, STORAGE));
+    // toggleShooterButton.toggleWhenPressed(new EnableShooter(SHOOTER, STORAGE));
 
     shootCloseTrigger.whileActiveOnce(shootClose);
     shootFarTrigger.whileActiveOnce(shootFar);
@@ -172,11 +167,6 @@ public class RobotContainer {
 
   public void addAutosToChooser(SendableChooser<Command> chooser) {
     chooser.setDefaultOption("Do Nothing", doNothing);
-    chooser.addOption("Slalom Auto", slalom);
-    chooser.addOption("Barrel Auto", barrel);
-    chooser.addOption("Bounce Auto", bounce);
-    chooser.addOption("Test Auto", testAuto);
-    chooser.addOption("Test Auto 2", testAuto2);
     // chooser.addOption("Move 20\"", moveForward);
     // chooser.addOption("Failsafe (Ram and 3 in the hole)", failsafe);
     // chooser.addOption("Trench (5 balls)", trench);
